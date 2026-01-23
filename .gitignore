@@ -1,0 +1,58 @@
+# Binaries
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output of go build
+/provider/cmd/pulumi-resource-danubedata/pulumi-resource-danubedata
+/provider/cmd/pulumi-tfgen-danubedata/pulumi-tfgen-danubedata
+
+# Generated SDKs (commit these after generation for releases)
+# sdk/
+
+# Go workspace
+go.work
+go.work.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+*.egg
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+.npm
+
+# Pulumi
+Pulumi.*.yaml
+!Pulumi.yaml
+.pulumi/
+
+# Test artifacts
+coverage.out
+coverage.html

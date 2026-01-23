@@ -1,0 +1,3 @@
+name: danubedata-python-example
+runtime: python
+description: Example DanubeData infrastructure with Pulumi (Python)

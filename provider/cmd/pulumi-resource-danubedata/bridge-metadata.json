@@ -1,0 +1,144 @@
+{
+    "auto-aliasing": {
+        "resources": {
+            "danubedata_cache": {
+                "current": "danubedata:index/cache:Cache"
+            },
+            "danubedata_database": {
+                "current": "danubedata:index/database:Database"
+            },
+            "danubedata_firewall": {
+                "current": "danubedata:index/firewall:Firewall",
+                "fields": {
+                    "rules": {
+                        "maxItemsOne": false,
+                        "elem": {
+                            "fields": {
+                                "source_ips": {
+                                    "maxItemsOne": false
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "danubedata_serverless": {
+                "current": "danubedata:index/serverless:Serverless"
+            },
+            "danubedata_ssh_key": {
+                "current": "danubedata:index/sshKey:SshKey"
+            },
+            "danubedata_storage_access_key": {
+                "current": "danubedata:index/storageAccessKey:StorageAccessKey"
+            },
+            "danubedata_storage_bucket": {
+                "current": "danubedata:index/storageBucket:StorageBucket"
+            },
+            "danubedata_vps": {
+                "current": "danubedata:index/vps:Vps"
+            },
+            "danubedata_vps_snapshot": {
+                "current": "danubedata:index/vpsSnapshot:VpsSnapshot"
+            }
+        },
+        "datasources": {
+            "danubedata_cache_providers": {
+                "current": "danubedata:index/getCacheProviders:getCacheProviders",
+                "fields": {
+                    "providers": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_caches": {
+                "current": "danubedata:index/getCaches:getCaches",
+                "fields": {
+                    "instances": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_database_providers": {
+                "current": "danubedata:index/getDatabaseProviders:getDatabaseProviders",
+                "fields": {
+                    "providers": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_databases": {
+                "current": "danubedata:index/getDatabases:getDatabases",
+                "fields": {
+                    "instances": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_firewalls": {
+                "current": "danubedata:index/getFirewalls:getFirewalls",
+                "fields": {
+                    "firewalls": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_serverless_containers": {
+                "current": "danubedata:index/getServerlessContainers:getServerlessContainers",
+                "fields": {
+                    "containers": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_ssh_keys": {
+                "current": "danubedata:index/getSshKeys:getSshKeys",
+                "fields": {
+                    "keys": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_storage_access_keys": {
+                "current": "danubedata:index/getStorageAccessKeys:getStorageAccessKeys",
+                "fields": {
+                    "keys": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_storage_buckets": {
+                "current": "danubedata:index/getStorageBuckets:getStorageBuckets",
+                "fields": {
+                    "buckets": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_vps_images": {
+                "current": "danubedata:index/getVpsImages:getVpsImages",
+                "fields": {
+                    "images": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_vps_snapshots": {
+                "current": "danubedata:index/getVpsSnapshots:getVpsSnapshots",
+                "fields": {
+                    "snapshots": {
+                        "maxItemsOne": false
+                    }
+                }
+            },
+            "danubedata_vpss": {
+                "current": "danubedata:index/getVpss:getVpss",
+                "fields": {
+                    "instances": {
+                        "maxItemsOne": false
+                    }
+                }
+            }
+        }
+    },
+    "auto-settings": {}
+}

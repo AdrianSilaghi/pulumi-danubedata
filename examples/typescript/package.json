@@ -1,0 +1,14 @@
+{
+    "name": "danubedata-typescript-example",
+    "version": "1.0.0",
+    "description": "Example DanubeData infrastructure with Pulumi",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^18.0.0",
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.0.0",
+        "@danubedata/pulumi": "^0.1.0"
+    }
+}

@@ -1,0 +1,2774 @@
+{
+    "name": "danubedata",
+    "displayName": "DanubeData",
+    "description": "A Pulumi provider for managing DanubeData cloud infrastructure resources.",
+    "keywords": [
+        "pulumi",
+        "danubedata",
+        "category/cloud",
+        "kind/native"
+    ],
+    "homepage": "https://danubedata.ro",
+    "license": "Apache-2.0",
+    "attribution": "This Pulumi package is based on the [`danubedata` Terraform Provider](https://github.com/AdrianSilaghi/terraform-provider-danubedata).",
+    "repository": "https://github.com/AdrianSilaghi/pulumi-danubedata",
+    "pluginDownloadURL": "github://api.github.com/AdrianSilaghi/pulumi-danubedata",
+    "publisher": "AdrianSilaghi",
+    "meta": {
+        "moduleFormat": "(.*)(?:/[^/]*)"
+    },
+    "language": {
+        "csharp": {
+            "packageReferences": {
+                "Pulumi": "3.*"
+            },
+            "namespaces": {
+                "danubedata": "DanubeData"
+            },
+            "compatibility": "tfbridge20",
+            "rootNamespace": "DanubeData"
+        },
+        "go": {
+            "importBasePath": "github.com/AdrianSilaghi/pulumi-danubedata/sdk/go/danubedata",
+            "generateResourceContainerTypes": true,
+            "generateExtraInputTypes": true
+        },
+        "nodejs": {
+            "packageName": "@danubedata/pulumi",
+            "packageDescription": "A Pulumi provider for managing DanubeData cloud infrastructure resources.",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/AdrianSilaghi/terraform-provider-danubedata)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-danubedata` repo](https://github.com/AdrianSilaghi/pulumi-danubedata/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-danubedata` repo](https://github.com/AdrianSilaghi/terraform-provider-danubedata/issues).",
+            "dependencies": {
+                "@pulumi/pulumi": "^3.0.0"
+            },
+            "devDependencies": {
+                "@types/node": "^10.0.0"
+            },
+            "compatibility": "tfbridge20",
+            "disableUnionOutputTypes": true
+        },
+        "python": {
+            "packageName": "pulumi_danubedata",
+            "requires": {
+                "pulumi": "\u003e=3.0.0,\u003c4.0.0"
+            },
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/AdrianSilaghi/terraform-provider-danubedata)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-danubedata` repo](https://github.com/AdrianSilaghi/pulumi-danubedata/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-danubedata` repo](https://github.com/AdrianSilaghi/terraform-provider-danubedata/issues).",
+            "compatibility": "tfbridge20",
+            "pyproject": {}
+        }
+    },
+    "config": {
+        "variables": {
+            "apiToken": {
+                "type": "string",
+                "description": "API token for DanubeData authentication. Can also be set via DANUBEDATA_API_TOKEN environment variable.\n",
+                "defaultInfo": {
+                    "environment": [
+                        "DANUBEDATA_API_TOKEN"
+                    ]
+                },
+                "secret": true
+            },
+            "baseUrl": {
+                "type": "string",
+                "description": "Base URL for the DanubeData API. Defaults to https://danubedata.ro/api/v1. Can also be set via DANUBEDATA_BASE_URL\nenvironment variable.\n",
+                "default": "https://danubedata.ro/api/v1",
+                "defaultInfo": {
+                    "environment": [
+                        "DANUBEDATA_BASE_URL"
+                    ]
+                }
+            }
+        }
+    },
+    "types": {
+        "danubedata:index/CacheTimeouts:CacheTimeouts": {
+            "properties": {
+                "create": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                },
+                "delete": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.\n"
+                },
+                "update": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                }
+            },
+            "type": "object"
+        },
+        "danubedata:index/DatabaseTimeouts:DatabaseTimeouts": {
+            "properties": {
+                "create": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                },
+                "delete": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.\n"
+                },
+                "update": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                }
+            },
+            "type": "object"
+        },
+        "danubedata:index/FirewallRule:FirewallRule": {
+            "properties": {
+                "action": {
+                    "type": "string",
+                    "description": "Action to take: 'accept' or 'drop'.\n"
+                },
+                "direction": {
+                    "type": "string",
+                    "description": "Direction: 'inbound' or 'outbound'.\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Rule ID (computed by API).\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name/description of the rule.\n"
+                },
+                "portRangeEnd": {
+                    "type": "integer",
+                    "description": "End of port range (1-65535).\n"
+                },
+                "portRangeStart": {
+                    "type": "integer",
+                    "description": "Start of port range (1-65535).\n"
+                },
+                "priority": {
+                    "type": "integer",
+                    "description": "Rule priority (lower numbers = higher priority).\n"
+                },
+                "protocol": {
+                    "type": "string",
+                    "description": "Protocol: 'tcp', 'udp', 'icmp', or 'any'.\n"
+                },
+                "sourceIps": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of source IP addresses or CIDR blocks.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "action",
+                "direction",
+                "protocol"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "action",
+                        "direction",
+                        "id",
+                        "protocol"
+                    ]
+                }
+            }
+        },
+        "danubedata:index/ServerlessTimeouts:ServerlessTimeouts": {
+            "properties": {
+                "create": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                },
+                "delete": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.\n"
+                },
+                "update": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                }
+            },
+            "type": "object"
+        },
+        "danubedata:index/StorageBucketTimeouts:StorageBucketTimeouts": {
+            "properties": {
+                "create": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                },
+                "delete": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.\n"
+                },
+                "update": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                }
+            },
+            "type": "object"
+        },
+        "danubedata:index/VpsSnapshotTimeouts:VpsSnapshotTimeouts": {
+            "properties": {
+                "create": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                },
+                "delete": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.\n"
+                }
+            },
+            "type": "object"
+        },
+        "danubedata:index/VpsTimeouts:VpsTimeouts": {
+            "properties": {
+                "create": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                },
+                "delete": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.\n"
+                },
+                "update": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).\n"
+                }
+            },
+            "type": "object"
+        },
+        "danubedata:index/getCacheProvidersProvider:getCacheProvidersProvider": {
+            "properties": {
+                "defaultPort": {
+                    "type": "integer",
+                    "description": "Default port number.\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Provider description.\n"
+                },
+                "id": {
+                    "type": "integer",
+                    "description": "Provider ID to use when creating cache instances.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Provider name (Redis, Valkey, Dragonfly).\n"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Provider type identifier.\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Default version.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "defaultPort",
+                "description",
+                "id",
+                "name",
+                "type",
+                "version"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getCachesInstance:getCachesInstance": {
+            "properties": {
+                "cacheProvider": {
+                    "type": "string",
+                    "description": "Cache provider (redis, valkey, dragonfly).\n"
+                },
+                "cpuCores": {
+                    "type": "integer",
+                    "description": "Number of CPU cores.\n"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the instance was created.\n"
+                },
+                "datacenter": {
+                    "type": "string",
+                    "description": "Datacenter location.\n"
+                },
+                "endpoint": {
+                    "type": "string",
+                    "description": "Connection endpoint hostname.\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the cache instance.\n"
+                },
+                "memorySizeMb": {
+                    "type": "integer",
+                    "description": "Memory size in MB.\n"
+                },
+                "monthlyCost": {
+                    "type": "number",
+                    "description": "Estimated monthly cost.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the cache instance.\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Connection port.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile (predefined CPU/RAM configuration).\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the cache instance.\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Cache version.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "cacheProvider",
+                "cpuCores",
+                "createdAt",
+                "datacenter",
+                "endpoint",
+                "id",
+                "memorySizeMb",
+                "monthlyCost",
+                "name",
+                "port",
+                "resourceProfile",
+                "status",
+                "version"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getDatabaseProvidersProvider:getDatabaseProvidersProvider": {
+            "properties": {
+                "defaultPort": {
+                    "type": "integer",
+                    "description": "Default port number.\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Provider description.\n"
+                },
+                "id": {
+                    "type": "integer",
+                    "description": "Provider ID to use when creating database instances.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Provider name (MySQL, PostgreSQL, MariaDB).\n"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Provider type identifier.\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Default version.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "defaultPort",
+                "description",
+                "id",
+                "name",
+                "type",
+                "version"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getDatabasesInstance:getDatabasesInstance": {
+            "properties": {
+                "cpuCores": {
+                    "type": "integer",
+                    "description": "Number of CPU cores.\n"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the instance was created.\n"
+                },
+                "databaseName": {
+                    "type": "string",
+                    "description": "Name of the database.\n"
+                },
+                "datacenter": {
+                    "type": "string",
+                    "description": "Datacenter location.\n"
+                },
+                "endpoint": {
+                    "type": "string",
+                    "description": "Connection endpoint hostname.\n"
+                },
+                "engine": {
+                    "type": "string",
+                    "description": "Database engine (mysql, postgresql, mariadb).\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the database instance.\n"
+                },
+                "memorySizeMb": {
+                    "type": "integer",
+                    "description": "Memory size in MB.\n"
+                },
+                "monthlyCost": {
+                    "type": "number",
+                    "description": "Estimated monthly cost.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the database instance.\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Connection port.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile (predefined CPU/RAM/Storage configuration).\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the database instance.\n"
+                },
+                "storageSizeGb": {
+                    "type": "integer",
+                    "description": "Storage size in GB.\n"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "Database admin username.\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Database version.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "cpuCores",
+                "createdAt",
+                "databaseName",
+                "datacenter",
+                "endpoint",
+                "engine",
+                "id",
+                "memorySizeMb",
+                "monthlyCost",
+                "name",
+                "port",
+                "resourceProfile",
+                "status",
+                "storageSizeGb",
+                "username",
+                "version"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getFirewallsFirewall:getFirewallsFirewall": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the firewall was created.\n"
+                },
+                "defaultAction": {
+                    "type": "string",
+                    "description": "Default action for unmatched traffic (allow or deny).\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the firewall.\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the firewall.\n"
+                },
+                "isDefault": {
+                    "type": "boolean",
+                    "description": "Whether this is the default firewall.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the firewall.\n"
+                },
+                "rulesCount": {
+                    "type": "integer",
+                    "description": "Number of rules in the firewall.\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the firewall.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "createdAt",
+                "defaultAction",
+                "description",
+                "id",
+                "isDefault",
+                "name",
+                "rulesCount",
+                "status"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getServerlessContainersContainer:getServerlessContainersContainer": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the container was created.\n"
+                },
+                "deploymentType": {
+                    "type": "string",
+                    "description": "Deployment type (docker or git).\n"
+                },
+                "gitBranch": {
+                    "type": "string",
+                    "description": "Git branch (for git deployment).\n"
+                },
+                "gitRepository": {
+                    "type": "string",
+                    "description": "Git repository URL (for git deployment).\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the serverless container.\n"
+                },
+                "imageUrl": {
+                    "type": "string",
+                    "description": "Docker image URL (for docker deployment).\n"
+                },
+                "maxInstances": {
+                    "type": "integer",
+                    "description": "Maximum number of instances.\n"
+                },
+                "minInstances": {
+                    "type": "integer",
+                    "description": "Minimum number of instances.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the serverless container.\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Container port.\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the container.\n"
+                },
+                "url": {
+                    "type": "string",
+                    "description": "Public HTTPS URL for the container.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "createdAt",
+                "deploymentType",
+                "gitBranch",
+                "gitRepository",
+                "id",
+                "imageUrl",
+                "maxInstances",
+                "minInstances",
+                "name",
+                "port",
+                "status",
+                "url"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getSshKeysKey:getSshKeysKey": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the key was created.\n"
+                },
+                "fingerprint": {
+                    "type": "string",
+                    "description": "SHA256 fingerprint of the SSH key.\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the SSH key.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the SSH key.\n"
+                },
+                "publicKey": {
+                    "type": "string",
+                    "description": "The SSH public key.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "createdAt",
+                "fingerprint",
+                "id",
+                "name",
+                "publicKey"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getStorageAccessKeysKey:getStorageAccessKeysKey": {
+            "properties": {
+                "accessKeyId": {
+                    "type": "string",
+                    "description": "The S3 access key ID for authentication.\n"
+                },
+                "accessType": {
+                    "type": "string",
+                    "description": "Access type (full or restricted).\n"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the key was created.\n"
+                },
+                "expiresAt": {
+                    "type": "string",
+                    "description": "Expiration timestamp (if set).\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the access key.\n"
+                },
+                "isExpired": {
+                    "type": "boolean",
+                    "description": "Whether the key has expired.\n"
+                },
+                "isPrefixScoped": {
+                    "type": "boolean",
+                    "description": "Whether the key is scoped to specific bucket prefixes.\n"
+                },
+                "lastUsedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the key was last used.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the access key.\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the key.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "accessKeyId",
+                "accessType",
+                "createdAt",
+                "expiresAt",
+                "id",
+                "isExpired",
+                "isPrefixScoped",
+                "lastUsedAt",
+                "name",
+                "status"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getStorageBucketsBucket:getStorageBucketsBucket": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the bucket was created.\n"
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "Human-readable display name.\n"
+                },
+                "encryptionEnabled": {
+                    "type": "boolean",
+                    "description": "Whether encryption is enabled.\n"
+                },
+                "endpointUrl": {
+                    "type": "string",
+                    "description": "S3-compatible endpoint URL.\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the storage bucket.\n"
+                },
+                "minioBucketName": {
+                    "type": "string",
+                    "description": "Internal bucket name.\n"
+                },
+                "monthlyCost": {
+                    "type": "number",
+                    "description": "Estimated monthly cost.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the storage bucket.\n"
+                },
+                "objectCount": {
+                    "type": "integer",
+                    "description": "Number of objects in the bucket.\n"
+                },
+                "publicAccess": {
+                    "type": "boolean",
+                    "description": "Whether public access is enabled.\n"
+                },
+                "publicUrl": {
+                    "type": "string",
+                    "description": "Public URL (if public access enabled).\n"
+                },
+                "region": {
+                    "type": "string",
+                    "description": "Region where the bucket is located.\n"
+                },
+                "sizeBytes": {
+                    "type": "integer",
+                    "description": "Current size in bytes.\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the bucket.\n"
+                },
+                "versioningEnabled": {
+                    "type": "boolean",
+                    "description": "Whether versioning is enabled.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "createdAt",
+                "displayName",
+                "encryptionEnabled",
+                "endpointUrl",
+                "id",
+                "minioBucketName",
+                "monthlyCost",
+                "name",
+                "objectCount",
+                "publicAccess",
+                "publicUrl",
+                "region",
+                "sizeBytes",
+                "status",
+                "versioningEnabled"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getVpsImagesImage:getVpsImagesImage": {
+            "properties": {
+                "defaultUser": {
+                    "type": "string",
+                    "description": "Default SSH user.\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Image description.\n"
+                },
+                "distro": {
+                    "type": "string",
+                    "description": "Distribution (ubuntu, debian, alma, rocky, fedora, alpine).\n"
+                },
+                "family": {
+                    "type": "string",
+                    "description": "OS family (debian, redhat, fedora, alpine).\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Image identifier (e.g., 'ubuntu-24.04').\n"
+                },
+                "image": {
+                    "type": "string",
+                    "description": "Full image reference.\n"
+                },
+                "label": {
+                    "type": "string",
+                    "description": "Human-readable label.\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Distribution version.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "defaultUser",
+                "description",
+                "distro",
+                "family",
+                "id",
+                "image",
+                "label",
+                "version"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getVpsSnapshotsSnapshot:getVpsSnapshotsSnapshot": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the snapshot was created.\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the snapshot.\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the snapshot.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the snapshot.\n"
+                },
+                "sizeGb": {
+                    "type": "number",
+                    "description": "Size of the snapshot in GB.\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the snapshot (creating, ready, error).\n"
+                },
+                "vpsInstanceId": {
+                    "type": "string",
+                    "description": "ID of the VPS instance this snapshot belongs to.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "createdAt",
+                "description",
+                "id",
+                "name",
+                "sizeGb",
+                "status",
+                "vpsInstanceId"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "danubedata:index/getVpssInstance:getVpssInstance": {
+            "properties": {
+                "cpuAllocationType": {
+                    "type": "string",
+                    "description": "CPU allocation type (shared or dedicated).\n"
+                },
+                "cpuCores": {
+                    "type": "integer",
+                    "description": "Number of CPU cores.\n"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the instance was created.\n"
+                },
+                "datacenter": {
+                    "type": "string",
+                    "description": "Datacenter location.\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier for the VPS instance.\n"
+                },
+                "image": {
+                    "type": "string",
+                    "description": "Operating system image.\n"
+                },
+                "ipv6Address": {
+                    "type": "string",
+                    "description": "IPv6 address.\n"
+                },
+                "memorySizeGb": {
+                    "type": "integer",
+                    "description": "Memory size in GB.\n"
+                },
+                "monthlyCost": {
+                    "type": "number",
+                    "description": "Estimated monthly cost.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the VPS instance.\n"
+                },
+                "privateIp": {
+                    "type": "string",
+                    "description": "Private IP address.\n"
+                },
+                "publicIp": {
+                    "type": "string",
+                    "description": "Public IPv4 address.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile (predefined CPU/RAM/Storage configuration).\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the VPS instance.\n"
+                },
+                "storageSizeGb": {
+                    "type": "integer",
+                    "description": "Storage size in GB.\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "cpuAllocationType",
+                "cpuCores",
+                "createdAt",
+                "datacenter",
+                "id",
+                "image",
+                "ipv6Address",
+                "memorySizeGb",
+                "monthlyCost",
+                "name",
+                "privateIp",
+                "publicIp",
+                "resourceProfile",
+                "status",
+                "storageSizeGb"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        }
+    },
+    "provider": {
+        "description": "The provider type for the danubedata package. By default, resources use package-wide configuration\nsettings, however an explicit `Provider` instance may be created and passed during resource\nconstruction to achieve fine-grained programmatic control over provider settings. See the\n[documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.\n",
+        "properties": {
+            "apiToken": {
+                "type": "string",
+                "description": "API token for DanubeData authentication. Can also be set via DANUBEDATA_API_TOKEN environment variable.\n",
+                "secret": true
+            },
+            "baseUrl": {
+                "type": "string",
+                "description": "Base URL for the DanubeData API. Defaults to https://danubedata.ro/api/v1. Can also be set via DANUBEDATA_BASE_URL\nenvironment variable.\n"
+            }
+        },
+        "inputProperties": {
+            "apiToken": {
+                "type": "string",
+                "description": "API token for DanubeData authentication. Can also be set via DANUBEDATA_API_TOKEN environment variable.\n",
+                "defaultInfo": {
+                    "environment": [
+                        "DANUBEDATA_API_TOKEN"
+                    ]
+                },
+                "secret": true
+            },
+            "baseUrl": {
+                "type": "string",
+                "description": "Base URL for the DanubeData API. Defaults to https://danubedata.ro/api/v1. Can also be set via DANUBEDATA_BASE_URL\nenvironment variable.\n",
+                "default": "https://danubedata.ro/api/v1",
+                "defaultInfo": {
+                    "environment": [
+                        "DANUBEDATA_BASE_URL"
+                    ]
+                }
+            }
+        }
+    },
+    "resources": {
+        "danubedata:index/cache:Cache": {
+            "properties": {
+                "cacheProvider": {
+                    "type": "string",
+                    "description": "Cache provider type (redis, valkey, dragonfly).\n"
+                },
+                "cpuCores": {
+                    "type": "integer",
+                    "description": "Number of CPU cores. If not specified, determined by resource_profile.\n"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the cache instance was created.\n"
+                },
+                "datacenter": {
+                    "type": "string",
+                    "description": "Datacenter location (ash, fsn1, nbg1, hel1).\n"
+                },
+                "deployedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the cache instance was deployed.\n"
+                },
+                "endpoint": {
+                    "type": "string",
+                    "description": "Connection endpoint for the cache instance.\n"
+                },
+                "memorySizeMb": {
+                    "type": "integer",
+                    "description": "Memory size in MB. If not specified, determined by resource_profile.\n"
+                },
+                "monthlyCost": {
+                    "type": "number",
+                    "description": "Monthly cost in dollars.\n"
+                },
+                "monthlyCostCents": {
+                    "type": "integer",
+                    "description": "Monthly cost in cents.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the cache instance.\n"
+                },
+                "parameterGroupId": {
+                    "type": "string",
+                    "description": "ID of the parameter group to use for custom configuration.\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Port number for the cache instance.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile for the cache (micro, small, medium, large).\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the cache instance (pending, provisioning, running, stopped, error).\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/CacheTimeouts:CacheTimeouts"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the cache instance was last updated.\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Version of the cache software.\n"
+                }
+            },
+            "required": [
+                "cacheProvider",
+                "cpuCores",
+                "createdAt",
+                "datacenter",
+                "deployedAt",
+                "endpoint",
+                "memorySizeMb",
+                "monthlyCost",
+                "monthlyCostCents",
+                "name",
+                "port",
+                "resourceProfile",
+                "status",
+                "updatedAt",
+                "version"
+            ],
+            "inputProperties": {
+                "cacheProvider": {
+                    "type": "string",
+                    "description": "Cache provider type (redis, valkey, dragonfly).\n"
+                },
+                "cpuCores": {
+                    "type": "integer",
+                    "description": "Number of CPU cores. If not specified, determined by resource_profile.\n"
+                },
+                "datacenter": {
+                    "type": "string",
+                    "description": "Datacenter location (ash, fsn1, nbg1, hel1).\n"
+                },
+                "memorySizeMb": {
+                    "type": "integer",
+                    "description": "Memory size in MB. If not specified, determined by resource_profile.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the cache instance.\n"
+                },
+                "parameterGroupId": {
+                    "type": "string",
+                    "description": "ID of the parameter group to use for custom configuration.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile for the cache (micro, small, medium, large).\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/CacheTimeouts:CacheTimeouts"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Version of the cache software.\n"
+                }
+            },
+            "requiredInputs": [
+                "cacheProvider",
+                "datacenter",
+                "resourceProfile"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Cache resources.\n",
+                "properties": {
+                    "cacheProvider": {
+                        "type": "string",
+                        "description": "Cache provider type (redis, valkey, dragonfly).\n"
+                    },
+                    "cpuCores": {
+                        "type": "integer",
+                        "description": "Number of CPU cores. If not specified, determined by resource_profile.\n"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Timestamp when the cache instance was created.\n"
+                    },
+                    "datacenter": {
+                        "type": "string",
+                        "description": "Datacenter location (ash, fsn1, nbg1, hel1).\n"
+                    },
+                    "deployedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the cache instance was deployed.\n"
+                    },
+                    "endpoint": {
+                        "type": "string",
+                        "description": "Connection endpoint for the cache instance.\n"
+                    },
+                    "memorySizeMb": {
+                        "type": "integer",
+                        "description": "Memory size in MB. If not specified, determined by resource_profile.\n"
+                    },
+                    "monthlyCost": {
+                        "type": "number",
+                        "description": "Monthly cost in dollars.\n"
+                    },
+                    "monthlyCostCents": {
+                        "type": "integer",
+                        "description": "Monthly cost in cents.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the cache instance.\n"
+                    },
+                    "parameterGroupId": {
+                        "type": "string",
+                        "description": "ID of the parameter group to use for custom configuration.\n"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "description": "Port number for the cache instance.\n"
+                    },
+                    "resourceProfile": {
+                        "type": "string",
+                        "description": "Resource profile for the cache (micro, small, medium, large).\n"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the cache instance (pending, provisioning, running, stopped, error).\n"
+                    },
+                    "timeouts": {
+                        "$ref": "#/types/danubedata:index/CacheTimeouts:CacheTimeouts"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the cache instance was last updated.\n"
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Version of the cache software.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "danubedata:index/database:Database": {
+            "properties": {
+                "cpuCores": {
+                    "type": "integer",
+                    "description": "Number of CPU cores. Derived from resource_profile.\n"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the database instance was created.\n"
+                },
+                "databaseName": {
+                    "type": "string",
+                    "description": "Name of the initial database to create. Must start with a letter and contain only letters, numbers, and underscores.\n"
+                },
+                "datacenter": {
+                    "type": "string",
+                    "description": "Datacenter location (fsn1, nbg1, hel1).\n"
+                },
+                "deployedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the database instance was deployed.\n"
+                },
+                "endpoint": {
+                    "type": "string",
+                    "description": "Connection endpoint for the database instance.\n"
+                },
+                "engine": {
+                    "type": "string",
+                    "description": "Database engine (mysql, postgresql, mariadb).\n"
+                },
+                "memorySizeMb": {
+                    "type": "integer",
+                    "description": "Memory size in MB. Derived from resource_profile.\n"
+                },
+                "monthlyCost": {
+                    "type": "number",
+                    "description": "Monthly cost in dollars.\n"
+                },
+                "monthlyCostCents": {
+                    "type": "integer",
+                    "description": "Monthly cost in cents.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the database instance. Must be lowercase alphanumeric with hyphens (DNS compatible).\n"
+                },
+                "parameterGroupId": {
+                    "type": "string",
+                    "description": "ID of the parameter group to use for custom configuration.\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Port number for the database instance.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile for the database (small, medium, large).\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the database instance (pending, provisioning, running, stopped, error).\n"
+                },
+                "storageSizeGb": {
+                    "type": "integer",
+                    "description": "Storage size in GB. Derived from resource_profile.\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/DatabaseTimeouts:DatabaseTimeouts"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the database instance was last updated.\n"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "Root username for the database instance.\n"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Version of the database software.\n"
+                }
+            },
+            "required": [
+                "cpuCores",
+                "createdAt",
+                "datacenter",
+                "deployedAt",
+                "endpoint",
+                "engine",
+                "memorySizeMb",
+                "monthlyCost",
+                "monthlyCostCents",
+                "name",
+                "port",
+                "resourceProfile",
+                "status",
+                "storageSizeGb",
+                "updatedAt",
+                "username",
+                "version"
+            ],
+            "inputProperties": {
+                "databaseName": {
+                    "type": "string",
+                    "description": "Name of the initial database to create. Must start with a letter and contain only letters, numbers, and underscores.\n"
+                },
+                "datacenter": {
+                    "type": "string",
+                    "description": "Datacenter location (fsn1, nbg1, hel1).\n"
+                },
+                "engine": {
+                    "type": "string",
+                    "description": "Database engine (mysql, postgresql, mariadb).\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the database instance. Must be lowercase alphanumeric with hyphens (DNS compatible).\n"
+                },
+                "parameterGroupId": {
+                    "type": "string",
+                    "description": "ID of the parameter group to use for custom configuration.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile for the database (small, medium, large).\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/DatabaseTimeouts:DatabaseTimeouts"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Version of the database software.\n"
+                }
+            },
+            "requiredInputs": [
+                "datacenter",
+                "engine",
+                "resourceProfile"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Database resources.\n",
+                "properties": {
+                    "cpuCores": {
+                        "type": "integer",
+                        "description": "Number of CPU cores. Derived from resource_profile.\n"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Timestamp when the database instance was created.\n"
+                    },
+                    "databaseName": {
+                        "type": "string",
+                        "description": "Name of the initial database to create. Must start with a letter and contain only letters, numbers, and underscores.\n"
+                    },
+                    "datacenter": {
+                        "type": "string",
+                        "description": "Datacenter location (fsn1, nbg1, hel1).\n"
+                    },
+                    "deployedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the database instance was deployed.\n"
+                    },
+                    "endpoint": {
+                        "type": "string",
+                        "description": "Connection endpoint for the database instance.\n"
+                    },
+                    "engine": {
+                        "type": "string",
+                        "description": "Database engine (mysql, postgresql, mariadb).\n"
+                    },
+                    "memorySizeMb": {
+                        "type": "integer",
+                        "description": "Memory size in MB. Derived from resource_profile.\n"
+                    },
+                    "monthlyCost": {
+                        "type": "number",
+                        "description": "Monthly cost in dollars.\n"
+                    },
+                    "monthlyCostCents": {
+                        "type": "integer",
+                        "description": "Monthly cost in cents.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the database instance. Must be lowercase alphanumeric with hyphens (DNS compatible).\n"
+                    },
+                    "parameterGroupId": {
+                        "type": "string",
+                        "description": "ID of the parameter group to use for custom configuration.\n"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "description": "Port number for the database instance.\n"
+                    },
+                    "resourceProfile": {
+                        "type": "string",
+                        "description": "Resource profile for the database (small, medium, large).\n"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the database instance (pending, provisioning, running, stopped, error).\n"
+                    },
+                    "storageSizeGb": {
+                        "type": "integer",
+                        "description": "Storage size in GB. Derived from resource_profile.\n"
+                    },
+                    "timeouts": {
+                        "$ref": "#/types/danubedata:index/DatabaseTimeouts:DatabaseTimeouts"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the database instance was last updated.\n"
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "Root username for the database instance.\n"
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Version of the database software.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "danubedata:index/firewall:Firewall": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the firewall was created.\n"
+                },
+                "defaultAction": {
+                    "type": "string",
+                    "description": "Default action for traffic not matching any rule: 'drop' or 'accept'.\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the firewall.\n"
+                },
+                "isDefault": {
+                    "type": "boolean",
+                    "description": "Whether this is the default firewall for the team.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the firewall.\n"
+                },
+                "rules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/danubedata:index/FirewallRule:FirewallRule"
+                    },
+                    "description": "List of firewall rules.\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the firewall (draft, active, deploying).\n"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the firewall was last updated.\n"
+                }
+            },
+            "required": [
+                "createdAt",
+                "defaultAction",
+                "isDefault",
+                "name",
+                "status",
+                "updatedAt"
+            ],
+            "inputProperties": {
+                "defaultAction": {
+                    "type": "string",
+                    "description": "Default action for traffic not matching any rule: 'drop' or 'accept'.\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the firewall.\n"
+                },
+                "isDefault": {
+                    "type": "boolean",
+                    "description": "Whether this is the default firewall for the team.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the firewall.\n"
+                },
+                "rules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/danubedata:index/FirewallRule:FirewallRule"
+                    },
+                    "description": "List of firewall rules.\n"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Firewall resources.\n",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Timestamp when the firewall was created.\n"
+                    },
+                    "defaultAction": {
+                        "type": "string",
+                        "description": "Default action for traffic not matching any rule: 'drop' or 'accept'.\n"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the firewall.\n"
+                    },
+                    "isDefault": {
+                        "type": "boolean",
+                        "description": "Whether this is the default firewall for the team.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the firewall.\n"
+                    },
+                    "rules": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/FirewallRule:FirewallRule"
+                        },
+                        "description": "List of firewall rules.\n"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the firewall (draft, active, deploying).\n"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the firewall was last updated.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "danubedata:index/serverless:Serverless": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the container was created.\n"
+                },
+                "currentMonthCostCents": {
+                    "type": "integer",
+                    "description": "Current month's cost in cents.\n"
+                },
+                "deploymentType": {
+                    "type": "string",
+                    "description": "Deployment type: 'image' for Docker image, 'git' for Git repository.\n"
+                },
+                "environmentVariables": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Environment variables for the container.\n"
+                },
+                "gitBranch": {
+                    "type": "string",
+                    "description": "Git branch to deploy.\n"
+                },
+                "gitRepository": {
+                    "type": "string",
+                    "description": "Git repository URL (required if deployment_type is 'git').\n"
+                },
+                "imageUrl": {
+                    "type": "string",
+                    "description": "Docker image URL (required if deployment_type is 'image').\n"
+                },
+                "maxInstances": {
+                    "type": "integer",
+                    "description": "Maximum number of instances.\n"
+                },
+                "minInstances": {
+                    "type": "integer",
+                    "description": "Minimum number of instances (0 for scale-to-zero).\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the serverless container.\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Port the container listens on.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile for the container (small, medium, large).\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the serverless container.\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/ServerlessTimeouts:ServerlessTimeouts"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the container was last updated.\n"
+                },
+                "url": {
+                    "type": "string",
+                    "description": "Public URL of the deployed service.\n"
+                }
+            },
+            "required": [
+                "createdAt",
+                "currentMonthCostCents",
+                "deploymentType",
+                "gitBranch",
+                "maxInstances",
+                "minInstances",
+                "name",
+                "port",
+                "resourceProfile",
+                "status",
+                "updatedAt",
+                "url"
+            ],
+            "inputProperties": {
+                "deploymentType": {
+                    "type": "string",
+                    "description": "Deployment type: 'image' for Docker image, 'git' for Git repository.\n"
+                },
+                "environmentVariables": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Environment variables for the container.\n"
+                },
+                "gitBranch": {
+                    "type": "string",
+                    "description": "Git branch to deploy.\n"
+                },
+                "gitRepository": {
+                    "type": "string",
+                    "description": "Git repository URL (required if deployment_type is 'git').\n"
+                },
+                "imageUrl": {
+                    "type": "string",
+                    "description": "Docker image URL (required if deployment_type is 'image').\n"
+                },
+                "maxInstances": {
+                    "type": "integer",
+                    "description": "Maximum number of instances.\n"
+                },
+                "minInstances": {
+                    "type": "integer",
+                    "description": "Minimum number of instances (0 for scale-to-zero).\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the serverless container.\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Port the container listens on.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile for the container (small, medium, large).\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/ServerlessTimeouts:ServerlessTimeouts"
+                }
+            },
+            "requiredInputs": [
+                "deploymentType"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Serverless resources.\n",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Timestamp when the container was created.\n"
+                    },
+                    "currentMonthCostCents": {
+                        "type": "integer",
+                        "description": "Current month's cost in cents.\n"
+                    },
+                    "deploymentType": {
+                        "type": "string",
+                        "description": "Deployment type: 'image' for Docker image, 'git' for Git repository.\n"
+                    },
+                    "environmentVariables": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "Environment variables for the container.\n"
+                    },
+                    "gitBranch": {
+                        "type": "string",
+                        "description": "Git branch to deploy.\n"
+                    },
+                    "gitRepository": {
+                        "type": "string",
+                        "description": "Git repository URL (required if deployment_type is 'git').\n"
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "description": "Docker image URL (required if deployment_type is 'image').\n"
+                    },
+                    "maxInstances": {
+                        "type": "integer",
+                        "description": "Maximum number of instances.\n"
+                    },
+                    "minInstances": {
+                        "type": "integer",
+                        "description": "Minimum number of instances (0 for scale-to-zero).\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the serverless container.\n"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "description": "Port the container listens on.\n"
+                    },
+                    "resourceProfile": {
+                        "type": "string",
+                        "description": "Resource profile for the container (small, medium, large).\n"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the serverless container.\n"
+                    },
+                    "timeouts": {
+                        "$ref": "#/types/danubedata:index/ServerlessTimeouts:ServerlessTimeouts"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the container was last updated.\n"
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "Public URL of the deployed service.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "danubedata:index/sshKey:SshKey": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the SSH key was created.\n"
+                },
+                "fingerprint": {
+                    "type": "string",
+                    "description": "The SHA256 fingerprint of the SSH key.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A descriptive name for the SSH key.\n"
+                },
+                "publicKey": {
+                    "type": "string",
+                    "description": "The SSH public key in OpenSSH format (e.g., 'ssh-rsa AAAA...' or 'ssh-ed25519 AAAA...').\n"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the SSH key was last updated.\n"
+                }
+            },
+            "required": [
+                "createdAt",
+                "fingerprint",
+                "name",
+                "publicKey",
+                "updatedAt"
+            ],
+            "inputProperties": {
+                "name": {
+                    "type": "string",
+                    "description": "A descriptive name for the SSH key.\n"
+                },
+                "publicKey": {
+                    "type": "string",
+                    "description": "The SSH public key in OpenSSH format (e.g., 'ssh-rsa AAAA...' or 'ssh-ed25519 AAAA...').\n"
+                }
+            },
+            "requiredInputs": [
+                "publicKey"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SshKey resources.\n",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Timestamp when the SSH key was created.\n"
+                    },
+                    "fingerprint": {
+                        "type": "string",
+                        "description": "The SHA256 fingerprint of the SSH key.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "A descriptive name for the SSH key.\n"
+                    },
+                    "publicKey": {
+                        "type": "string",
+                        "description": "The SSH public key in OpenSSH format (e.g., 'ssh-rsa AAAA...' or 'ssh-ed25519 AAAA...').\n"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the SSH key was last updated.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "danubedata:index/storageAccessKey:StorageAccessKey": {
+            "properties": {
+                "accessKeyId": {
+                    "type": "string",
+                    "description": "The S3 access key ID.\n"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the access key was created.\n"
+                },
+                "expiresAt": {
+                    "type": "string",
+                    "description": "Optional expiration date for the access key (ISO 8601 format).\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the access key.\n"
+                },
+                "secretAccessKey": {
+                    "type": "string",
+                    "description": "The S3 secret access key. Only available after creation.\n",
+                    "secret": true
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the access key (active, revoked).\n"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the access key was last updated.\n"
+                }
+            },
+            "required": [
+                "accessKeyId",
+                "createdAt",
+                "name",
+                "secretAccessKey",
+                "status",
+                "updatedAt"
+            ],
+            "inputProperties": {
+                "expiresAt": {
+                    "type": "string",
+                    "description": "Optional expiration date for the access key (ISO 8601 format).\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the access key.\n"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering StorageAccessKey resources.\n",
+                "properties": {
+                    "accessKeyId": {
+                        "type": "string",
+                        "description": "The S3 access key ID.\n"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Timestamp when the access key was created.\n"
+                    },
+                    "expiresAt": {
+                        "type": "string",
+                        "description": "Optional expiration date for the access key (ISO 8601 format).\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the access key.\n"
+                    },
+                    "secretAccessKey": {
+                        "type": "string",
+                        "description": "The S3 secret access key. Only available after creation.\n",
+                        "secret": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the access key (active, revoked).\n"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the access key was last updated.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "danubedata:index/storageBucket:StorageBucket": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the bucket was created.\n"
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "Human-readable display name for the bucket.\n"
+                },
+                "encryptionEnabled": {
+                    "type": "boolean",
+                    "description": "Whether server-side encryption is enabled.\n"
+                },
+                "encryptionType": {
+                    "type": "string",
+                    "description": "Encryption type (none, sse-s3, sse-kms).\n"
+                },
+                "endpointUrl": {
+                    "type": "string",
+                    "description": "S3 endpoint URL for accessing the bucket.\n"
+                },
+                "minioBucketName": {
+                    "type": "string",
+                    "description": "Internal MinIO bucket name (includes team prefix).\n"
+                },
+                "monthlyCost": {
+                    "type": "number",
+                    "description": "Monthly cost in dollars.\n"
+                },
+                "monthlyCostCents": {
+                    "type": "integer",
+                    "description": "Monthly cost in cents.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the storage bucket. Must follow S3 bucket naming rules (3-63 chars, lowercase alphanumeric with hyphens).\n"
+                },
+                "objectCount": {
+                    "type": "integer",
+                    "description": "Number of objects in the bucket.\n"
+                },
+                "publicAccess": {
+                    "type": "boolean",
+                    "description": "Whether the bucket has public read access enabled.\n"
+                },
+                "region": {
+                    "type": "string",
+                    "description": "Region for the storage bucket (fsn1).\n"
+                },
+                "sizeBytes": {
+                    "type": "integer",
+                    "description": "Current size of the bucket in bytes.\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the storage bucket (pending, active, error, destroying).\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/StorageBucketTimeouts:StorageBucketTimeouts"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the bucket was last updated.\n"
+                },
+                "versioningEnabled": {
+                    "type": "boolean",
+                    "description": "Whether object versioning is enabled.\n"
+                }
+            },
+            "required": [
+                "createdAt",
+                "encryptionEnabled",
+                "encryptionType",
+                "endpointUrl",
+                "minioBucketName",
+                "monthlyCost",
+                "monthlyCostCents",
+                "name",
+                "objectCount",
+                "publicAccess",
+                "region",
+                "sizeBytes",
+                "status",
+                "updatedAt",
+                "versioningEnabled"
+            ],
+            "inputProperties": {
+                "displayName": {
+                    "type": "string",
+                    "description": "Human-readable display name for the bucket.\n"
+                },
+                "encryptionEnabled": {
+                    "type": "boolean",
+                    "description": "Whether server-side encryption is enabled.\n"
+                },
+                "encryptionType": {
+                    "type": "string",
+                    "description": "Encryption type (none, sse-s3, sse-kms).\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the storage bucket. Must follow S3 bucket naming rules (3-63 chars, lowercase alphanumeric with hyphens).\n"
+                },
+                "publicAccess": {
+                    "type": "boolean",
+                    "description": "Whether the bucket has public read access enabled.\n"
+                },
+                "region": {
+                    "type": "string",
+                    "description": "Region for the storage bucket (fsn1).\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/StorageBucketTimeouts:StorageBucketTimeouts"
+                },
+                "versioningEnabled": {
+                    "type": "boolean",
+                    "description": "Whether object versioning is enabled.\n"
+                }
+            },
+            "requiredInputs": [
+                "region"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering StorageBucket resources.\n",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Timestamp when the bucket was created.\n"
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "description": "Human-readable display name for the bucket.\n"
+                    },
+                    "encryptionEnabled": {
+                        "type": "boolean",
+                        "description": "Whether server-side encryption is enabled.\n"
+                    },
+                    "encryptionType": {
+                        "type": "string",
+                        "description": "Encryption type (none, sse-s3, sse-kms).\n"
+                    },
+                    "endpointUrl": {
+                        "type": "string",
+                        "description": "S3 endpoint URL for accessing the bucket.\n"
+                    },
+                    "minioBucketName": {
+                        "type": "string",
+                        "description": "Internal MinIO bucket name (includes team prefix).\n"
+                    },
+                    "monthlyCost": {
+                        "type": "number",
+                        "description": "Monthly cost in dollars.\n"
+                    },
+                    "monthlyCostCents": {
+                        "type": "integer",
+                        "description": "Monthly cost in cents.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the storage bucket. Must follow S3 bucket naming rules (3-63 chars, lowercase alphanumeric with hyphens).\n"
+                    },
+                    "objectCount": {
+                        "type": "integer",
+                        "description": "Number of objects in the bucket.\n"
+                    },
+                    "publicAccess": {
+                        "type": "boolean",
+                        "description": "Whether the bucket has public read access enabled.\n"
+                    },
+                    "region": {
+                        "type": "string",
+                        "description": "Region for the storage bucket (fsn1).\n"
+                    },
+                    "sizeBytes": {
+                        "type": "integer",
+                        "description": "Current size of the bucket in bytes.\n"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the storage bucket (pending, active, error, destroying).\n"
+                    },
+                    "timeouts": {
+                        "$ref": "#/types/danubedata:index/StorageBucketTimeouts:StorageBucketTimeouts"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the bucket was last updated.\n"
+                    },
+                    "versioningEnabled": {
+                        "type": "boolean",
+                        "description": "Whether object versioning is enabled.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "danubedata:index/vps:Vps": {
+            "properties": {
+                "authMethod": {
+                    "type": "string",
+                    "description": "Authentication method: 'ssh_key' or 'password'.\n"
+                },
+                "cpuAllocationType": {
+                    "type": "string",
+                    "description": "CPU allocation type: 'shared' or 'dedicated'.\n"
+                },
+                "cpuCores": {
+                    "type": "integer",
+                    "description": "Number of CPU cores. Can be specified during creation or update. VPS must be stopped to modify.\n"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the VPS was created.\n"
+                },
+                "customCloudInit": {
+                    "type": "string",
+                    "description": "Custom cloud-init configuration script.\n"
+                },
+                "datacenter": {
+                    "type": "string",
+                    "description": "Datacenter location (fsn1, nbg1, hel1, ash).\n"
+                },
+                "deployedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the VPS was deployed.\n"
+                },
+                "image": {
+                    "type": "string",
+                    "description": "Operating system image (e.g., 'ubuntu-24.04', 'debian-12').\n"
+                },
+                "ipv6Address": {
+                    "type": "string",
+                    "description": "IPv6 address.\n"
+                },
+                "memorySizeGb": {
+                    "type": "integer",
+                    "description": "Memory size in GB. Can be specified during creation or update. VPS must be stopped to modify.\n"
+                },
+                "monthlyCost": {
+                    "type": "number",
+                    "description": "Monthly cost in dollars.\n"
+                },
+                "monthlyCostCents": {
+                    "type": "integer",
+                    "description": "Monthly cost in cents.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the VPS instance. Must be lowercase alphanumeric with hyphens.\n"
+                },
+                "networkStack": {
+                    "type": "string",
+                    "description": "Network stack: 'ipv4_only', 'ipv6_only', or 'dual_stack'.\n"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Root password (required if auth_method is 'password'). Must be at least 12 characters.\n",
+                    "secret": true
+                },
+                "privateIp": {
+                    "type": "string",
+                    "description": "Private IP address.\n"
+                },
+                "publicIp": {
+                    "type": "string",
+                    "description": "Public IPv4 address.\n"
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile for the VPS (nano_shared, micro_shared, small_shared, medium_shared, large_shared, or dedicated\nvariants).\n"
+                },
+                "sshKeyId": {
+                    "type": "string",
+                    "description": "SSH key ID for authentication (required if auth_method is 'ssh_key').\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Current status of the VPS instance (pending, provisioning, running, stopped, error).\n"
+                },
+                "storageSizeGb": {
+                    "type": "integer",
+                    "description": "Storage size in GB. Can be specified during creation or update. VPS must be stopped to modify.\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/VpsTimeouts:VpsTimeouts"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the VPS was last updated.\n"
+                }
+            },
+            "required": [
+                "authMethod",
+                "cpuAllocationType",
+                "cpuCores",
+                "createdAt",
+                "datacenter",
+                "deployedAt",
+                "image",
+                "ipv6Address",
+                "memorySizeGb",
+                "monthlyCost",
+                "monthlyCostCents",
+                "name",
+                "networkStack",
+                "privateIp",
+                "publicIp",
+                "resourceProfile",
+                "status",
+                "storageSizeGb",
+                "updatedAt"
+            ],
+            "inputProperties": {
+                "authMethod": {
+                    "type": "string",
+                    "description": "Authentication method: 'ssh_key' or 'password'.\n"
+                },
+                "cpuAllocationType": {
+                    "type": "string",
+                    "description": "CPU allocation type: 'shared' or 'dedicated'.\n"
+                },
+                "cpuCores": {
+                    "type": "integer",
+                    "description": "Number of CPU cores. Can be specified during creation or update. VPS must be stopped to modify.\n"
+                },
+                "customCloudInit": {
+                    "type": "string",
+                    "description": "Custom cloud-init configuration script.\n"
+                },
+                "datacenter": {
+                    "type": "string",
+                    "description": "Datacenter location (fsn1, nbg1, hel1, ash).\n"
+                },
+                "image": {
+                    "type": "string",
+                    "description": "Operating system image (e.g., 'ubuntu-24.04', 'debian-12').\n"
+                },
+                "memorySizeGb": {
+                    "type": "integer",
+                    "description": "Memory size in GB. Can be specified during creation or update. VPS must be stopped to modify.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the VPS instance. Must be lowercase alphanumeric with hyphens.\n"
+                },
+                "networkStack": {
+                    "type": "string",
+                    "description": "Network stack: 'ipv4_only', 'ipv6_only', or 'dual_stack'.\n"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Root password (required if auth_method is 'password'). Must be at least 12 characters.\n",
+                    "secret": true
+                },
+                "resourceProfile": {
+                    "type": "string",
+                    "description": "Resource profile for the VPS (nano_shared, micro_shared, small_shared, medium_shared, large_shared, or dedicated\nvariants).\n"
+                },
+                "sshKeyId": {
+                    "type": "string",
+                    "description": "SSH key ID for authentication (required if auth_method is 'ssh_key').\n"
+                },
+                "storageSizeGb": {
+                    "type": "integer",
+                    "description": "Storage size in GB. Can be specified during creation or update. VPS must be stopped to modify.\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/VpsTimeouts:VpsTimeouts"
+                }
+            },
+            "requiredInputs": [
+                "authMethod",
+                "datacenter",
+                "image"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Vps resources.\n",
+                "properties": {
+                    "authMethod": {
+                        "type": "string",
+                        "description": "Authentication method: 'ssh_key' or 'password'.\n"
+                    },
+                    "cpuAllocationType": {
+                        "type": "string",
+                        "description": "CPU allocation type: 'shared' or 'dedicated'.\n"
+                    },
+                    "cpuCores": {
+                        "type": "integer",
+                        "description": "Number of CPU cores. Can be specified during creation or update. VPS must be stopped to modify.\n"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Timestamp when the VPS was created.\n"
+                    },
+                    "customCloudInit": {
+                        "type": "string",
+                        "description": "Custom cloud-init configuration script.\n"
+                    },
+                    "datacenter": {
+                        "type": "string",
+                        "description": "Datacenter location (fsn1, nbg1, hel1, ash).\n"
+                    },
+                    "deployedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the VPS was deployed.\n"
+                    },
+                    "image": {
+                        "type": "string",
+                        "description": "Operating system image (e.g., 'ubuntu-24.04', 'debian-12').\n"
+                    },
+                    "ipv6Address": {
+                        "type": "string",
+                        "description": "IPv6 address.\n"
+                    },
+                    "memorySizeGb": {
+                        "type": "integer",
+                        "description": "Memory size in GB. Can be specified during creation or update. VPS must be stopped to modify.\n"
+                    },
+                    "monthlyCost": {
+                        "type": "number",
+                        "description": "Monthly cost in dollars.\n"
+                    },
+                    "monthlyCostCents": {
+                        "type": "integer",
+                        "description": "Monthly cost in cents.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the VPS instance. Must be lowercase alphanumeric with hyphens.\n"
+                    },
+                    "networkStack": {
+                        "type": "string",
+                        "description": "Network stack: 'ipv4_only', 'ipv6_only', or 'dual_stack'.\n"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "Root password (required if auth_method is 'password'). Must be at least 12 characters.\n",
+                        "secret": true
+                    },
+                    "privateIp": {
+                        "type": "string",
+                        "description": "Private IP address.\n"
+                    },
+                    "publicIp": {
+                        "type": "string",
+                        "description": "Public IPv4 address.\n"
+                    },
+                    "resourceProfile": {
+                        "type": "string",
+                        "description": "Resource profile for the VPS (nano_shared, micro_shared, small_shared, medium_shared, large_shared, or dedicated\nvariants).\n"
+                    },
+                    "sshKeyId": {
+                        "type": "string",
+                        "description": "SSH key ID for authentication (required if auth_method is 'ssh_key').\n"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the VPS instance (pending, provisioning, running, stopped, error).\n"
+                    },
+                    "storageSizeGb": {
+                        "type": "integer",
+                        "description": "Storage size in GB. Can be specified during creation or update. VPS must be stopped to modify.\n"
+                    },
+                    "timeouts": {
+                        "$ref": "#/types/danubedata:index/VpsTimeouts:VpsTimeouts"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the VPS was last updated.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "danubedata:index/vpsSnapshot:VpsSnapshot": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Timestamp when the snapshot was created.\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the snapshot.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the snapshot.\n"
+                },
+                "sizeGb": {
+                    "type": "number",
+                    "description": "Size of the snapshot in GB.\n"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Status of the snapshot (pending, completed, failed).\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/VpsSnapshotTimeouts:VpsSnapshotTimeouts"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Timestamp when the snapshot was last updated.\n"
+                },
+                "vpsInstanceId": {
+                    "type": "string",
+                    "description": "ID of the VPS instance to snapshot.\n"
+                }
+            },
+            "required": [
+                "createdAt",
+                "name",
+                "sizeGb",
+                "status",
+                "updatedAt",
+                "vpsInstanceId"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string",
+                    "description": "Description of the snapshot.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the snapshot.\n"
+                },
+                "timeouts": {
+                    "$ref": "#/types/danubedata:index/VpsSnapshotTimeouts:VpsSnapshotTimeouts"
+                },
+                "vpsInstanceId": {
+                    "type": "string",
+                    "description": "ID of the VPS instance to snapshot.\n"
+                }
+            },
+            "requiredInputs": [
+                "vpsInstanceId"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering VpsSnapshot resources.\n",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Timestamp when the snapshot was created.\n"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the snapshot.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the snapshot.\n"
+                    },
+                    "sizeGb": {
+                        "type": "number",
+                        "description": "Size of the snapshot in GB.\n"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Status of the snapshot (pending, completed, failed).\n"
+                    },
+                    "timeouts": {
+                        "$ref": "#/types/danubedata:index/VpsSnapshotTimeouts:VpsSnapshotTimeouts"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Timestamp when the snapshot was last updated.\n"
+                    },
+                    "vpsInstanceId": {
+                        "type": "string",
+                        "description": "ID of the VPS instance to snapshot.\n"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "functions": {
+        "danubedata:index/getCacheProviders:getCacheProviders": {
+            "outputs": {
+                "description": "A collection of values returned by getCacheProviders.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "providers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getCacheProvidersProvider:getCacheProvidersProvider"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "providers",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getCaches:getCaches": {
+            "outputs": {
+                "description": "A collection of values returned by getCaches.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "instances": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getCachesInstance:getCachesInstance"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "instances",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getDatabaseProviders:getDatabaseProviders": {
+            "outputs": {
+                "description": "A collection of values returned by getDatabaseProviders.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "providers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getDatabaseProvidersProvider:getDatabaseProvidersProvider"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "providers",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getDatabases:getDatabases": {
+            "outputs": {
+                "description": "A collection of values returned by getDatabases.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "instances": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getDatabasesInstance:getDatabasesInstance"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "instances",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getFirewalls:getFirewalls": {
+            "outputs": {
+                "description": "A collection of values returned by getFirewalls.\n",
+                "properties": {
+                    "firewalls": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getFirewallsFirewall:getFirewallsFirewall"
+                        }
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "firewalls",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getServerlessContainers:getServerlessContainers": {
+            "outputs": {
+                "description": "A collection of values returned by getServerlessContainers.\n",
+                "properties": {
+                    "containers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getServerlessContainersContainer:getServerlessContainersContainer"
+                        }
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "containers",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getSshKeys:getSshKeys": {
+            "outputs": {
+                "description": "A collection of values returned by getSshKeys.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "keys": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getSshKeysKey:getSshKeysKey"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "keys",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getStorageAccessKeys:getStorageAccessKeys": {
+            "outputs": {
+                "description": "A collection of values returned by getStorageAccessKeys.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "keys": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getStorageAccessKeysKey:getStorageAccessKeysKey"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "keys",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getStorageBuckets:getStorageBuckets": {
+            "outputs": {
+                "description": "A collection of values returned by getStorageBuckets.\n",
+                "properties": {
+                    "buckets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getStorageBucketsBucket:getStorageBucketsBucket"
+                        }
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "buckets",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getVpsImages:getVpsImages": {
+            "outputs": {
+                "description": "A collection of values returned by getVpsImages.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getVpsImagesImage:getVpsImagesImage"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "images",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getVpsSnapshots:getVpsSnapshots": {
+            "outputs": {
+                "description": "A collection of values returned by getVpsSnapshots.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "snapshots": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getVpsSnapshotsSnapshot:getVpsSnapshotsSnapshot"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "snapshots",
+                    "id"
+                ]
+            }
+        },
+        "danubedata:index/getVpss:getVpss": {
+            "outputs": {
+                "description": "A collection of values returned by getVpss.\n",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The provider-assigned unique ID for this managed resource.\n"
+                    },
+                    "instances": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/danubedata:index/getVpssInstance:getVpssInstance"
+                        }
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "instances",
+                    "id"
+                ]
+            }
+        }
+    }
+}
