@@ -56,6 +56,7 @@ build_nodejs: generate_sdks
 	cd sdk/nodejs && \
 		sed -i.bak 's/$${VERSION}/$(VERSION)/g' package.json && \
 		rm -f package.json.bak && \
+		node -e "const p=require('./package.json'); p.main='bin/index.js'; p.types='bin/index.d.ts'; p.files=['bin/**/*.js','bin/**/*.d.ts','bin/**/*.js.map']; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 4));" && \
 		npm install && \
 		npm run build
 
