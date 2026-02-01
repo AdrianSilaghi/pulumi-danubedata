@@ -1,4 +1,4 @@
-.PHONY: build install generate generate_schema generate_sdks clean test
+.PHONY: build install generate generate_schema generate_sdks clean test build_nodejs build_python build_dotnet
 
 PROVIDER_NAME := danubedata
 VERSION := 0.1.0
@@ -54,16 +54,26 @@ install_dev: provider
 # Build and install NodeJS SDK
 build_nodejs: generate_sdks
 	cd sdk/nodejs && \
+		sed -i.bak 's/$${VERSION}/$(VERSION)/g' package.json && \
+		rm -f package.json.bak && \
 		npm install && \
 		npm run build
 
 # Build and install Python SDK
 build_python: generate_sdks
 	cd sdk/python && \
-		python3 -m venv venv && \
+		PULUMI_VERSION=$(VERSION) python3 -m venv venv && \
 		. venv/bin/activate && \
 		pip install build && \
-		python -m build
+		PULUMI_VERSION=$(VERSION) python -m build
+
+# Build .NET SDK
+build_dotnet: generate_sdks
+	cd sdk/dotnet && \
+		sed -i.bak 's/<Version>0.0.0<\/Version>/<Version>$(VERSION)<\/Version>/g' *.csproj && \
+		rm -f *.csproj.bak && \
+		echo "$(VERSION)" > version.txt && \
+		dotnet build
 
 # Run tests
 test:
@@ -94,6 +104,7 @@ help:
 	@echo "  install_dev    - Install provider for local development"
 	@echo "  build_nodejs   - Build NodeJS SDK"
 	@echo "  build_python   - Build Python SDK"
+	@echo "  build_dotnet   - Build .NET SDK"
 	@echo "  test           - Run provider tests"
 	@echo "  clean          - Remove build artifacts"
 	@echo "  tidy           - Tidy Go modules"

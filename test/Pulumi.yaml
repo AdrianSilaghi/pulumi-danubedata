@@ -1,0 +1,3 @@
+name: danubedata-test
+runtime: nodejs
+description: Minimal test for DanubeData Pulumi provider
