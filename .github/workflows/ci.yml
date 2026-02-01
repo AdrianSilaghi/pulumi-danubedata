@@ -58,6 +58,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
+          cache: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -98,4 +99,6 @@ jobs:
       - name: Validate Go SDK
         run: |
           cd sdk/go/danubedata
+          go mod init github.com/AdrianSilaghi/pulumi-danubedata/sdk/go/danubedata
+          go mod tidy
           go build ./...
