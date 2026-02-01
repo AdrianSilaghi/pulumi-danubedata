@@ -18,6 +18,9 @@ const (
 	mainMod = "index"
 )
 
+// Version is set via ldflags at build time
+var Version string
+
 //go:embed cmd/pulumi-resource-danubedata/bridge-metadata.json
 var metadata []byte
 
@@ -29,6 +32,7 @@ func Provider() tfbridge.ProviderInfo {
 
 		Name:        "danubedata",
 		DisplayName: "DanubeData",
+		Version:     Version,
 		Publisher:   "AdrianSilaghi",
 		LogoURL:     "",
 		PluginDownloadURL: "github://api.github.com/AdrianSilaghi/pulumi-danubedata",

@@ -19,7 +19,7 @@ endif
 build: provider
 
 provider:
-	cd provider && go build -o $(PROVIDER) -ldflags "-X main.version=$(VERSION)" ./cmd/pulumi-resource-$(PROVIDER_NAME)
+	cd provider && go build -o $(PROVIDER) -ldflags "-X github.com/AdrianSilaghi/pulumi-danubedata/provider.Version=$(VERSION)" ./cmd/pulumi-resource-$(PROVIDER_NAME)
 
 # Build the tfgen binary
 tfgen:
@@ -56,9 +56,10 @@ build_nodejs: generate_sdks
 	cd sdk/nodejs && \
 		sed -i.bak 's/$${VERSION}/$(VERSION)/g' package.json && \
 		rm -f package.json.bak && \
-		node -e "const p=require('./package.json'); p.main='bin/index.js'; p.types='bin/index.d.ts'; p.files=['bin/**/*.js','bin/**/*.d.ts','bin/**/*.js.map']; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 4));" && \
+		node -e "const p=require('./package.json'); p.main='bin/index.js'; p.types='bin/index.d.ts'; p.files=['bin/**/*.js','bin/**/*.d.ts','bin/**/*.js.map','package.json']; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 4));" && \
 		npm install && \
-		npm run build
+		npm run build && \
+		cp package.json bin/
 
 # Build and install Python SDK
 build_python: generate_sdks
