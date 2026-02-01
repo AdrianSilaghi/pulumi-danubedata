@@ -6,6 +6,52 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getStorageAccessKeys
+ *
+ * Lists all S3 storage access keys in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageAccessKeys({});
+ * export const keyCount = all.then(all => all.keys).length;
+ * export const activeKeys = all.then(all => .filter(k => k.status == "active").map(k => (k.name)));
+ * ```
+ *
+ * ### Find Key by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageAccessKeys({});
+ * const appKey = all.then(all => .filter(k => k.name == "app-access-key").map(k => (k))[0]);
+ * export const appAccessKeyId = appKey.accessKeyId;
+ * ```
+ *
+ * ### Filter Active Keys
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageAccessKeys({});
+ * const activeKeys = all.then(all => .filter(k => k.status == "active" && !k.isExpired).map(k => (k)));
+ * const expiredKeys = all.then(all => .filter(k => k.isExpired).map(k => (k)));
+ * export const activeCount = activeKeys.length;
+ * export const expiredCount = expiredKeys.apply(expiredKeys => expiredKeys.length);
+ * ```
+ *
+ * ## Notes
+ *
+ * - The `secretAccessKey` is not included in this data source for security reasons.
+ * - Secret access keys are only available during creation.
+ * - To get a new secret key, create a new access key resource.
+ */
 export function getStorageAccessKeys(opts?: pulumi.InvokeOptions): Promise<GetStorageAccessKeysResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getStorageAccessKeys:getStorageAccessKeys", {
@@ -20,8 +66,57 @@ export interface GetStorageAccessKeysResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * List of storage access keys. Each key contains:
+     */
     readonly keys: outputs.GetStorageAccessKeysKey[];
 }
+/**
+ * ## # danubedata.getStorageAccessKeys
+ *
+ * Lists all S3 storage access keys in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageAccessKeys({});
+ * export const keyCount = all.then(all => all.keys).length;
+ * export const activeKeys = all.then(all => .filter(k => k.status == "active").map(k => (k.name)));
+ * ```
+ *
+ * ### Find Key by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageAccessKeys({});
+ * const appKey = all.then(all => .filter(k => k.name == "app-access-key").map(k => (k))[0]);
+ * export const appAccessKeyId = appKey.accessKeyId;
+ * ```
+ *
+ * ### Filter Active Keys
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageAccessKeys({});
+ * const activeKeys = all.then(all => .filter(k => k.status == "active" && !k.isExpired).map(k => (k)));
+ * const expiredKeys = all.then(all => .filter(k => k.isExpired).map(k => (k)));
+ * export const activeCount = activeKeys.length;
+ * export const expiredCount = expiredKeys.apply(expiredKeys => expiredKeys.length);
+ * ```
+ *
+ * ## Notes
+ *
+ * - The `secretAccessKey` is not included in this data source for security reasons.
+ * - Secret access keys are only available during creation.
+ * - To get a new secret key, create a new access key resource.
+ */
 export function getStorageAccessKeysOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetStorageAccessKeysResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getStorageAccessKeys:getStorageAccessKeys", {

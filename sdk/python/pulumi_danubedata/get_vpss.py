@@ -46,6 +46,9 @@ class GetVpssResult:
     @property
     @pulumi.getter
     def instances(self) -> Sequence['outputs.GetVpssInstanceResult']:
+        """
+        List of VPS instances. Each instance contains:
+        """
         return pulumi.get(self, "instances")
 
 
@@ -61,7 +64,42 @@ class AwaitableGetVpssResult(GetVpssResult):
 
 def get_vpss(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetVpssResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_vpss
+
+    Lists all VPS instances in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vpss()
+    pulumi.export("vpsCount", len(all.instances))
+    pulumi.export("vpsNames", [vps.name for vps in all.instances])
+    ```
+
+    ### Find VPS by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vpss()
+    web_server = [vps for vps in all.instances if vps.name == "web-server"][0]
+    pulumi.export("webServerIp", web_server.public_ip)
+    ```
+
+    ### Filter Running Instances
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vpss()
+    running_instances = [vps for vps in all.instances if vps.status == "running"]
+    pulumi.export("runningCount", len(running_instances))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +110,42 @@ def get_vpss(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetVpssRes
         instances=pulumi.get(__ret__, 'instances'))
 def get_vpss_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetVpssResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_vpss
+
+    Lists all VPS instances in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vpss()
+    pulumi.export("vpsCount", len(all.instances))
+    pulumi.export("vpsNames", [vps.name for vps in all.instances])
+    ```
+
+    ### Find VPS by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vpss()
+    web_server = [vps for vps in all.instances if vps.name == "web-server"][0]
+    pulumi.export("webServerIp", web_server.public_ip)
+    ```
+
+    ### Filter Running Instances
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vpss()
+    running_instances = [vps for vps in all.instances if vps.status == "running"]
+    pulumi.export("runningCount", len(running_instances))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

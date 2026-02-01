@@ -46,6 +46,9 @@ class GetCacheProvidersResult:
     @property
     @pulumi.getter
     def providers(self) -> Sequence['outputs.GetCacheProvidersProviderResult']:
+        """
+        List of cache providers. Each provider contains:
+        """
         return pulumi.get(self, "providers")
 
 
@@ -61,7 +64,22 @@ class AwaitableGetCacheProvidersResult(GetCacheProvidersResult):
 
 def get_cache_providers(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetCacheProvidersResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_cache_providers
+
+    Lists available cache providers (Redis, Valkey, Dragonfly).
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_cache_providers()
+    pulumi.export("cacheProviders", [{
+        "id": p.id,
+        "name": p.name,
+    } for p in all.providers])
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +90,22 @@ def get_cache_providers(opts: Optional[pulumi.InvokeOptions] = None) -> Awaitabl
         providers=pulumi.get(__ret__, 'providers'))
 def get_cache_providers_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetCacheProvidersResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_cache_providers
+
+    Lists available cache providers (Redis, Valkey, Dragonfly).
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_cache_providers()
+    pulumi.export("cacheProviders", [{
+        "id": p.id,
+        "name": p.name,
+    } for p in all.providers])
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

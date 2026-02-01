@@ -38,6 +38,9 @@ class GetServerlessContainersResult:
     @property
     @pulumi.getter
     def containers(self) -> Sequence['outputs.GetServerlessContainersContainerResult']:
+        """
+        List of serverless containers. Each container contains:
+        """
         return pulumi.get(self, "containers")
 
     @property
@@ -61,7 +64,44 @@ class AwaitableGetServerlessContainersResult(GetServerlessContainersResult):
 
 def get_serverless_containers(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetServerlessContainersResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_serverless_containers
+
+    Lists all serverless containers in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_serverless_containers()
+    pulumi.export("containerCount", len(all.containers))
+    pulumi.export("containerUrls", {c.name: c.url for c in all.containers})
+    ```
+
+    ### Find Container by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_serverless_containers()
+    api_container = [c for c in all.containers if c.name == "api-server"][0]
+    pulumi.export("apiUrl", api_container.url)
+    pulumi.export("apiStatus", api_container.status)
+    ```
+
+    ### Filter by Deployment Type
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_serverless_containers()
+    docker_containers = [c for c in all.containers if c.deployment_type == "docker"]
+    git_containers = [c for c in all.containers if c.deployment_type == "git"]
+    pulumi.export("dockerCount", len(docker_containers))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +112,44 @@ def get_serverless_containers(opts: Optional[pulumi.InvokeOptions] = None) -> Aw
         id=pulumi.get(__ret__, 'id'))
 def get_serverless_containers_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetServerlessContainersResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_serverless_containers
+
+    Lists all serverless containers in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_serverless_containers()
+    pulumi.export("containerCount", len(all.containers))
+    pulumi.export("containerUrls", {c.name: c.url for c in all.containers})
+    ```
+
+    ### Find Container by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_serverless_containers()
+    api_container = [c for c in all.containers if c.name == "api-server"][0]
+    pulumi.export("apiUrl", api_container.url)
+    pulumi.export("apiStatus", api_container.status)
+    ```
+
+    ### Filter by Deployment Type
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_serverless_containers()
+    docker_containers = [c for c in all.containers if c.deployment_type == "docker"]
+    git_containers = [c for c in all.containers if c.deployment_type == "git"]
+    pulumi.export("dockerCount", len(docker_containers))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

@@ -6,6 +6,34 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getStorageBuckets
+ *
+ * Lists all S3-compatible storage buckets in your account.
+ *
+ * ### Find Bucket by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageBuckets({});
+ * const assetsBucket = all.then(all => .filter(b => b.name == "assets").map(b => (b))[0]);
+ * export const assetsEndpoint = assetsBucket.endpointUrl;
+ * export const assetsBucketName = assetsBucket.minioBucketName;
+ * ```
+ *
+ * ### Filter Public Buckets
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageBuckets({});
+ * const publicBuckets = all.then(all => .filter(b => b.publicAccess).map(b => (b)));
+ * export const publicBucketUrls = publicBuckets.apply(publicBuckets => publicBuckets.map(b => (b.publicUrl)));
+ * ```
+ */
 export function getStorageBuckets(opts?: pulumi.InvokeOptions): Promise<GetStorageBucketsResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getStorageBuckets:getStorageBuckets", {
@@ -16,12 +44,43 @@ export function getStorageBuckets(opts?: pulumi.InvokeOptions): Promise<GetStora
  * A collection of values returned by getStorageBuckets.
  */
 export interface GetStorageBucketsResult {
+    /**
+     * List of storage buckets. Each bucket contains:
+     */
     readonly buckets: outputs.GetStorageBucketsBucket[];
     /**
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
 }
+/**
+ * ## # danubedata.getStorageBuckets
+ *
+ * Lists all S3-compatible storage buckets in your account.
+ *
+ * ### Find Bucket by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageBuckets({});
+ * const assetsBucket = all.then(all => .filter(b => b.name == "assets").map(b => (b))[0]);
+ * export const assetsEndpoint = assetsBucket.endpointUrl;
+ * export const assetsBucketName = assetsBucket.minioBucketName;
+ * ```
+ *
+ * ### Filter Public Buckets
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getStorageBuckets({});
+ * const publicBuckets = all.then(all => .filter(b => b.publicAccess).map(b => (b)));
+ * export const publicBucketUrls = publicBuckets.apply(publicBuckets => publicBuckets.map(b => (b.publicUrl)));
+ * ```
+ */
 export function getStorageBucketsOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetStorageBucketsResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getStorageBuckets:getStorageBuckets", {

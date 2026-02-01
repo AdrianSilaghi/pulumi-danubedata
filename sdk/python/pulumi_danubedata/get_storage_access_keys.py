@@ -46,6 +46,9 @@ class GetStorageAccessKeysResult:
     @property
     @pulumi.getter
     def keys(self) -> Sequence['outputs.GetStorageAccessKeysKeyResult']:
+        """
+        List of storage access keys. Each key contains:
+        """
         return pulumi.get(self, "keys")
 
 
@@ -61,7 +64,50 @@ class AwaitableGetStorageAccessKeysResult(GetStorageAccessKeysResult):
 
 def get_storage_access_keys(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetStorageAccessKeysResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_storage_access_keys
+
+    Lists all S3 storage access keys in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_access_keys()
+    pulumi.export("keyCount", len(all.keys))
+    pulumi.export("activeKeys", [k.name for k in all.keys if k.status == "active"])
+    ```
+
+    ### Find Key by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_access_keys()
+    app_key = [k for k in all.keys if k.name == "app-access-key"][0]
+    pulumi.export("appAccessKeyId", app_key.access_key_id)
+    ```
+
+    ### Filter Active Keys
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_access_keys()
+    active_keys = [k for k in all.keys if k.status == "active" and not k.is_expired]
+    expired_keys = [k for k in all.keys if k.is_expired]
+    pulumi.export("activeCount", len(active_keys))
+    pulumi.export("expiredCount", len(expired_keys))
+    ```
+
+    ## Notes
+
+    - The `secret_access_key` is not included in this data source for security reasons.
+    - Secret access keys are only available during creation.
+    - To get a new secret key, create a new access key resource.
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +118,50 @@ def get_storage_access_keys(opts: Optional[pulumi.InvokeOptions] = None) -> Awai
         keys=pulumi.get(__ret__, 'keys'))
 def get_storage_access_keys_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetStorageAccessKeysResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_storage_access_keys
+
+    Lists all S3 storage access keys in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_access_keys()
+    pulumi.export("keyCount", len(all.keys))
+    pulumi.export("activeKeys", [k.name for k in all.keys if k.status == "active"])
+    ```
+
+    ### Find Key by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_access_keys()
+    app_key = [k for k in all.keys if k.name == "app-access-key"][0]
+    pulumi.export("appAccessKeyId", app_key.access_key_id)
+    ```
+
+    ### Filter Active Keys
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_access_keys()
+    active_keys = [k for k in all.keys if k.status == "active" and not k.is_expired]
+    expired_keys = [k for k in all.keys if k.is_expired]
+    pulumi.export("activeCount", len(active_keys))
+    pulumi.export("expiredCount", len(expired_keys))
+    ```
+
+    ## Notes
+
+    - The `secret_access_key` is not included in this data source for security reasons.
+    - Secret access keys are only available during creation.
+    - To get a new secret key, create a new access key resource.
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

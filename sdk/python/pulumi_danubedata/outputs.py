@@ -43,9 +43,9 @@ class CacheTimeouts(dict):
                  delete: Optional[str] = None,
                  update: Optional[str] = None):
         """
-        :param str create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param str delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param str update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param str create: Time to wait for cache creation.
+        :param str delete: Time to wait for cache deletion.
+        :param str update: Time to wait for cache updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -58,7 +58,7 @@ class CacheTimeouts(dict):
     @pulumi.getter
     def create(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for cache creation.
         """
         return pulumi.get(self, "create")
 
@@ -66,7 +66,7 @@ class CacheTimeouts(dict):
     @pulumi.getter
     def delete(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for cache deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -74,7 +74,7 @@ class CacheTimeouts(dict):
     @pulumi.getter
     def update(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for cache updates.
         """
         return pulumi.get(self, "update")
 
@@ -86,9 +86,9 @@ class DatabaseTimeouts(dict):
                  delete: Optional[str] = None,
                  update: Optional[str] = None):
         """
-        :param str create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param str delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param str update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param str create: Time to wait for database creation.
+        :param str delete: Time to wait for database deletion.
+        :param str update: Time to wait for database updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -101,7 +101,7 @@ class DatabaseTimeouts(dict):
     @pulumi.getter
     def create(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for database creation.
         """
         return pulumi.get(self, "create")
 
@@ -109,7 +109,7 @@ class DatabaseTimeouts(dict):
     @pulumi.getter
     def delete(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for database deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -117,7 +117,7 @@ class DatabaseTimeouts(dict):
     @pulumi.getter
     def update(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for database updates.
         """
         return pulumi.get(self, "update")
 
@@ -156,15 +156,15 @@ class FirewallRule(dict):
                  priority: Optional[int] = None,
                  source_ips: Optional[Sequence[str]] = None):
         """
-        :param str action: Action to take: 'accept' or 'drop'.
-        :param str direction: Direction: 'inbound' or 'outbound'.
-        :param str protocol: Protocol: 'tcp', 'udp', 'icmp', or 'any'.
-        :param str id: Rule ID (computed by API).
-        :param str name: Name/description of the rule.
-        :param int port_range_end: End of port range (1-65535).
-        :param int port_range_start: Start of port range (1-65535).
-        :param int priority: Rule priority (lower numbers = higher priority).
-        :param Sequence[str] source_ips: List of source IP addresses or CIDR blocks.
+        :param str action: Action: `allow` or `deny`.
+        :param str direction: Direction: `inbound` or `outbound`.
+        :param str protocol: Protocol: `tcp`, `udp`, `icmp`, or `all`.
+        :param str id: The firewall ID.
+        :param str name: Name of the rule.
+        :param int port_range_end: End of port range.
+        :param int port_range_start: Start of port range.
+        :param int priority: Rule priority (lower = higher priority).
+        :param Sequence[str] source_ips: List of source IP addresses/CIDRs.
         """
         pulumi.set(__self__, "action", action)
         pulumi.set(__self__, "direction", direction)
@@ -186,7 +186,7 @@ class FirewallRule(dict):
     @pulumi.getter
     def action(self) -> str:
         """
-        Action to take: 'accept' or 'drop'.
+        Action: `allow` or `deny`.
         """
         return pulumi.get(self, "action")
 
@@ -194,7 +194,7 @@ class FirewallRule(dict):
     @pulumi.getter
     def direction(self) -> str:
         """
-        Direction: 'inbound' or 'outbound'.
+        Direction: `inbound` or `outbound`.
         """
         return pulumi.get(self, "direction")
 
@@ -202,7 +202,7 @@ class FirewallRule(dict):
     @pulumi.getter
     def protocol(self) -> str:
         """
-        Protocol: 'tcp', 'udp', 'icmp', or 'any'.
+        Protocol: `tcp`, `udp`, `icmp`, or `all`.
         """
         return pulumi.get(self, "protocol")
 
@@ -210,7 +210,7 @@ class FirewallRule(dict):
     @pulumi.getter
     def id(self) -> Optional[str]:
         """
-        Rule ID (computed by API).
+        The firewall ID.
         """
         return pulumi.get(self, "id")
 
@@ -218,7 +218,7 @@ class FirewallRule(dict):
     @pulumi.getter
     def name(self) -> Optional[str]:
         """
-        Name/description of the rule.
+        Name of the rule.
         """
         return pulumi.get(self, "name")
 
@@ -226,7 +226,7 @@ class FirewallRule(dict):
     @pulumi.getter(name="portRangeEnd")
     def port_range_end(self) -> Optional[int]:
         """
-        End of port range (1-65535).
+        End of port range.
         """
         return pulumi.get(self, "port_range_end")
 
@@ -234,7 +234,7 @@ class FirewallRule(dict):
     @pulumi.getter(name="portRangeStart")
     def port_range_start(self) -> Optional[int]:
         """
-        Start of port range (1-65535).
+        Start of port range.
         """
         return pulumi.get(self, "port_range_start")
 
@@ -242,7 +242,7 @@ class FirewallRule(dict):
     @pulumi.getter
     def priority(self) -> Optional[int]:
         """
-        Rule priority (lower numbers = higher priority).
+        Rule priority (lower = higher priority).
         """
         return pulumi.get(self, "priority")
 
@@ -250,7 +250,7 @@ class FirewallRule(dict):
     @pulumi.getter(name="sourceIps")
     def source_ips(self) -> Optional[Sequence[str]]:
         """
-        List of source IP addresses or CIDR blocks.
+        List of source IP addresses/CIDRs.
         """
         return pulumi.get(self, "source_ips")
 
@@ -262,9 +262,9 @@ class ServerlessTimeouts(dict):
                  delete: Optional[str] = None,
                  update: Optional[str] = None):
         """
-        :param str create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param str delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param str update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param str create: Time to wait for container creation.
+        :param str delete: Time to wait for container deletion.
+        :param str update: Time to wait for container updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -277,7 +277,7 @@ class ServerlessTimeouts(dict):
     @pulumi.getter
     def create(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for container creation.
         """
         return pulumi.get(self, "create")
 
@@ -285,7 +285,7 @@ class ServerlessTimeouts(dict):
     @pulumi.getter
     def delete(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for container deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -293,7 +293,7 @@ class ServerlessTimeouts(dict):
     @pulumi.getter
     def update(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for container updates.
         """
         return pulumi.get(self, "update")
 
@@ -305,9 +305,9 @@ class StorageBucketTimeouts(dict):
                  delete: Optional[str] = None,
                  update: Optional[str] = None):
         """
-        :param str create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param str delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param str update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param str create: Time to wait for bucket creation.
+        :param str delete: Time to wait for bucket deletion.
+        :param str update: Time to wait for bucket updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -320,7 +320,7 @@ class StorageBucketTimeouts(dict):
     @pulumi.getter
     def create(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for bucket creation.
         """
         return pulumi.get(self, "create")
 
@@ -328,7 +328,7 @@ class StorageBucketTimeouts(dict):
     @pulumi.getter
     def delete(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for bucket deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -336,7 +336,7 @@ class StorageBucketTimeouts(dict):
     @pulumi.getter
     def update(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for bucket updates.
         """
         return pulumi.get(self, "update")
 
@@ -347,8 +347,8 @@ class VpsSnapshotTimeouts(dict):
                  create: Optional[str] = None,
                  delete: Optional[str] = None):
         """
-        :param str create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param str delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        :param str create: Time to wait for snapshot creation.
+        :param str delete: Time to wait for snapshot deletion.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -359,7 +359,7 @@ class VpsSnapshotTimeouts(dict):
     @pulumi.getter
     def create(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for snapshot creation.
         """
         return pulumi.get(self, "create")
 
@@ -367,7 +367,7 @@ class VpsSnapshotTimeouts(dict):
     @pulumi.getter
     def delete(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for snapshot deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -379,9 +379,9 @@ class VpsTimeouts(dict):
                  delete: Optional[str] = None,
                  update: Optional[str] = None):
         """
-        :param str create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param str delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param str update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param str create: Time to wait for VPS creation.
+        :param str delete: Time to wait for VPS deletion.
+        :param str update: Time to wait for VPS updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -394,7 +394,7 @@ class VpsTimeouts(dict):
     @pulumi.getter
     def create(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for VPS creation.
         """
         return pulumi.get(self, "create")
 
@@ -402,7 +402,7 @@ class VpsTimeouts(dict):
     @pulumi.getter
     def delete(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for VPS deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -410,7 +410,7 @@ class VpsTimeouts(dict):
     @pulumi.getter
     def update(self) -> Optional[str]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for VPS updates.
         """
         return pulumi.get(self, "update")
 
@@ -427,8 +427,8 @@ class GetCacheProvidersProviderResult(dict):
         """
         :param int default_port: Default port number.
         :param str description: Provider description.
-        :param int id: Provider ID to use when creating cache instances.
-        :param str name: Provider name (Redis, Valkey, Dragonfly).
+        :param int id: The provider ID.
+        :param str name: Provider name (e.g., "Redis", "Valkey", "Dragonfly").
         :param str type: Provider type identifier.
         :param str version: Default version.
         """
@@ -459,7 +459,7 @@ class GetCacheProvidersProviderResult(dict):
     @pulumi.getter
     def id(self) -> int:
         """
-        Provider ID to use when creating cache instances.
+        The provider ID.
         """
         return pulumi.get(self, "id")
 
@@ -467,7 +467,7 @@ class GetCacheProvidersProviderResult(dict):
     @pulumi.getter
     def name(self) -> str:
         """
-        Provider name (Redis, Valkey, Dragonfly).
+        Provider name (e.g., "Redis", "Valkey", "Dragonfly").
         """
         return pulumi.get(self, "name")
 
@@ -505,7 +505,7 @@ class GetCachesInstanceResult(dict):
                  status: str,
                  version: str):
         """
-        :param str cache_provider: Cache provider (redis, valkey, dragonfly).
+        :param str cache_provider: Cache provider (Redis, Valkey, Dragonfly).
         :param int cpu_cores: Number of CPU cores.
         :param str created_at: Timestamp when the instance was created.
         :param str datacenter: Datacenter location.
@@ -516,7 +516,7 @@ class GetCachesInstanceResult(dict):
         :param str name: Name of the cache instance.
         :param int port: Connection port.
         :param str resource_profile: Resource profile (predefined CPU/RAM configuration).
-        :param str status: Current status of the cache instance.
+        :param str status: Current status (creating, running, stopped, error).
         :param str version: Cache version.
         """
         pulumi.set(__self__, "cache_provider", cache_provider)
@@ -537,7 +537,7 @@ class GetCachesInstanceResult(dict):
     @pulumi.getter(name="cacheProvider")
     def cache_provider(self) -> str:
         """
-        Cache provider (redis, valkey, dragonfly).
+        Cache provider (Redis, Valkey, Dragonfly).
         """
         return pulumi.get(self, "cache_provider")
 
@@ -625,7 +625,7 @@ class GetCachesInstanceResult(dict):
     @pulumi.getter
     def status(self) -> str:
         """
-        Current status of the cache instance.
+        Current status (creating, running, stopped, error).
         """
         return pulumi.get(self, "status")
 
@@ -650,8 +650,8 @@ class GetDatabaseProvidersProviderResult(dict):
         """
         :param int default_port: Default port number.
         :param str description: Provider description.
-        :param int id: Provider ID to use when creating database instances.
-        :param str name: Provider name (MySQL, PostgreSQL, MariaDB).
+        :param int id: The provider ID.
+        :param str name: Provider name (e.g., "MySQL", "PostgreSQL", "MariaDB").
         :param str type: Provider type identifier.
         :param str version: Default version.
         """
@@ -682,7 +682,7 @@ class GetDatabaseProvidersProviderResult(dict):
     @pulumi.getter
     def id(self) -> int:
         """
-        Provider ID to use when creating database instances.
+        The provider ID.
         """
         return pulumi.get(self, "id")
 
@@ -690,7 +690,7 @@ class GetDatabaseProvidersProviderResult(dict):
     @pulumi.getter
     def name(self) -> str:
         """
-        Provider name (MySQL, PostgreSQL, MariaDB).
+        Provider name (e.g., "MySQL", "PostgreSQL", "MariaDB").
         """
         return pulumi.get(self, "name")
 
@@ -736,14 +736,14 @@ class GetDatabasesInstanceResult(dict):
         :param str database_name: Name of the database.
         :param str datacenter: Datacenter location.
         :param str endpoint: Connection endpoint hostname.
-        :param str engine: Database engine (mysql, postgresql, mariadb).
+        :param str engine: Database engine (MySQL, PostgreSQL, MariaDB).
         :param str id: Unique identifier for the database instance.
         :param int memory_size_mb: Memory size in MB.
         :param float monthly_cost: Estimated monthly cost.
         :param str name: Name of the database instance.
         :param int port: Connection port.
         :param str resource_profile: Resource profile (predefined CPU/RAM/Storage configuration).
-        :param str status: Current status of the database instance.
+        :param str status: Current status (creating, running, stopped, error).
         :param int storage_size_gb: Storage size in GB.
         :param str username: Database admin username.
         :param str version: Database version.
@@ -809,7 +809,7 @@ class GetDatabasesInstanceResult(dict):
     @pulumi.getter
     def engine(self) -> str:
         """
-        Database engine (mysql, postgresql, mariadb).
+        Database engine (MySQL, PostgreSQL, MariaDB).
         """
         return pulumi.get(self, "engine")
 
@@ -865,7 +865,7 @@ class GetDatabasesInstanceResult(dict):
     @pulumi.getter
     def status(self) -> str:
         """
-        Current status of the database instance.
+        Current status (creating, running, stopped, error).
         """
         return pulumi.get(self, "status")
 
@@ -913,7 +913,7 @@ class GetFirewallsFirewallResult(dict):
         :param bool is_default: Whether this is the default firewall.
         :param str name: Name of the firewall.
         :param int rules_count: Number of rules in the firewall.
-        :param str status: Current status of the firewall.
+        :param str status: Current status.
         """
         pulumi.set(__self__, "created_at", created_at)
         pulumi.set(__self__, "default_action", default_action)
@@ -984,7 +984,7 @@ class GetFirewallsFirewallResult(dict):
     @pulumi.getter
     def status(self) -> str:
         """
-        Current status of the firewall.
+        Current status.
         """
         return pulumi.get(self, "status")
 
@@ -1009,13 +1009,13 @@ class GetServerlessContainersContainerResult(dict):
         :param str deployment_type: Deployment type (docker or git).
         :param str git_branch: Git branch (for git deployment).
         :param str git_repository: Git repository URL (for git deployment).
-        :param str id: Unique identifier for the serverless container.
+        :param str id: Unique identifier for the container.
         :param str image_url: Docker image URL (for docker deployment).
         :param int max_instances: Maximum number of instances.
-        :param int min_instances: Minimum number of instances.
-        :param str name: Name of the serverless container.
+        :param int min_instances: Minimum number of instances (0 = scale to zero).
+        :param str name: Name of the container.
         :param int port: Container port.
-        :param str status: Current status of the container.
+        :param str status: Current status (creating, building, running, error).
         :param str url: Public HTTPS URL for the container.
         """
         pulumi.set(__self__, "created_at", created_at)
@@ -1067,7 +1067,7 @@ class GetServerlessContainersContainerResult(dict):
     @pulumi.getter
     def id(self) -> str:
         """
-        Unique identifier for the serverless container.
+        Unique identifier for the container.
         """
         return pulumi.get(self, "id")
 
@@ -1091,7 +1091,7 @@ class GetServerlessContainersContainerResult(dict):
     @pulumi.getter(name="minInstances")
     def min_instances(self) -> int:
         """
-        Minimum number of instances.
+        Minimum number of instances (0 = scale to zero).
         """
         return pulumi.get(self, "min_instances")
 
@@ -1099,7 +1099,7 @@ class GetServerlessContainersContainerResult(dict):
     @pulumi.getter
     def name(self) -> str:
         """
-        Name of the serverless container.
+        Name of the container.
         """
         return pulumi.get(self, "name")
 
@@ -1115,7 +1115,7 @@ class GetServerlessContainersContainerResult(dict):
     @pulumi.getter
     def status(self) -> str:
         """
-        Current status of the container.
+        Current status (creating, building, running, error).
         """
         return pulumi.get(self, "status")
 
@@ -1137,11 +1137,11 @@ class GetSshKeysKeyResult(dict):
                  name: str,
                  public_key: str):
         """
-        :param str created_at: Timestamp when the key was created.
-        :param str fingerprint: SHA256 fingerprint of the SSH key.
-        :param str id: Unique identifier for the SSH key.
-        :param str name: Name of the SSH key.
-        :param str public_key: The SSH public key.
+        :param str created_at: Creation timestamp.
+        :param str fingerprint: SSH key fingerprint.
+        :param str id: The SSH key ID.
+        :param str name: Name of the key.
+        :param str public_key: The public key content.
         """
         pulumi.set(__self__, "created_at", created_at)
         pulumi.set(__self__, "fingerprint", fingerprint)
@@ -1153,7 +1153,7 @@ class GetSshKeysKeyResult(dict):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> str:
         """
-        Timestamp when the key was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -1161,7 +1161,7 @@ class GetSshKeysKeyResult(dict):
     @pulumi.getter
     def fingerprint(self) -> str:
         """
-        SHA256 fingerprint of the SSH key.
+        SSH key fingerprint.
         """
         return pulumi.get(self, "fingerprint")
 
@@ -1169,7 +1169,7 @@ class GetSshKeysKeyResult(dict):
     @pulumi.getter
     def id(self) -> str:
         """
-        Unique identifier for the SSH key.
+        The SSH key ID.
         """
         return pulumi.get(self, "id")
 
@@ -1177,7 +1177,7 @@ class GetSshKeysKeyResult(dict):
     @pulumi.getter
     def name(self) -> str:
         """
-        Name of the SSH key.
+        Name of the key.
         """
         return pulumi.get(self, "name")
 
@@ -1185,7 +1185,7 @@ class GetSshKeysKeyResult(dict):
     @pulumi.getter(name="publicKey")
     def public_key(self) -> str:
         """
-        The SSH public key.
+        The public key content.
         """
         return pulumi.get(self, "public_key")
 
@@ -1213,7 +1213,7 @@ class GetStorageAccessKeysKeyResult(dict):
         :param bool is_prefix_scoped: Whether the key is scoped to specific bucket prefixes.
         :param str last_used_at: Timestamp when the key was last used.
         :param str name: Name of the access key.
-        :param str status: Current status of the key.
+        :param str status: Current status (active, revoked).
         """
         pulumi.set(__self__, "access_key_id", access_key_id)
         pulumi.set(__self__, "access_type", access_type)
@@ -1302,7 +1302,7 @@ class GetStorageAccessKeysKeyResult(dict):
     @pulumi.getter
     def status(self) -> str:
         """
-        Current status of the key.
+        Current status (active, revoked).
         """
         return pulumi.get(self, "status")
 
@@ -1330,16 +1330,16 @@ class GetStorageBucketsBucketResult(dict):
         :param str display_name: Human-readable display name.
         :param bool encryption_enabled: Whether encryption is enabled.
         :param str endpoint_url: S3-compatible endpoint URL.
-        :param str id: Unique identifier for the storage bucket.
-        :param str minio_bucket_name: Internal bucket name.
+        :param str id: Unique identifier for the bucket.
+        :param str minio_bucket_name: Internal bucket name for S3 operations.
         :param float monthly_cost: Estimated monthly cost.
-        :param str name: Name of the storage bucket.
+        :param str name: Name of the bucket.
         :param int object_count: Number of objects in the bucket.
         :param bool public_access: Whether public access is enabled.
         :param str public_url: Public URL (if public access enabled).
         :param str region: Region where the bucket is located.
         :param int size_bytes: Current size in bytes.
-        :param str status: Current status of the bucket.
+        :param str status: Current status.
         :param bool versioning_enabled: Whether versioning is enabled.
         """
         pulumi.set(__self__, "created_at", created_at)
@@ -1394,7 +1394,7 @@ class GetStorageBucketsBucketResult(dict):
     @pulumi.getter
     def id(self) -> str:
         """
-        Unique identifier for the storage bucket.
+        Unique identifier for the bucket.
         """
         return pulumi.get(self, "id")
 
@@ -1402,7 +1402,7 @@ class GetStorageBucketsBucketResult(dict):
     @pulumi.getter(name="minioBucketName")
     def minio_bucket_name(self) -> str:
         """
-        Internal bucket name.
+        Internal bucket name for S3 operations.
         """
         return pulumi.get(self, "minio_bucket_name")
 
@@ -1418,7 +1418,7 @@ class GetStorageBucketsBucketResult(dict):
     @pulumi.getter
     def name(self) -> str:
         """
-        Name of the storage bucket.
+        Name of the bucket.
         """
         return pulumi.get(self, "name")
 
@@ -1466,7 +1466,7 @@ class GetStorageBucketsBucketResult(dict):
     @pulumi.getter
     def status(self) -> str:
         """
-        Current status of the bucket.
+        Current status.
         """
         return pulumi.get(self, "status")
 
@@ -1491,12 +1491,12 @@ class GetVpsImagesImageResult(dict):
                  label: str,
                  version: str):
         """
-        :param str default_user: Default SSH user.
+        :param str default_user: Default SSH user for this image.
         :param str description: Image description.
-        :param str distro: Distribution (ubuntu, debian, alma, rocky, fedora, alpine).
-        :param str family: OS family (debian, redhat, fedora, alpine).
-        :param str id: Image identifier (e.g., 'ubuntu-24.04').
-        :param str image: Full image reference.
+        :param str distro: Distribution name (e.g., `ubuntu`, `debian`, `almalinux`).
+        :param str family: Image family (if applicable).
+        :param str id: The image ID.
+        :param str image: Image identifier used when creating VPS.
         :param str label: Human-readable label.
         :param str version: Distribution version.
         """
@@ -1513,7 +1513,7 @@ class GetVpsImagesImageResult(dict):
     @pulumi.getter(name="defaultUser")
     def default_user(self) -> str:
         """
-        Default SSH user.
+        Default SSH user for this image.
         """
         return pulumi.get(self, "default_user")
 
@@ -1529,7 +1529,7 @@ class GetVpsImagesImageResult(dict):
     @pulumi.getter
     def distro(self) -> str:
         """
-        Distribution (ubuntu, debian, alma, rocky, fedora, alpine).
+        Distribution name (e.g., `ubuntu`, `debian`, `almalinux`).
         """
         return pulumi.get(self, "distro")
 
@@ -1537,7 +1537,7 @@ class GetVpsImagesImageResult(dict):
     @pulumi.getter
     def family(self) -> str:
         """
-        OS family (debian, redhat, fedora, alpine).
+        Image family (if applicable).
         """
         return pulumi.get(self, "family")
 
@@ -1545,7 +1545,7 @@ class GetVpsImagesImageResult(dict):
     @pulumi.getter
     def id(self) -> str:
         """
-        Image identifier (e.g., 'ubuntu-24.04').
+        The image ID.
         """
         return pulumi.get(self, "id")
 
@@ -1553,7 +1553,7 @@ class GetVpsImagesImageResult(dict):
     @pulumi.getter
     def image(self) -> str:
         """
-        Full image reference.
+        Image identifier used when creating VPS.
         """
         return pulumi.get(self, "image")
 
@@ -1590,7 +1590,7 @@ class GetVpsSnapshotsSnapshotResult(dict):
         :param str id: Unique identifier for the snapshot.
         :param str name: Name of the snapshot.
         :param float size_gb: Size of the snapshot in GB.
-        :param str status: Current status of the snapshot (creating, ready, error).
+        :param str status: Current status (creating, ready, error).
         :param str vps_instance_id: ID of the VPS instance this snapshot belongs to.
         """
         pulumi.set(__self__, "created_at", created_at)
@@ -1645,7 +1645,7 @@ class GetVpsSnapshotsSnapshotResult(dict):
     @pulumi.getter
     def status(self) -> str:
         """
-        Current status of the snapshot (creating, ready, error).
+        Current status (creating, ready, error).
         """
         return pulumi.get(self, "status")
 
@@ -1683,14 +1683,14 @@ class GetVpssInstanceResult(dict):
         :param str datacenter: Datacenter location.
         :param str id: Unique identifier for the VPS instance.
         :param str image: Operating system image.
-        :param str ipv6_address: IPv6 address.
+        :param str ipv6_address: IPv6 address (if enabled).
         :param int memory_size_gb: Memory size in GB.
         :param float monthly_cost: Estimated monthly cost.
         :param str name: Name of the VPS instance.
-        :param str private_ip: Private IP address.
-        :param str public_ip: Public IPv4 address.
+        :param str private_ip: Private IP address (if assigned).
+        :param str public_ip: Public IPv4 address (if assigned).
         :param str resource_profile: Resource profile (predefined CPU/RAM/Storage configuration).
-        :param str status: Current status of the VPS instance.
+        :param str status: Current status (creating, running, stopped, error).
         :param int storage_size_gb: Storage size in GB.
         """
         pulumi.set(__self__, "cpu_allocation_type", cpu_allocation_type)
@@ -1761,7 +1761,7 @@ class GetVpssInstanceResult(dict):
     @pulumi.getter(name="ipv6Address")
     def ipv6_address(self) -> str:
         """
-        IPv6 address.
+        IPv6 address (if enabled).
         """
         return pulumi.get(self, "ipv6_address")
 
@@ -1793,7 +1793,7 @@ class GetVpssInstanceResult(dict):
     @pulumi.getter(name="privateIp")
     def private_ip(self) -> str:
         """
-        Private IP address.
+        Private IP address (if assigned).
         """
         return pulumi.get(self, "private_ip")
 
@@ -1801,7 +1801,7 @@ class GetVpssInstanceResult(dict):
     @pulumi.getter(name="publicIp")
     def public_ip(self) -> str:
         """
-        Public IPv4 address.
+        Public IPv4 address (if assigned).
         """
         return pulumi.get(self, "public_ip")
 
@@ -1817,7 +1817,7 @@ class GetVpssInstanceResult(dict):
     @pulumi.getter
     def status(self) -> str:
         """
-        Current status of the VPS instance.
+        Current status (creating, running, stopped, error).
         """
         return pulumi.get(self, "status")
 

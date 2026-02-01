@@ -6,6 +6,44 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getVpss
+ *
+ * Lists all VPS instances in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpss({});
+ * export const vpsCount = all.then(all => all.instances).length;
+ * export const vpsNames = all.then(all => .map(vps => (vps.name)));
+ * ```
+ *
+ * ### Find VPS by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpss({});
+ * const webServer = all.then(all => .filter(vps => vps.name == "web-server").map(vps => (vps))[0]);
+ * export const webServerIp = webServer.publicIp;
+ * ```
+ *
+ * ### Filter Running Instances
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpss({});
+ * const runningInstances = all.then(all => .filter(vps => vps.status == "running").map(vps => (vps)));
+ * export const runningCount = runningInstances.length;
+ * ```
+ */
 export function getVpss(opts?: pulumi.InvokeOptions): Promise<GetVpssResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getVpss:getVpss", {
@@ -20,8 +58,49 @@ export interface GetVpssResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * List of VPS instances. Each instance contains:
+     */
     readonly instances: outputs.GetVpssInstance[];
 }
+/**
+ * ## # danubedata.getVpss
+ *
+ * Lists all VPS instances in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpss({});
+ * export const vpsCount = all.then(all => all.instances).length;
+ * export const vpsNames = all.then(all => .map(vps => (vps.name)));
+ * ```
+ *
+ * ### Find VPS by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpss({});
+ * const webServer = all.then(all => .filter(vps => vps.name == "web-server").map(vps => (vps))[0]);
+ * export const webServerIp = webServer.publicIp;
+ * ```
+ *
+ * ### Filter Running Instances
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpss({});
+ * const runningInstances = all.then(all => .filter(vps => vps.status == "running").map(vps => (vps)));
+ * export const runningCount = runningInstances.length;
+ * ```
+ */
 export function getVpssOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetVpssResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getVpss:getVpss", {

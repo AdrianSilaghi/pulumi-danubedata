@@ -6,6 +6,46 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getServerlessContainers
+ *
+ * Lists all serverless containers in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getServerlessContainers({});
+ * export const containerCount = all.then(all => all.containers).length;
+ * export const containerUrls = all.then(all => .reduce((__obj, c) => ({ ...__obj, [c.name]: c.url })));
+ * ```
+ *
+ * ### Find Container by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getServerlessContainers({});
+ * const apiContainer = all.then(all => .filter(c => c.name == "api-server").map(c => (c))[0]);
+ * export const apiUrl = apiContainer.url;
+ * export const apiStatus = apiContainer.status;
+ * ```
+ *
+ * ### Filter by Deployment Type
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getServerlessContainers({});
+ * const dockerContainers = all.then(all => .filter(c => c.deploymentType == "docker").map(c => (c)));
+ * const gitContainers = all.then(all => .filter(c => c.deploymentType == "git").map(c => (c)));
+ * export const dockerCount = dockerContainers.length;
+ * ```
+ */
 export function getServerlessContainers(opts?: pulumi.InvokeOptions): Promise<GetServerlessContainersResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getServerlessContainers:getServerlessContainers", {
@@ -16,12 +56,55 @@ export function getServerlessContainers(opts?: pulumi.InvokeOptions): Promise<Ge
  * A collection of values returned by getServerlessContainers.
  */
 export interface GetServerlessContainersResult {
+    /**
+     * List of serverless containers. Each container contains:
+     */
     readonly containers: outputs.GetServerlessContainersContainer[];
     /**
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
 }
+/**
+ * ## # danubedata.getServerlessContainers
+ *
+ * Lists all serverless containers in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getServerlessContainers({});
+ * export const containerCount = all.then(all => all.containers).length;
+ * export const containerUrls = all.then(all => .reduce((__obj, c) => ({ ...__obj, [c.name]: c.url })));
+ * ```
+ *
+ * ### Find Container by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getServerlessContainers({});
+ * const apiContainer = all.then(all => .filter(c => c.name == "api-server").map(c => (c))[0]);
+ * export const apiUrl = apiContainer.url;
+ * export const apiStatus = apiContainer.status;
+ * ```
+ *
+ * ### Filter by Deployment Type
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getServerlessContainers({});
+ * const dockerContainers = all.then(all => .filter(c => c.deploymentType == "docker").map(c => (c)));
+ * const gitContainers = all.then(all => .filter(c => c.deploymentType == "git").map(c => (c)));
+ * export const dockerCount = dockerContainers.length;
+ * ```
+ */
 export function getServerlessContainersOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetServerlessContainersResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getServerlessContainers:getServerlessContainers", {

@@ -7,69 +7,69 @@ import * as outputs from "../types/output";
 
 export interface CacheTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for cache creation.
      */
     create?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for cache deletion.
      */
     delete?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for cache updates.
      */
     update?: string;
 }
 
 export interface DatabaseTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for database creation.
      */
     create?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for database deletion.
      */
     delete?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for database updates.
      */
     update?: string;
 }
 
 export interface FirewallRule {
     /**
-     * Action to take: 'accept' or 'drop'.
+     * Action: `allow` or `deny`.
      */
     action: string;
     /**
-     * Direction: 'inbound' or 'outbound'.
+     * Direction: `inbound` or `outbound`.
      */
     direction: string;
     /**
-     * Rule ID (computed by API).
+     * The firewall ID.
      */
     id: string;
     /**
-     * Name/description of the rule.
+     * Name of the rule.
      */
     name?: string;
     /**
-     * End of port range (1-65535).
+     * End of port range.
      */
     portRangeEnd?: number;
     /**
-     * Start of port range (1-65535).
+     * Start of port range.
      */
     portRangeStart?: number;
     /**
-     * Rule priority (lower numbers = higher priority).
+     * Rule priority (lower = higher priority).
      */
     priority?: number;
     /**
-     * Protocol: 'tcp', 'udp', 'icmp', or 'any'.
+     * Protocol: `tcp`, `udp`, `icmp`, or `all`.
      */
     protocol: string;
     /**
-     * List of source IP addresses or CIDR blocks.
+     * List of source IP addresses/CIDRs.
      */
     sourceIps?: string[];
 }
@@ -84,11 +84,11 @@ export interface GetCacheProvidersProvider {
      */
     description: string;
     /**
-     * Provider ID to use when creating cache instances.
+     * The provider ID.
      */
     id: number;
     /**
-     * Provider name (Redis, Valkey, Dragonfly).
+     * Provider name (e.g., "Redis", "Valkey", "Dragonfly").
      */
     name: string;
     /**
@@ -103,7 +103,7 @@ export interface GetCacheProvidersProvider {
 
 export interface GetCachesInstance {
     /**
-     * Cache provider (redis, valkey, dragonfly).
+     * Cache provider (Redis, Valkey, Dragonfly).
      */
     cacheProvider: string;
     /**
@@ -147,7 +147,7 @@ export interface GetCachesInstance {
      */
     resourceProfile: string;
     /**
-     * Current status of the cache instance.
+     * Current status (creating, running, stopped, error).
      */
     status: string;
     /**
@@ -166,11 +166,11 @@ export interface GetDatabaseProvidersProvider {
      */
     description: string;
     /**
-     * Provider ID to use when creating database instances.
+     * The provider ID.
      */
     id: number;
     /**
-     * Provider name (MySQL, PostgreSQL, MariaDB).
+     * Provider name (e.g., "MySQL", "PostgreSQL", "MariaDB").
      */
     name: string;
     /**
@@ -205,7 +205,7 @@ export interface GetDatabasesInstance {
      */
     endpoint: string;
     /**
-     * Database engine (mysql, postgresql, mariadb).
+     * Database engine (MySQL, PostgreSQL, MariaDB).
      */
     engine: string;
     /**
@@ -233,7 +233,7 @@ export interface GetDatabasesInstance {
      */
     resourceProfile: string;
     /**
-     * Current status of the database instance.
+     * Current status (creating, running, stopped, error).
      */
     status: string;
     /**
@@ -280,7 +280,7 @@ export interface GetFirewallsFirewall {
      */
     rulesCount: number;
     /**
-     * Current status of the firewall.
+     * Current status.
      */
     status: string;
 }
@@ -303,7 +303,7 @@ export interface GetServerlessContainersContainer {
      */
     gitRepository: string;
     /**
-     * Unique identifier for the serverless container.
+     * Unique identifier for the container.
      */
     id: string;
     /**
@@ -315,11 +315,11 @@ export interface GetServerlessContainersContainer {
      */
     maxInstances: number;
     /**
-     * Minimum number of instances.
+     * Minimum number of instances (0 = scale to zero).
      */
     minInstances: number;
     /**
-     * Name of the serverless container.
+     * Name of the container.
      */
     name: string;
     /**
@@ -327,7 +327,7 @@ export interface GetServerlessContainersContainer {
      */
     port: number;
     /**
-     * Current status of the container.
+     * Current status (creating, building, running, error).
      */
     status: string;
     /**
@@ -338,23 +338,23 @@ export interface GetServerlessContainersContainer {
 
 export interface GetSshKeysKey {
     /**
-     * Timestamp when the key was created.
+     * Creation timestamp.
      */
     createdAt: string;
     /**
-     * SHA256 fingerprint of the SSH key.
+     * SSH key fingerprint.
      */
     fingerprint: string;
     /**
-     * Unique identifier for the SSH key.
+     * The SSH key ID.
      */
     id: string;
     /**
-     * Name of the SSH key.
+     * Name of the key.
      */
     name: string;
     /**
-     * The SSH public key.
+     * The public key content.
      */
     publicKey: string;
 }
@@ -397,7 +397,7 @@ export interface GetStorageAccessKeysKey {
      */
     name: string;
     /**
-     * Current status of the key.
+     * Current status (active, revoked).
      */
     status: string;
 }
@@ -420,11 +420,11 @@ export interface GetStorageBucketsBucket {
      */
     endpointUrl: string;
     /**
-     * Unique identifier for the storage bucket.
+     * Unique identifier for the bucket.
      */
     id: string;
     /**
-     * Internal bucket name.
+     * Internal bucket name for S3 operations.
      */
     minioBucketName: string;
     /**
@@ -432,7 +432,7 @@ export interface GetStorageBucketsBucket {
      */
     monthlyCost: number;
     /**
-     * Name of the storage bucket.
+     * Name of the bucket.
      */
     name: string;
     /**
@@ -456,7 +456,7 @@ export interface GetStorageBucketsBucket {
      */
     sizeBytes: number;
     /**
-     * Current status of the bucket.
+     * Current status.
      */
     status: string;
     /**
@@ -467,7 +467,7 @@ export interface GetStorageBucketsBucket {
 
 export interface GetVpsImagesImage {
     /**
-     * Default SSH user.
+     * Default SSH user for this image.
      */
     defaultUser: string;
     /**
@@ -475,19 +475,19 @@ export interface GetVpsImagesImage {
      */
     description: string;
     /**
-     * Distribution (ubuntu, debian, alma, rocky, fedora, alpine).
+     * Distribution name (e.g., `ubuntu`, `debian`, `almalinux`).
      */
     distro: string;
     /**
-     * OS family (debian, redhat, fedora, alpine).
+     * Image family (if applicable).
      */
     family: string;
     /**
-     * Image identifier (e.g., 'ubuntu-24.04').
+     * The image ID.
      */
     id: string;
     /**
-     * Full image reference.
+     * Image identifier used when creating VPS.
      */
     image: string;
     /**
@@ -522,7 +522,7 @@ export interface GetVpsSnapshotsSnapshot {
      */
     sizeGb: number;
     /**
-     * Current status of the snapshot (creating, ready, error).
+     * Current status (creating, ready, error).
      */
     status: string;
     /**
@@ -557,7 +557,7 @@ export interface GetVpssInstance {
      */
     image: string;
     /**
-     * IPv6 address.
+     * IPv6 address (if enabled).
      */
     ipv6Address: string;
     /**
@@ -573,11 +573,11 @@ export interface GetVpssInstance {
      */
     name: string;
     /**
-     * Private IP address.
+     * Private IP address (if assigned).
      */
     privateIp: string;
     /**
-     * Public IPv4 address.
+     * Public IPv4 address (if assigned).
      */
     publicIp: string;
     /**
@@ -585,7 +585,7 @@ export interface GetVpssInstance {
      */
     resourceProfile: string;
     /**
-     * Current status of the VPS instance.
+     * Current status (creating, running, stopped, error).
      */
     status: string;
     /**
@@ -596,56 +596,56 @@ export interface GetVpssInstance {
 
 export interface ServerlessTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for container creation.
      */
     create?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for container deletion.
      */
     delete?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for container updates.
      */
     update?: string;
 }
 
 export interface StorageBucketTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for bucket creation.
      */
     create?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for bucket deletion.
      */
     delete?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for bucket updates.
      */
     update?: string;
 }
 
 export interface VpsSnapshotTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for snapshot creation.
      */
     create?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for snapshot deletion.
      */
     delete?: string;
 }
 
 export interface VpsTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for VPS creation.
      */
     create?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for VPS deletion.
      */
     delete?: string;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for VPS updates.
      */
     update?: string;
 }

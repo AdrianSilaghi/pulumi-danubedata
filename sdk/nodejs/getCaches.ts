@@ -6,6 +6,45 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getCaches
+ *
+ * Lists all cache instances in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getCaches({});
+ * export const cacheCount = all.then(all => all.instances).length;
+ * export const cacheEndpoints = all.then(all => .reduce((__obj, cache) => ({ ...__obj, [cache.name]: `${cache.endpoint}:${cache.port}` })));
+ * ```
+ *
+ * ### Find Cache by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getCaches({});
+ * const mainCache = all.then(all => .filter(c => c.name == "main-cache").map(c => (c))[0]);
+ * export const redisUrl = `redis://${mainCache.endpoint}:${mainCache.port}`;
+ * ```
+ *
+ * ### Filter by Provider
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getCaches({});
+ * const redisCaches = all.then(all => .filter(c => c.cacheProvider == "Redis").map(c => (c)));
+ * const dragonflyCaches = all.then(all => .filter(c => c.cacheProvider == "Dragonfly").map(c => (c)));
+ * export const redisCount = redisCaches.length;
+ * ```
+ */
 export function getCaches(opts?: pulumi.InvokeOptions): Promise<GetCachesResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getCaches:getCaches", {
@@ -20,8 +59,50 @@ export interface GetCachesResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * List of cache instances. Each instance contains:
+     */
     readonly instances: outputs.GetCachesInstance[];
 }
+/**
+ * ## # danubedata.getCaches
+ *
+ * Lists all cache instances in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getCaches({});
+ * export const cacheCount = all.then(all => all.instances).length;
+ * export const cacheEndpoints = all.then(all => .reduce((__obj, cache) => ({ ...__obj, [cache.name]: `${cache.endpoint}:${cache.port}` })));
+ * ```
+ *
+ * ### Find Cache by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getCaches({});
+ * const mainCache = all.then(all => .filter(c => c.name == "main-cache").map(c => (c))[0]);
+ * export const redisUrl = `redis://${mainCache.endpoint}:${mainCache.port}`;
+ * ```
+ *
+ * ### Filter by Provider
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getCaches({});
+ * const redisCaches = all.then(all => .filter(c => c.cacheProvider == "Redis").map(c => (c)));
+ * const dragonflyCaches = all.then(all => .filter(c => c.cacheProvider == "Dragonfly").map(c => (c)));
+ * export const redisCount = redisCaches.length;
+ * ```
+ */
 export function getCachesOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetCachesResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getCaches:getCaches", {

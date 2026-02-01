@@ -6,6 +6,78 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.StorageBucket
+ *
+ * Manages an S3-compatible object storage bucket.
+ *
+ * ## Example Usage
+ *
+ * ### Basic Bucket
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const assets = new danubedata.StorageBucket("assets", {region: "fsn1"});
+ * export const bucketEndpoint = assets.endpointUrl;
+ * ```
+ *
+ * ### Bucket with Versioning
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const backups = new danubedata.StorageBucket("backups", {
+ *     region: "fsn1",
+ *     versioningEnabled: true,
+ * });
+ * ```
+ *
+ * ### Public Bucket
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const _public = new danubedata.StorageBucket("public", {
+ *     publicAccess: true,
+ *     region: "fsn1",
+ * });
+ * ```
+ *
+ * ### Complete Configuration
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const data = new danubedata.StorageBucket("data", {
+ *     displayName: "Application Data",
+ *     encryptionEnabled: true,
+ *     publicAccess: false,
+ *     region: "fsn1",
+ *     versioningEnabled: true,
+ * });
+ * ```
+ *
+ * ## Pricing
+ *
+ * - Base: EUR 3.99/month
+ * - Includes: 1TB storage + 1TB egress traffic
+ * - Overage: EUR 0.01/GB for storage, EUR 0.01/GB for egress
+ *
+ * ## Import
+ *
+ * Storage buckets can be imported using their ID:
+ *
+ * bash
+ *
+ * ```sh
+ * $ pulumi import danubedata:index/storageBucket:StorageBucket example bucket-abc123
+ * ```
+ */
 export class StorageBucket extends pulumi.CustomResource {
     /**
      * Get an existing StorageBucket resource's state with the given name, ID, and optional extra
@@ -35,7 +107,7 @@ export class StorageBucket extends pulumi.CustomResource {
     }
 
     /**
-     * Timestamp when the bucket was created.
+     * Creation timestamp.
      */
     public /*out*/ readonly createdAt!: pulumi.Output<string>;
     /**
@@ -51,15 +123,15 @@ export class StorageBucket extends pulumi.CustomResource {
      */
     public readonly encryptionType!: pulumi.Output<string>;
     /**
-     * S3 endpoint URL for accessing the bucket.
+     * S3-compatible endpoint URL.
      */
     public /*out*/ readonly endpointUrl!: pulumi.Output<string>;
     /**
-     * Internal MinIO bucket name (includes team prefix).
+     * Internal bucket name.
      */
     public /*out*/ readonly minioBucketName!: pulumi.Output<string>;
     /**
-     * Monthly cost in dollars.
+     * Estimated monthly cost.
      */
     public /*out*/ readonly monthlyCost!: pulumi.Output<number>;
     /**
@@ -71,7 +143,7 @@ export class StorageBucket extends pulumi.CustomResource {
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * Number of objects in the bucket.
+     * Number of objects.
      */
     public /*out*/ readonly objectCount!: pulumi.Output<number>;
     /**
@@ -83,11 +155,11 @@ export class StorageBucket extends pulumi.CustomResource {
      */
     public readonly region!: pulumi.Output<string>;
     /**
-     * Current size of the bucket in bytes.
+     * Current size in bytes.
      */
     public /*out*/ readonly sizeBytes!: pulumi.Output<number>;
     /**
-     * Current status of the storage bucket (pending, active, error, destroying).
+     * Current status.
      */
     public /*out*/ readonly status!: pulumi.Output<string>;
     public readonly timeouts!: pulumi.Output<outputs.StorageBucketTimeouts | undefined>;
@@ -163,7 +235,7 @@ export class StorageBucket extends pulumi.CustomResource {
  */
 export interface StorageBucketState {
     /**
-     * Timestamp when the bucket was created.
+     * Creation timestamp.
      */
     createdAt?: pulumi.Input<string>;
     /**
@@ -179,15 +251,15 @@ export interface StorageBucketState {
      */
     encryptionType?: pulumi.Input<string>;
     /**
-     * S3 endpoint URL for accessing the bucket.
+     * S3-compatible endpoint URL.
      */
     endpointUrl?: pulumi.Input<string>;
     /**
-     * Internal MinIO bucket name (includes team prefix).
+     * Internal bucket name.
      */
     minioBucketName?: pulumi.Input<string>;
     /**
-     * Monthly cost in dollars.
+     * Estimated monthly cost.
      */
     monthlyCost?: pulumi.Input<number>;
     /**
@@ -199,7 +271,7 @@ export interface StorageBucketState {
      */
     name?: pulumi.Input<string>;
     /**
-     * Number of objects in the bucket.
+     * Number of objects.
      */
     objectCount?: pulumi.Input<number>;
     /**
@@ -211,11 +283,11 @@ export interface StorageBucketState {
      */
     region?: pulumi.Input<string>;
     /**
-     * Current size of the bucket in bytes.
+     * Current size in bytes.
      */
     sizeBytes?: pulumi.Input<number>;
     /**
-     * Current status of the storage bucket (pending, active, error, destroying).
+     * Current status.
      */
     status?: pulumi.Input<string>;
     timeouts?: pulumi.Input<inputs.StorageBucketTimeouts>;

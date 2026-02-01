@@ -6,6 +6,46 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getVpsSnapshots
+ *
+ * Lists all VPS snapshots in your account.
+ *
+ * ### Find Snapshot by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsSnapshots({});
+ * const preUpgrade = all.then(all => .filter(s => s.name == "pre-upgrade-backup").map(s => (s))[0]);
+ * export const preUpgradeSnapshotId = preUpgrade.id;
+ * ```
+ *
+ * ### Filter Snapshots by VPS Instance
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsSnapshots({});
+ * const config = new pulumi.Config();
+ * const vpsId = config.get("vpsId") || "vps-abc123";
+ * const vpsSnapshots = all.then(all => .filter(s => s.vpsInstanceId == vpsId).map(s => (s)));
+ * export const vpsSnapshotCount = vpsSnapshots.length;
+ * ```
+ *
+ * ### Filter Ready Snapshots
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsSnapshots({});
+ * const readySnapshots = all.then(all => .filter(s => s.status == "ready").map(s => (s)));
+ * export const readyCount = readySnapshots.length;
+ * ```
+ */
 export function getVpsSnapshots(opts?: pulumi.InvokeOptions): Promise<GetVpsSnapshotsResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getVpsSnapshots:getVpsSnapshots", {
@@ -20,8 +60,51 @@ export interface GetVpsSnapshotsResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * List of VPS snapshots. Each snapshot contains:
+     */
     readonly snapshots: outputs.GetVpsSnapshotsSnapshot[];
 }
+/**
+ * ## # danubedata.getVpsSnapshots
+ *
+ * Lists all VPS snapshots in your account.
+ *
+ * ### Find Snapshot by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsSnapshots({});
+ * const preUpgrade = all.then(all => .filter(s => s.name == "pre-upgrade-backup").map(s => (s))[0]);
+ * export const preUpgradeSnapshotId = preUpgrade.id;
+ * ```
+ *
+ * ### Filter Snapshots by VPS Instance
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsSnapshots({});
+ * const config = new pulumi.Config();
+ * const vpsId = config.get("vpsId") || "vps-abc123";
+ * const vpsSnapshots = all.then(all => .filter(s => s.vpsInstanceId == vpsId).map(s => (s)));
+ * export const vpsSnapshotCount = vpsSnapshots.length;
+ * ```
+ *
+ * ### Filter Ready Snapshots
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsSnapshots({});
+ * const readySnapshots = all.then(all => .filter(s => s.status == "ready").map(s => (s)));
+ * export const readyCount = readySnapshots.length;
+ * ```
+ */
 export function getVpsSnapshotsOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetVpsSnapshotsResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getVpsSnapshots:getVpsSnapshots", {

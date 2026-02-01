@@ -12,7 +12,7 @@ web_server = danubedata.Vps("web-server",
     name="web-server",
     image="ubuntu-24.04",
     datacenter="fsn1",
-    resource_profile="vps-starter",
+    resource_profile="nano_shared",
     auth_method="ssh_key",
     ssh_key_id=ssh_key.id)
 
@@ -20,16 +20,15 @@ web_server = danubedata.Vps("web-server",
 session_cache = danubedata.Cache("session-cache",
     name="session-cache",
     cache_provider="redis",
-    resource_profile="cache-starter",
+    resource_profile="micro",
     datacenter="fsn1")
 
 # Create a PostgreSQL database
 app_database = danubedata.Database("app-db",
     name="app-database",
-    database_provider="postgresql",
-    resource_profile="db-starter",
+    engine="postgresql",
+    resource_profile="small",
     database_name="myapp",
-    username="appuser",
     datacenter="fsn1")
 
 # Create an S3-compatible storage bucket for assets

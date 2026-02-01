@@ -6,6 +6,50 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.VpsSnapshot
+ *
+ * Manages a VPS snapshot for backup and recovery.
+ *
+ * ## Example Usage
+ *
+ * ### Basic Snapshot
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const server = new danubedata.Vps("server", {
+ *     image: "ubuntu-22.04",
+ *     datacenter: "fsn1",
+ *     authMethod: "ssh_key",
+ *     sshKeyId: danubedata_ssh_key.main.id,
+ * });
+ * const backup = new danubedata.VpsSnapshot("backup", {vpsInstanceId: server.id});
+ * ```
+ *
+ * ### Snapshot with Description
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const release = new danubedata.VpsSnapshot("release", {
+ *     description: "Snapshot before v1.0 release deployment",
+ *     vpsInstanceId: danubedata_vps.server.id,
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * VPS snapshots can be imported using their ID:
+ *
+ * bash
+ *
+ * ```sh
+ * $ pulumi import danubedata:index/vpsSnapshot:VpsSnapshot example snap-abc123
+ * ```
+ */
 export class VpsSnapshot extends pulumi.CustomResource {
     /**
      * Get an existing VpsSnapshot resource's state with the given name, ID, and optional extra
@@ -35,7 +79,7 @@ export class VpsSnapshot extends pulumi.CustomResource {
     }
 
     /**
-     * Timestamp when the snapshot was created.
+     * Creation timestamp.
      */
     public /*out*/ readonly createdAt!: pulumi.Output<string>;
     /**
@@ -51,7 +95,7 @@ export class VpsSnapshot extends pulumi.CustomResource {
      */
     public /*out*/ readonly sizeGb!: pulumi.Output<number>;
     /**
-     * Status of the snapshot (pending, completed, failed).
+     * Current status (`creating`, `ready`, `error`).
      */
     public /*out*/ readonly status!: pulumi.Output<string>;
     public readonly timeouts!: pulumi.Output<outputs.VpsSnapshotTimeouts | undefined>;
@@ -109,7 +153,7 @@ export class VpsSnapshot extends pulumi.CustomResource {
  */
 export interface VpsSnapshotState {
     /**
-     * Timestamp when the snapshot was created.
+     * Creation timestamp.
      */
     createdAt?: pulumi.Input<string>;
     /**
@@ -125,7 +169,7 @@ export interface VpsSnapshotState {
      */
     sizeGb?: pulumi.Input<number>;
     /**
-     * Status of the snapshot (pending, completed, failed).
+     * Current status (`creating`, `ready`, `error`).
      */
     status?: pulumi.Input<string>;
     timeouts?: pulumi.Input<inputs.VpsSnapshotTimeouts>;

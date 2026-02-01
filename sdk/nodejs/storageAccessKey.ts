@@ -4,6 +4,64 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.StorageAccessKey
+ *
+ * Manages an S3-compatible storage access key for bucket authentication.
+ *
+ * ## Example Usage
+ *
+ * ### Basic Access Key
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const main = new danubedata.StorageAccessKey("main", {});
+ * export const accessKeyId = main.accessKeyId;
+ * export const secretAccessKey = main.secretAccessKey;
+ * ```
+ *
+ * ### Using with AWS Provider for S3 Operations
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as aws from "@pulumi/aws";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const data = new danubedata.StorageBucket("data", {region: "fsn1"});
+ * const s3 = new danubedata.StorageAccessKey("s3", {});
+ * const danubedata = new aws.Provider("danubedata", {
+ *     region: "us-east-1",
+ *     accessKey: s3.accessKeyId,
+ *     secretKey: s3.secretAccessKey,
+ *     endpoints: [{
+ *         s3: data.endpointUrl,
+ *     }],
+ *     skipCredentialsValidation: true,
+ *     skipMetadataApiCheck: true,
+ *     skipRequestingAccountId: true,
+ *     s3UsePathStyle: true,
+ * });
+ * const example = new aws.s3.BucketObjectv2("example", {
+ *     bucket: data.minioBucketName,
+ *     key: "example.txt",
+ *     content: "Hello, World!",
+ * }, {
+ *     provider: aws.danubedata,
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Storage access keys can be imported using their ID:
+ *
+ * bash
+ *
+ * ```sh
+ * $ pulumi import danubedata:index/storageAccessKey:StorageAccessKey example key-abc123
+ * ```
+ */
 export class StorageAccessKey extends pulumi.CustomResource {
     /**
      * Get an existing StorageAccessKey resource's state with the given name, ID, and optional extra
@@ -33,11 +91,11 @@ export class StorageAccessKey extends pulumi.CustomResource {
     }
 
     /**
-     * The S3 access key ID.
+     * The S3 access key ID for authentication.
      */
     public /*out*/ readonly accessKeyId!: pulumi.Output<string>;
     /**
-     * Timestamp when the access key was created.
+     * Creation timestamp.
      */
     public /*out*/ readonly createdAt!: pulumi.Output<string>;
     /**
@@ -49,11 +107,11 @@ export class StorageAccessKey extends pulumi.CustomResource {
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The S3 secret access key. Only available after creation.
+     * The S3 secret access key for authentication. Only available after creation.
      */
     public /*out*/ readonly secretAccessKey!: pulumi.Output<string>;
     /**
-     * Current status of the access key (active, revoked).
+     * Current status of the key.
      */
     public /*out*/ readonly status!: pulumi.Output<string>;
     /**
@@ -103,11 +161,11 @@ export class StorageAccessKey extends pulumi.CustomResource {
  */
 export interface StorageAccessKeyState {
     /**
-     * The S3 access key ID.
+     * The S3 access key ID for authentication.
      */
     accessKeyId?: pulumi.Input<string>;
     /**
-     * Timestamp when the access key was created.
+     * Creation timestamp.
      */
     createdAt?: pulumi.Input<string>;
     /**
@@ -119,11 +177,11 @@ export interface StorageAccessKeyState {
      */
     name?: pulumi.Input<string>;
     /**
-     * The S3 secret access key. Only available after creation.
+     * The S3 secret access key for authentication. Only available after creation.
      */
     secretAccessKey?: pulumi.Input<string>;
     /**
-     * Current status of the access key (active, revoked).
+     * Current status of the key.
      */
     status?: pulumi.Input<string>;
     /**

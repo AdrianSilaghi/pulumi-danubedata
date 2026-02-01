@@ -1,0 +1,218 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  PROVIDER: danubedata
+  GO_VERSION: '1.22'
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  DOTNET_VERSION: '6.0'
+
+jobs:
+  build-provider:
+    name: Build Provider Binaries
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: linux
+            arch: amd64
+          - os: linux
+            arch: arm64
+          - os: darwin
+            arch: amd64
+          - os: darwin
+            arch: arm64
+          - os: windows
+            arch: amd64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Get version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build provider binary
+        env:
+          GOOS: ${{ matrix.os }}
+          GOARCH: ${{ matrix.arch }}
+        run: |
+          cd provider
+          BINARY_NAME="pulumi-resource-${{ env.PROVIDER }}"
+          if [ "${{ matrix.os }}" = "windows" ]; then
+            BINARY_NAME="${BINARY_NAME}.exe"
+          fi
+          go build -o "../bin/${BINARY_NAME}" \
+            -ldflags "-X main.version=${{ steps.version.outputs.VERSION }}" \
+            ./cmd/pulumi-resource-${{ env.PROVIDER }}
+
+      - name: Package binary
+        run: |
+          cd bin
+          ARCHIVE_NAME="pulumi-resource-${{ env.PROVIDER }}-v${{ steps.version.outputs.VERSION }}-${{ matrix.os }}-${{ matrix.arch }}"
+          if [ "${{ matrix.os }}" = "windows" ]; then
+            zip "${ARCHIVE_NAME}.zip" pulumi-resource-${{ env.PROVIDER }}.exe
+          else
+            tar -czvf "${ARCHIVE_NAME}.tar.gz" pulumi-resource-${{ env.PROVIDER }}
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-${{ matrix.os }}-${{ matrix.arch }}
+          path: bin/pulumi-resource-${{ env.PROVIDER }}-*
+
+  publish-sdks:
+    name: Publish SDKs
+    needs: build-provider
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Get version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build tfgen
+        run: |
+          cd provider
+          go build -o ../bin/pulumi-tfgen-${{ env.PROVIDER }} ./cmd/pulumi-tfgen-${{ env.PROVIDER }}
+
+      - name: Generate SDKs
+        run: |
+          ./bin/pulumi-tfgen-${{ env.PROVIDER }} nodejs --out sdk/nodejs
+          ./bin/pulumi-tfgen-${{ env.PROVIDER }} python --out sdk/python
+          ./bin/pulumi-tfgen-${{ env.PROVIDER }} go --out sdk/go
+          ./bin/pulumi-tfgen-${{ env.PROVIDER }} dotnet --out sdk/dotnet
+
+      - name: Update SDK versions
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+
+          # Update Node.js package.json
+          cd sdk/nodejs
+          sed -i "s/\${VERSION}/${VERSION}/g" package.json
+          # Update devDependencies
+          sed -i 's/"@types\/node": "[^"]*"/"@types\/node": "^18.0.0"/g' package.json
+          sed -i 's/"typescript": "[^"]*"/"typescript": "^5.0.0"/g' package.json
+          cd ../..
+
+          # Update Python setup.py
+          cd sdk/python
+          sed -i "s/VERSION = \"0.0.0\"/VERSION = \"${VERSION}\"/g" setup.py
+          cd ../..
+
+          # Update .NET csproj
+          cd sdk/dotnet
+          sed -i "s/<Version>.*<\/Version>/<Version>${VERSION}<\/Version>/g" *.csproj
+          cd ../..
+
+      - name: Publish Node.js SDK
+        if: ${{ !contains(github.ref, 'alpha') && !contains(github.ref, 'beta') }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd sdk/nodejs
+          npm install
+          npm run build
+          npm publish --access public
+        continue-on-error: true
+
+      - name: Publish Python SDK
+        if: ${{ !contains(github.ref, 'alpha') && !contains(github.ref, 'beta') }}
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          cd sdk/python
+          pip install build twine
+          python -m build
+          twine upload dist/*
+        continue-on-error: true
+
+      - name: Publish .NET SDK
+        if: ${{ !contains(github.ref, 'alpha') && !contains(github.ref, 'beta') }}
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_TOKEN }}
+        run: |
+          cd sdk/dotnet
+          dotnet pack -c Release
+          dotnet nuget push **/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
+        continue-on-error: true
+
+      - name: Upload SDK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdks
+          path: |
+            sdk/nodejs/
+            sdk/python/dist/
+            sdk/go/
+            sdk/dotnet/bin/
+
+  create-release:
+    name: Create GitHub Release
+    needs: [build-provider, publish-sdks]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Get version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Collect release assets
+        run: |
+          mkdir -p release-assets
+          find artifacts -name "*.tar.gz" -o -name "*.zip" | xargs -I {} cp {} release-assets/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: v${{ steps.version.outputs.VERSION }}
+          draft: false
+          prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
+          generate_release_notes: true
+          files: release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

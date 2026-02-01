@@ -12,7 +12,7 @@ const webServer = new danubedata.Vps("web-server", {
     name: "web-server",
     image: "ubuntu-24.04",
     datacenter: "fsn1",
-    resourceProfile: "vps-starter",
+    resourceProfile: "nano_shared",
     authMethod: "ssh_key",
     sshKeyId: sshKey.id,
 });
@@ -21,17 +21,16 @@ const webServer = new danubedata.Vps("web-server", {
 const sessionCache = new danubedata.Cache("session-cache", {
     name: "session-cache",
     cacheProvider: "redis",
-    resourceProfile: "cache-starter",
+    resourceProfile: "micro",
     datacenter: "fsn1",
 });
 
 // Create a PostgreSQL database
 const appDatabase = new danubedata.Database("app-db", {
     name: "app-database",
-    databaseProvider: "postgresql",
-    resourceProfile: "db-starter",
+    engine: "postgresql",
+    resourceProfile: "small",
     databaseName: "myapp",
-    username: "appuser",
     datacenter: "fsn1",
 });
 

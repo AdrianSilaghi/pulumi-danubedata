@@ -6,6 +6,86 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.Vps
+ *
+ * Manages a VPS (Virtual Private Server) instance.
+ *
+ * ## Example Usage
+ *
+ * ### Basic VPS with SSH Key
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ * import * as fs from "fs";
+ *
+ * const main = new danubedata.SshKey("main", {publicKey: fs.readFileSync("~/.ssh/id_ed25519.pub", "utf8")});
+ * const web = new danubedata.Vps("web", {
+ *     image: "ubuntu-22.04",
+ *     datacenter: "fsn1",
+ *     authMethod: "ssh_key",
+ *     sshKeyId: main.id,
+ * });
+ * ```
+ *
+ * ### VPS with Custom Resources
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const app = new danubedata.Vps("app", {
+ *     image: "debian-12",
+ *     datacenter: "fsn1",
+ *     authMethod: "ssh_key",
+ *     sshKeyId: danubedata_ssh_key.main.id,
+ *     cpuAllocationType: "dedicated",
+ *     cpuCores: 4,
+ *     memorySizeGb: 8,
+ *     storageSizeGb: 100,
+ * });
+ * ```
+ *
+ * ### VPS with Password Authentication
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const dev = new danubedata.Vps("dev", {
+ *     image: "ubuntu-22.04",
+ *     datacenter: "fsn1",
+ *     authMethod: "password",
+ *     password: _var.server_password,
+ * });
+ * ```
+ *
+ * ### VPS with Resource Profile
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const standard = new danubedata.Vps("standard", {
+ *     image: "ubuntu-22.04",
+ *     datacenter: "fsn1",
+ *     resourceProfile: "vps-medium",
+ *     authMethod: "ssh_key",
+ *     sshKeyId: danubedata_ssh_key.main.id,
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * VPS instances can be imported using their ID:
+ *
+ * bash
+ *
+ * ```sh
+ * $ pulumi import danubedata:index/vps:Vps example vps-abc123
+ * ```
+ */
 export class Vps extends pulumi.CustomResource {
     /**
      * Get an existing Vps resource's state with the given name, ID, and optional extra
@@ -47,7 +127,7 @@ export class Vps extends pulumi.CustomResource {
      */
     public readonly cpuCores!: pulumi.Output<number>;
     /**
-     * Timestamp when the VPS was created.
+     * Creation timestamp.
      */
     public /*out*/ readonly createdAt!: pulumi.Output<string>;
     /**
@@ -59,7 +139,7 @@ export class Vps extends pulumi.CustomResource {
      */
     public readonly datacenter!: pulumi.Output<string>;
     /**
-     * Timestamp when the VPS was deployed.
+     * Deployment timestamp.
      */
     public /*out*/ readonly deployedAt!: pulumi.Output<string>;
     /**
@@ -67,7 +147,7 @@ export class Vps extends pulumi.CustomResource {
      */
     public readonly image!: pulumi.Output<string>;
     /**
-     * IPv6 address.
+     * IPv6 address (if enabled).
      */
     public /*out*/ readonly ipv6Address!: pulumi.Output<string>;
     /**
@@ -75,7 +155,7 @@ export class Vps extends pulumi.CustomResource {
      */
     public readonly memorySizeGb!: pulumi.Output<number>;
     /**
-     * Monthly cost in dollars.
+     * Estimated monthly cost.
      */
     public /*out*/ readonly monthlyCost!: pulumi.Output<number>;
     /**
@@ -112,7 +192,7 @@ export class Vps extends pulumi.CustomResource {
      */
     public readonly sshKeyId!: pulumi.Output<string | undefined>;
     /**
-     * Current status of the VPS instance (pending, provisioning, running, stopped, error).
+     * Current status of the VPS.
      */
     public /*out*/ readonly status!: pulumi.Output<string>;
     /**
@@ -220,7 +300,7 @@ export interface VpsState {
      */
     cpuCores?: pulumi.Input<number>;
     /**
-     * Timestamp when the VPS was created.
+     * Creation timestamp.
      */
     createdAt?: pulumi.Input<string>;
     /**
@@ -232,7 +312,7 @@ export interface VpsState {
      */
     datacenter?: pulumi.Input<string>;
     /**
-     * Timestamp when the VPS was deployed.
+     * Deployment timestamp.
      */
     deployedAt?: pulumi.Input<string>;
     /**
@@ -240,7 +320,7 @@ export interface VpsState {
      */
     image?: pulumi.Input<string>;
     /**
-     * IPv6 address.
+     * IPv6 address (if enabled).
      */
     ipv6Address?: pulumi.Input<string>;
     /**
@@ -248,7 +328,7 @@ export interface VpsState {
      */
     memorySizeGb?: pulumi.Input<number>;
     /**
-     * Monthly cost in dollars.
+     * Estimated monthly cost.
      */
     monthlyCost?: pulumi.Input<number>;
     /**
@@ -285,7 +365,7 @@ export interface VpsState {
      */
     sshKeyId?: pulumi.Input<string>;
     /**
-     * Current status of the VPS instance (pending, provisioning, running, stopped, error).
+     * Current status of the VPS.
      */
     status?: pulumi.Input<string>;
     /**

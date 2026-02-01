@@ -173,23 +173,23 @@ class _DatabaseState:
         """
         Input properties used for looking up and filtering Database resources.
         :param pulumi.Input[int] cpu_cores: Number of CPU cores. Derived from resource_profile.
-        :param pulumi.Input[str] created_at: Timestamp when the database instance was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] database_name: Name of the initial database to create. Must start with a letter and contain only letters, numbers, and underscores.
         :param pulumi.Input[str] datacenter: Datacenter location (fsn1, nbg1, hel1).
-        :param pulumi.Input[str] deployed_at: Timestamp when the database instance was deployed.
-        :param pulumi.Input[str] endpoint: Connection endpoint for the database instance.
+        :param pulumi.Input[str] deployed_at: Deployment timestamp.
+        :param pulumi.Input[str] endpoint: Connection endpoint hostname.
         :param pulumi.Input[str] engine: Database engine (mysql, postgresql, mariadb).
         :param pulumi.Input[int] memory_size_mb: Memory size in MB. Derived from resource_profile.
-        :param pulumi.Input[float] monthly_cost: Monthly cost in dollars.
+        :param pulumi.Input[float] monthly_cost: Estimated monthly cost.
         :param pulumi.Input[int] monthly_cost_cents: Monthly cost in cents.
         :param pulumi.Input[str] name: Name of the database instance. Must be lowercase alphanumeric with hyphens (DNS compatible).
         :param pulumi.Input[str] parameter_group_id: ID of the parameter group to use for custom configuration.
-        :param pulumi.Input[int] port: Port number for the database instance.
+        :param pulumi.Input[int] port: Connection port.
         :param pulumi.Input[str] resource_profile: Resource profile for the database (small, medium, large).
-        :param pulumi.Input[str] status: Current status of the database instance (pending, provisioning, running, stopped, error).
+        :param pulumi.Input[str] status: Current status.
         :param pulumi.Input[int] storage_size_gb: Storage size in GB. Derived from resource_profile.
         :param pulumi.Input[str] updated_at: Timestamp when the database instance was last updated.
-        :param pulumi.Input[str] username: Root username for the database instance.
+        :param pulumi.Input[str] username: Database admin username.
         :param pulumi.Input[str] version: Version of the database software.
         """
         if cpu_cores is not None:
@@ -249,7 +249,7 @@ class _DatabaseState:
     @pulumi.getter(name="createdAt")
     def created_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the database instance was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -285,7 +285,7 @@ class _DatabaseState:
     @pulumi.getter(name="deployedAt")
     def deployed_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the database instance was deployed.
+        Deployment timestamp.
         """
         return pulumi.get(self, "deployed_at")
 
@@ -297,7 +297,7 @@ class _DatabaseState:
     @pulumi.getter
     def endpoint(self) -> Optional[pulumi.Input[str]]:
         """
-        Connection endpoint for the database instance.
+        Connection endpoint hostname.
         """
         return pulumi.get(self, "endpoint")
 
@@ -333,7 +333,7 @@ class _DatabaseState:
     @pulumi.getter(name="monthlyCost")
     def monthly_cost(self) -> Optional[pulumi.Input[float]]:
         """
-        Monthly cost in dollars.
+        Estimated monthly cost.
         """
         return pulumi.get(self, "monthly_cost")
 
@@ -381,7 +381,7 @@ class _DatabaseState:
     @pulumi.getter
     def port(self) -> Optional[pulumi.Input[int]]:
         """
-        Port number for the database instance.
+        Connection port.
         """
         return pulumi.get(self, "port")
 
@@ -405,7 +405,7 @@ class _DatabaseState:
     @pulumi.getter
     def status(self) -> Optional[pulumi.Input[str]]:
         """
-        Current status of the database instance (pending, provisioning, running, stopped, error).
+        Current status.
         """
         return pulumi.get(self, "status")
 
@@ -450,7 +450,7 @@ class _DatabaseState:
     @pulumi.getter
     def username(self) -> Optional[pulumi.Input[str]]:
         """
-        Root username for the database instance.
+        Database admin username.
         """
         return pulumi.get(self, "username")
 
@@ -486,7 +486,40 @@ class Database(pulumi.CustomResource):
                  version: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a Database resource with the given unique name, props, and options.
+        ## # Database
+
+        Manages a managed database instance (MySQL, PostgreSQL, or MariaDB).
+
+        ## Example Usage
+
+        ### Using Resource Profile
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        standard = danubedata.Database("standard",
+            datacenter="fsn1",
+            engine="mysql",
+            resource_profile="db-medium")
+        ```
+
+        ## Notes
+
+        - Database credentials are managed separately and can be retrieved via the API.
+        - Storage size can only be increased, not decreased.
+        - Version upgrades may cause brief downtime.
+
+        ## Import
+
+        Database instances can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/database:Database example db-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] database_name: Name of the initial database to create. Must start with a letter and contain only letters, numbers, and underscores.
@@ -504,7 +537,40 @@ class Database(pulumi.CustomResource):
                  args: DatabaseArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Database resource with the given unique name, props, and options.
+        ## # Database
+
+        Manages a managed database instance (MySQL, PostgreSQL, or MariaDB).
+
+        ## Example Usage
+
+        ### Using Resource Profile
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        standard = danubedata.Database("standard",
+            datacenter="fsn1",
+            engine="mysql",
+            resource_profile="db-medium")
+        ```
+
+        ## Notes
+
+        - Database credentials are managed separately and can be retrieved via the API.
+        - Storage size can only be increased, not decreased.
+        - Version upgrades may cause brief downtime.
+
+        ## Import
+
+        Database instances can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/database:Database example db-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param DatabaseArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -601,23 +667,23 @@ class Database(pulumi.CustomResource):
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[int] cpu_cores: Number of CPU cores. Derived from resource_profile.
-        :param pulumi.Input[str] created_at: Timestamp when the database instance was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] database_name: Name of the initial database to create. Must start with a letter and contain only letters, numbers, and underscores.
         :param pulumi.Input[str] datacenter: Datacenter location (fsn1, nbg1, hel1).
-        :param pulumi.Input[str] deployed_at: Timestamp when the database instance was deployed.
-        :param pulumi.Input[str] endpoint: Connection endpoint for the database instance.
+        :param pulumi.Input[str] deployed_at: Deployment timestamp.
+        :param pulumi.Input[str] endpoint: Connection endpoint hostname.
         :param pulumi.Input[str] engine: Database engine (mysql, postgresql, mariadb).
         :param pulumi.Input[int] memory_size_mb: Memory size in MB. Derived from resource_profile.
-        :param pulumi.Input[float] monthly_cost: Monthly cost in dollars.
+        :param pulumi.Input[float] monthly_cost: Estimated monthly cost.
         :param pulumi.Input[int] monthly_cost_cents: Monthly cost in cents.
         :param pulumi.Input[str] name: Name of the database instance. Must be lowercase alphanumeric with hyphens (DNS compatible).
         :param pulumi.Input[str] parameter_group_id: ID of the parameter group to use for custom configuration.
-        :param pulumi.Input[int] port: Port number for the database instance.
+        :param pulumi.Input[int] port: Connection port.
         :param pulumi.Input[str] resource_profile: Resource profile for the database (small, medium, large).
-        :param pulumi.Input[str] status: Current status of the database instance (pending, provisioning, running, stopped, error).
+        :param pulumi.Input[str] status: Current status.
         :param pulumi.Input[int] storage_size_gb: Storage size in GB. Derived from resource_profile.
         :param pulumi.Input[str] updated_at: Timestamp when the database instance was last updated.
-        :param pulumi.Input[str] username: Root username for the database instance.
+        :param pulumi.Input[str] username: Database admin username.
         :param pulumi.Input[str] version: Version of the database software.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -658,7 +724,7 @@ class Database(pulumi.CustomResource):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the database instance was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -682,7 +748,7 @@ class Database(pulumi.CustomResource):
     @pulumi.getter(name="deployedAt")
     def deployed_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the database instance was deployed.
+        Deployment timestamp.
         """
         return pulumi.get(self, "deployed_at")
 
@@ -690,7 +756,7 @@ class Database(pulumi.CustomResource):
     @pulumi.getter
     def endpoint(self) -> pulumi.Output[str]:
         """
-        Connection endpoint for the database instance.
+        Connection endpoint hostname.
         """
         return pulumi.get(self, "endpoint")
 
@@ -714,7 +780,7 @@ class Database(pulumi.CustomResource):
     @pulumi.getter(name="monthlyCost")
     def monthly_cost(self) -> pulumi.Output[float]:
         """
-        Monthly cost in dollars.
+        Estimated monthly cost.
         """
         return pulumi.get(self, "monthly_cost")
 
@@ -746,7 +812,7 @@ class Database(pulumi.CustomResource):
     @pulumi.getter
     def port(self) -> pulumi.Output[int]:
         """
-        Port number for the database instance.
+        Connection port.
         """
         return pulumi.get(self, "port")
 
@@ -762,7 +828,7 @@ class Database(pulumi.CustomResource):
     @pulumi.getter
     def status(self) -> pulumi.Output[str]:
         """
-        Current status of the database instance (pending, provisioning, running, stopped, error).
+        Current status.
         """
         return pulumi.get(self, "status")
 
@@ -791,7 +857,7 @@ class Database(pulumi.CustomResource):
     @pulumi.getter
     def username(self) -> pulumi.Output[str]:
         """
-        Root username for the database instance.
+        Database admin username.
         """
         return pulumi.get(self, "username")
 

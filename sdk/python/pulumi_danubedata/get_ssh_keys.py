@@ -46,6 +46,9 @@ class GetSshKeysResult:
     @property
     @pulumi.getter
     def keys(self) -> Sequence['outputs.GetSshKeysKeyResult']:
+        """
+        List of SSH keys. Each key contains:
+        """
         return pulumi.get(self, "keys")
 
 
@@ -61,7 +64,35 @@ class AwaitableGetSshKeysResult(GetSshKeysResult):
 
 def get_ssh_keys(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetSshKeysResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_ssh_keys
+
+    Lists all SSH keys in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_ssh_keys()
+    pulumi.export("sshKeyIds", [key.id for key in all.keys])
+    pulumi.export("sshKeyNames", [key.name for key in all.keys])
+    ```
+
+    ### Find Key by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_ssh_keys()
+    deploy_key = [key for key in all.keys if key.name == "deploy-key"][0]
+    server = danubedata.Vps("server",
+        image="ubuntu-22.04",
+        datacenter="fsn1",
+        auth_method="ssh_key",
+        ssh_key_id=deploy_key.id)
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +103,35 @@ def get_ssh_keys(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetSsh
         keys=pulumi.get(__ret__, 'keys'))
 def get_ssh_keys_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetSshKeysResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_ssh_keys
+
+    Lists all SSH keys in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_ssh_keys()
+    pulumi.export("sshKeyIds", [key.id for key in all.keys])
+    pulumi.export("sshKeyNames", [key.name for key in all.keys])
+    ```
+
+    ### Find Key by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_ssh_keys()
+    deploy_key = [key for key in all.keys if key.name == "deploy-key"][0]
+    server = danubedata.Vps("server",
+        image="ubuntu-22.04",
+        datacenter="fsn1",
+        auth_method="ssh_key",
+        ssh_key_id=deploy_key.id)
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

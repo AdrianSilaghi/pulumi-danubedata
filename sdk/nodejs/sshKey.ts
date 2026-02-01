@@ -4,6 +4,46 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.SshKey
+ *
+ * Manages an SSH key for VPS authentication.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ * import * as fs from "fs";
+ *
+ * const main = new danubedata.SshKey("main", {publicKey: fs.readFileSync("~/.ssh/id_ed25519.pub", "utf8")});
+ * ```
+ *
+ * ### Using with VPS
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const deploy = new danubedata.SshKey("deploy", {publicKey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... deploy@example.com"});
+ * const server = new danubedata.Vps("server", {
+ *     image: "ubuntu-22.04",
+ *     datacenter: "fsn1",
+ *     authMethod: "ssh_key",
+ *     sshKeyId: deploy.id,
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * SSH keys can be imported using their ID:
+ *
+ * bash
+ *
+ * ```sh
+ * $ pulumi import danubedata:index/sshKey:SshKey example key-abc123
+ * ```
+ */
 export class SshKey extends pulumi.CustomResource {
     /**
      * Get an existing SshKey resource's state with the given name, ID, and optional extra
@@ -33,11 +73,11 @@ export class SshKey extends pulumi.CustomResource {
     }
 
     /**
-     * Timestamp when the SSH key was created.
+     * Creation timestamp.
      */
     public /*out*/ readonly createdAt!: pulumi.Output<string>;
     /**
-     * The SHA256 fingerprint of the SSH key.
+     * The SSH key fingerprint.
      */
     public /*out*/ readonly fingerprint!: pulumi.Output<string>;
     /**
@@ -92,11 +132,11 @@ export class SshKey extends pulumi.CustomResource {
  */
 export interface SshKeyState {
     /**
-     * Timestamp when the SSH key was created.
+     * Creation timestamp.
      */
     createdAt?: pulumi.Input<string>;
     /**
-     * The SHA256 fingerprint of the SSH key.
+     * The SSH key fingerprint.
      */
     fingerprint?: pulumi.Input<string>;
     /**

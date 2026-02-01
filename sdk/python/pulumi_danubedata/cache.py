@@ -187,18 +187,18 @@ class _CacheState:
         Input properties used for looking up and filtering Cache resources.
         :param pulumi.Input[str] cache_provider: Cache provider type (redis, valkey, dragonfly).
         :param pulumi.Input[int] cpu_cores: Number of CPU cores. If not specified, determined by resource_profile.
-        :param pulumi.Input[str] created_at: Timestamp when the cache instance was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] datacenter: Datacenter location (ash, fsn1, nbg1, hel1).
-        :param pulumi.Input[str] deployed_at: Timestamp when the cache instance was deployed.
-        :param pulumi.Input[str] endpoint: Connection endpoint for the cache instance.
+        :param pulumi.Input[str] deployed_at: Deployment timestamp.
+        :param pulumi.Input[str] endpoint: Connection endpoint hostname.
         :param pulumi.Input[int] memory_size_mb: Memory size in MB. If not specified, determined by resource_profile.
-        :param pulumi.Input[float] monthly_cost: Monthly cost in dollars.
+        :param pulumi.Input[float] monthly_cost: Estimated monthly cost.
         :param pulumi.Input[int] monthly_cost_cents: Monthly cost in cents.
         :param pulumi.Input[str] name: Name of the cache instance.
         :param pulumi.Input[str] parameter_group_id: ID of the parameter group to use for custom configuration.
-        :param pulumi.Input[int] port: Port number for the cache instance.
+        :param pulumi.Input[int] port: Connection port.
         :param pulumi.Input[str] resource_profile: Resource profile for the cache (micro, small, medium, large).
-        :param pulumi.Input[str] status: Current status of the cache instance (pending, provisioning, running, stopped, error).
+        :param pulumi.Input[str] status: Current status.
         :param pulumi.Input[str] updated_at: Timestamp when the cache instance was last updated.
         :param pulumi.Input[str] version: Version of the cache software.
         """
@@ -265,7 +265,7 @@ class _CacheState:
     @pulumi.getter(name="createdAt")
     def created_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the cache instance was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -289,7 +289,7 @@ class _CacheState:
     @pulumi.getter(name="deployedAt")
     def deployed_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the cache instance was deployed.
+        Deployment timestamp.
         """
         return pulumi.get(self, "deployed_at")
 
@@ -301,7 +301,7 @@ class _CacheState:
     @pulumi.getter
     def endpoint(self) -> Optional[pulumi.Input[str]]:
         """
-        Connection endpoint for the cache instance.
+        Connection endpoint hostname.
         """
         return pulumi.get(self, "endpoint")
 
@@ -325,7 +325,7 @@ class _CacheState:
     @pulumi.getter(name="monthlyCost")
     def monthly_cost(self) -> Optional[pulumi.Input[float]]:
         """
-        Monthly cost in dollars.
+        Estimated monthly cost.
         """
         return pulumi.get(self, "monthly_cost")
 
@@ -373,7 +373,7 @@ class _CacheState:
     @pulumi.getter
     def port(self) -> Optional[pulumi.Input[int]]:
         """
-        Port number for the cache instance.
+        Connection port.
         """
         return pulumi.get(self, "port")
 
@@ -397,7 +397,7 @@ class _CacheState:
     @pulumi.getter
     def status(self) -> Optional[pulumi.Input[str]]:
         """
-        Current status of the cache instance (pending, provisioning, running, stopped, error).
+        Current status.
         """
         return pulumi.get(self, "status")
 
@@ -455,7 +455,75 @@ class Cache(pulumi.CustomResource):
                  version: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a Cache resource with the given unique name, props, and options.
+        ## # Cache
+
+        Manages an in-memory cache instance (Redis, Valkey, or Dragonfly).
+
+        ## Example Usage
+
+        ### Redis Cache
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        redis = danubedata.Cache("redis",
+            cache_provider="redis",
+            memory_size_mb=512,
+            cpu_cores=1,
+            datacenter="fsn1",
+            version="7.2")
+        pulumi.export("redisEndpoint", redis.endpoint)
+        ```
+
+        ### Valkey Cache (Redis Fork)
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        valkey = danubedata.Cache("valkey",
+            cache_provider="valkey",
+            cpu_cores=2,
+            datacenter="fsn1",
+            memory_size_mb=1024)
+        ```
+
+        ### Dragonfly Cache (High Performance)
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        dragonfly = danubedata.Cache("dragonfly",
+            cache_provider="dragonfly",
+            cpu_cores=4,
+            datacenter="fsn1",
+            memory_size_mb=2048)
+        ```
+
+        ### Using Resource Profile
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        standard = danubedata.Cache("standard",
+            resource_profile="cache-medium",
+            datacenter="fsn1",
+            opts = pulumi.ResourceOptions(provider="redis"))
+        ```
+
+        ## Import
+
+        Cache instances can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/cache:Cache example cache-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] cache_provider: Cache provider type (redis, valkey, dragonfly).
@@ -474,7 +542,75 @@ class Cache(pulumi.CustomResource):
                  args: CacheArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Cache resource with the given unique name, props, and options.
+        ## # Cache
+
+        Manages an in-memory cache instance (Redis, Valkey, or Dragonfly).
+
+        ## Example Usage
+
+        ### Redis Cache
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        redis = danubedata.Cache("redis",
+            cache_provider="redis",
+            memory_size_mb=512,
+            cpu_cores=1,
+            datacenter="fsn1",
+            version="7.2")
+        pulumi.export("redisEndpoint", redis.endpoint)
+        ```
+
+        ### Valkey Cache (Redis Fork)
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        valkey = danubedata.Cache("valkey",
+            cache_provider="valkey",
+            cpu_cores=2,
+            datacenter="fsn1",
+            memory_size_mb=1024)
+        ```
+
+        ### Dragonfly Cache (High Performance)
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        dragonfly = danubedata.Cache("dragonfly",
+            cache_provider="dragonfly",
+            cpu_cores=4,
+            datacenter="fsn1",
+            memory_size_mb=2048)
+        ```
+
+        ### Using Resource Profile
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        standard = danubedata.Cache("standard",
+            resource_profile="cache-medium",
+            datacenter="fsn1",
+            opts = pulumi.ResourceOptions(provider="redis"))
+        ```
+
+        ## Import
+
+        Cache instances can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/cache:Cache example cache-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param CacheArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -567,18 +703,18 @@ class Cache(pulumi.CustomResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] cache_provider: Cache provider type (redis, valkey, dragonfly).
         :param pulumi.Input[int] cpu_cores: Number of CPU cores. If not specified, determined by resource_profile.
-        :param pulumi.Input[str] created_at: Timestamp when the cache instance was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] datacenter: Datacenter location (ash, fsn1, nbg1, hel1).
-        :param pulumi.Input[str] deployed_at: Timestamp when the cache instance was deployed.
-        :param pulumi.Input[str] endpoint: Connection endpoint for the cache instance.
+        :param pulumi.Input[str] deployed_at: Deployment timestamp.
+        :param pulumi.Input[str] endpoint: Connection endpoint hostname.
         :param pulumi.Input[int] memory_size_mb: Memory size in MB. If not specified, determined by resource_profile.
-        :param pulumi.Input[float] monthly_cost: Monthly cost in dollars.
+        :param pulumi.Input[float] monthly_cost: Estimated monthly cost.
         :param pulumi.Input[int] monthly_cost_cents: Monthly cost in cents.
         :param pulumi.Input[str] name: Name of the cache instance.
         :param pulumi.Input[str] parameter_group_id: ID of the parameter group to use for custom configuration.
-        :param pulumi.Input[int] port: Port number for the cache instance.
+        :param pulumi.Input[int] port: Connection port.
         :param pulumi.Input[str] resource_profile: Resource profile for the cache (micro, small, medium, large).
-        :param pulumi.Input[str] status: Current status of the cache instance (pending, provisioning, running, stopped, error).
+        :param pulumi.Input[str] status: Current status.
         :param pulumi.Input[str] updated_at: Timestamp when the cache instance was last updated.
         :param pulumi.Input[str] version: Version of the cache software.
         """
@@ -625,7 +761,7 @@ class Cache(pulumi.CustomResource):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the cache instance was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -641,7 +777,7 @@ class Cache(pulumi.CustomResource):
     @pulumi.getter(name="deployedAt")
     def deployed_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the cache instance was deployed.
+        Deployment timestamp.
         """
         return pulumi.get(self, "deployed_at")
 
@@ -649,7 +785,7 @@ class Cache(pulumi.CustomResource):
     @pulumi.getter
     def endpoint(self) -> pulumi.Output[str]:
         """
-        Connection endpoint for the cache instance.
+        Connection endpoint hostname.
         """
         return pulumi.get(self, "endpoint")
 
@@ -665,7 +801,7 @@ class Cache(pulumi.CustomResource):
     @pulumi.getter(name="monthlyCost")
     def monthly_cost(self) -> pulumi.Output[float]:
         """
-        Monthly cost in dollars.
+        Estimated monthly cost.
         """
         return pulumi.get(self, "monthly_cost")
 
@@ -697,7 +833,7 @@ class Cache(pulumi.CustomResource):
     @pulumi.getter
     def port(self) -> pulumi.Output[int]:
         """
-        Port number for the cache instance.
+        Connection port.
         """
         return pulumi.get(self, "port")
 
@@ -713,7 +849,7 @@ class Cache(pulumi.CustomResource):
     @pulumi.getter
     def status(self) -> pulumi.Output[str]:
         """
-        Current status of the cache instance (pending, provisioning, running, stopped, error).
+        Current status.
         """
         return pulumi.get(self, "status")
 

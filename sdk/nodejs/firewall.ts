@@ -6,6 +6,23 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.Firewall
+ *
+ * Manages a firewall with rules for network traffic control.
+ *
+ * ## Example Usage
+ *
+ * ## Import
+ *
+ * Firewalls can be imported using their ID:
+ *
+ * bash
+ *
+ * ```sh
+ * $ pulumi import danubedata:index/firewall:Firewall example fw-abc123
+ * ```
+ */
 export class Firewall extends pulumi.CustomResource {
     /**
      * Get an existing Firewall resource's state with the given name, ID, and optional extra
@@ -35,7 +52,7 @@ export class Firewall extends pulumi.CustomResource {
     }
 
     /**
-     * Timestamp when the firewall was created.
+     * Creation timestamp.
      */
     public /*out*/ readonly createdAt!: pulumi.Output<string>;
     /**
@@ -59,7 +76,7 @@ export class Firewall extends pulumi.CustomResource {
      */
     public readonly rules!: pulumi.Output<outputs.FirewallRule[] | undefined>;
     /**
-     * Current status of the firewall (draft, active, deploying).
+     * Current status of the firewall.
      */
     public /*out*/ readonly status!: pulumi.Output<string>;
     /**
@@ -109,7 +126,7 @@ export class Firewall extends pulumi.CustomResource {
  */
 export interface FirewallState {
     /**
-     * Timestamp when the firewall was created.
+     * Creation timestamp.
      */
     createdAt?: pulumi.Input<string>;
     /**
@@ -133,7 +150,7 @@ export interface FirewallState {
      */
     rules?: pulumi.Input<pulumi.Input<inputs.FirewallRule>[]>;
     /**
-     * Current status of the firewall (draft, active, deploying).
+     * Current status of the firewall.
      */
     status?: pulumi.Input<string>;
     /**

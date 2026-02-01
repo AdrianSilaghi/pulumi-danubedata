@@ -38,6 +38,9 @@ class GetFirewallsResult:
     @property
     @pulumi.getter
     def firewalls(self) -> Sequence['outputs.GetFirewallsFirewallResult']:
+        """
+        List of firewalls. Each firewall contains:
+        """
         return pulumi.get(self, "firewalls")
 
     @property
@@ -61,7 +64,43 @@ class AwaitableGetFirewallsResult(GetFirewallsResult):
 
 def get_firewalls(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetFirewallsResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_firewalls
+
+    Lists all firewalls in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_firewalls()
+    pulumi.export("firewallCount", len(all.firewalls))
+    pulumi.export("firewallNames", [fw.name for fw in all.firewalls])
+    ```
+
+    ### Find Firewall by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_firewalls()
+    web_firewall = [fw for fw in all.firewalls if fw.name == "web-firewall"][0]
+    pulumi.export("webFirewallId", web_firewall.id)
+    pulumi.export("webFirewallRules", web_firewall.rules_count)
+    ```
+
+    ### Find Default Firewall
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_firewalls()
+    default_firewall = [fw for fw in all.firewalls if fw.is_default][0]
+    pulumi.export("defaultFirewallId", default_firewall.id)
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +111,43 @@ def get_firewalls(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetFi
         id=pulumi.get(__ret__, 'id'))
 def get_firewalls_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetFirewallsResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_firewalls
+
+    Lists all firewalls in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_firewalls()
+    pulumi.export("firewallCount", len(all.firewalls))
+    pulumi.export("firewallNames", [fw.name for fw in all.firewalls])
+    ```
+
+    ### Find Firewall by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_firewalls()
+    web_firewall = [fw for fw in all.firewalls if fw.name == "web-firewall"][0]
+    pulumi.export("webFirewallId", web_firewall.id)
+    pulumi.export("webFirewallRules", web_firewall.rules_count)
+    ```
+
+    ### Find Default Firewall
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_firewalls()
+    default_firewall = [fw for fw in all.firewalls if fw.is_default][0]
+    pulumi.export("defaultFirewallId", default_firewall.id)
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

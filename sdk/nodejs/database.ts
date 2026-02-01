@@ -6,6 +6,42 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.Database
+ *
+ * Manages a managed database instance (MySQL, PostgreSQL, or MariaDB).
+ *
+ * ## Example Usage
+ *
+ * ### Using Resource Profile
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const standard = new danubedata.Database("standard", {
+ *     datacenter: "fsn1",
+ *     engine: "mysql",
+ *     resourceProfile: "db-medium",
+ * });
+ * ```
+ *
+ * ## Notes
+ *
+ * - Database credentials are managed separately and can be retrieved via the API.
+ * - Storage size can only be increased, not decreased.
+ * - Version upgrades may cause brief downtime.
+ *
+ * ## Import
+ *
+ * Database instances can be imported using their ID:
+ *
+ * bash
+ *
+ * ```sh
+ * $ pulumi import danubedata:index/database:Database example db-abc123
+ * ```
+ */
 export class Database extends pulumi.CustomResource {
     /**
      * Get an existing Database resource's state with the given name, ID, and optional extra
@@ -39,7 +75,7 @@ export class Database extends pulumi.CustomResource {
      */
     public /*out*/ readonly cpuCores!: pulumi.Output<number>;
     /**
-     * Timestamp when the database instance was created.
+     * Creation timestamp.
      */
     public /*out*/ readonly createdAt!: pulumi.Output<string>;
     /**
@@ -51,11 +87,11 @@ export class Database extends pulumi.CustomResource {
      */
     public readonly datacenter!: pulumi.Output<string>;
     /**
-     * Timestamp when the database instance was deployed.
+     * Deployment timestamp.
      */
     public /*out*/ readonly deployedAt!: pulumi.Output<string>;
     /**
-     * Connection endpoint for the database instance.
+     * Connection endpoint hostname.
      */
     public /*out*/ readonly endpoint!: pulumi.Output<string>;
     /**
@@ -67,7 +103,7 @@ export class Database extends pulumi.CustomResource {
      */
     public /*out*/ readonly memorySizeMb!: pulumi.Output<number>;
     /**
-     * Monthly cost in dollars.
+     * Estimated monthly cost.
      */
     public /*out*/ readonly monthlyCost!: pulumi.Output<number>;
     /**
@@ -83,7 +119,7 @@ export class Database extends pulumi.CustomResource {
      */
     public readonly parameterGroupId!: pulumi.Output<string | undefined>;
     /**
-     * Port number for the database instance.
+     * Connection port.
      */
     public /*out*/ readonly port!: pulumi.Output<number>;
     /**
@@ -91,7 +127,7 @@ export class Database extends pulumi.CustomResource {
      */
     public readonly resourceProfile!: pulumi.Output<string>;
     /**
-     * Current status of the database instance (pending, provisioning, running, stopped, error).
+     * Current status.
      */
     public /*out*/ readonly status!: pulumi.Output<string>;
     /**
@@ -104,7 +140,7 @@ export class Database extends pulumi.CustomResource {
      */
     public /*out*/ readonly updatedAt!: pulumi.Output<string>;
     /**
-     * Root username for the database instance.
+     * Database admin username.
      */
     public /*out*/ readonly username!: pulumi.Output<string>;
     /**
@@ -191,7 +227,7 @@ export interface DatabaseState {
      */
     cpuCores?: pulumi.Input<number>;
     /**
-     * Timestamp when the database instance was created.
+     * Creation timestamp.
      */
     createdAt?: pulumi.Input<string>;
     /**
@@ -203,11 +239,11 @@ export interface DatabaseState {
      */
     datacenter?: pulumi.Input<string>;
     /**
-     * Timestamp when the database instance was deployed.
+     * Deployment timestamp.
      */
     deployedAt?: pulumi.Input<string>;
     /**
-     * Connection endpoint for the database instance.
+     * Connection endpoint hostname.
      */
     endpoint?: pulumi.Input<string>;
     /**
@@ -219,7 +255,7 @@ export interface DatabaseState {
      */
     memorySizeMb?: pulumi.Input<number>;
     /**
-     * Monthly cost in dollars.
+     * Estimated monthly cost.
      */
     monthlyCost?: pulumi.Input<number>;
     /**
@@ -235,7 +271,7 @@ export interface DatabaseState {
      */
     parameterGroupId?: pulumi.Input<string>;
     /**
-     * Port number for the database instance.
+     * Connection port.
      */
     port?: pulumi.Input<number>;
     /**
@@ -243,7 +279,7 @@ export interface DatabaseState {
      */
     resourceProfile?: pulumi.Input<string>;
     /**
-     * Current status of the database instance (pending, provisioning, running, stopped, error).
+     * Current status.
      */
     status?: pulumi.Input<string>;
     /**
@@ -256,7 +292,7 @@ export interface DatabaseState {
      */
     updatedAt?: pulumi.Input<string>;
     /**
-     * Root username for the database instance.
+     * Database admin username.
      */
     username?: pulumi.Input<string>;
     /**

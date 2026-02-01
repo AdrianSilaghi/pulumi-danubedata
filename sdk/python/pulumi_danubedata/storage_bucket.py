@@ -171,20 +171,20 @@ class _StorageBucketState:
                  versioning_enabled: Optional[pulumi.Input[bool]] = None):
         """
         Input properties used for looking up and filtering StorageBucket resources.
-        :param pulumi.Input[str] created_at: Timestamp when the bucket was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] display_name: Human-readable display name for the bucket.
         :param pulumi.Input[bool] encryption_enabled: Whether server-side encryption is enabled.
         :param pulumi.Input[str] encryption_type: Encryption type (none, sse-s3, sse-kms).
-        :param pulumi.Input[str] endpoint_url: S3 endpoint URL for accessing the bucket.
-        :param pulumi.Input[str] minio_bucket_name: Internal MinIO bucket name (includes team prefix).
-        :param pulumi.Input[float] monthly_cost: Monthly cost in dollars.
+        :param pulumi.Input[str] endpoint_url: S3-compatible endpoint URL.
+        :param pulumi.Input[str] minio_bucket_name: Internal bucket name.
+        :param pulumi.Input[float] monthly_cost: Estimated monthly cost.
         :param pulumi.Input[int] monthly_cost_cents: Monthly cost in cents.
         :param pulumi.Input[str] name: Name of the storage bucket. Must follow S3 bucket naming rules (3-63 chars, lowercase alphanumeric with hyphens).
-        :param pulumi.Input[int] object_count: Number of objects in the bucket.
+        :param pulumi.Input[int] object_count: Number of objects.
         :param pulumi.Input[bool] public_access: Whether the bucket has public read access enabled.
         :param pulumi.Input[str] region: Region for the storage bucket (fsn1).
-        :param pulumi.Input[int] size_bytes: Current size of the bucket in bytes.
-        :param pulumi.Input[str] status: Current status of the storage bucket (pending, active, error, destroying).
+        :param pulumi.Input[int] size_bytes: Current size in bytes.
+        :param pulumi.Input[str] status: Current status.
         :param pulumi.Input[str] updated_at: Timestamp when the bucket was last updated.
         :param pulumi.Input[bool] versioning_enabled: Whether object versioning is enabled.
         """
@@ -227,7 +227,7 @@ class _StorageBucketState:
     @pulumi.getter(name="createdAt")
     def created_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the bucket was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -275,7 +275,7 @@ class _StorageBucketState:
     @pulumi.getter(name="endpointUrl")
     def endpoint_url(self) -> Optional[pulumi.Input[str]]:
         """
-        S3 endpoint URL for accessing the bucket.
+        S3-compatible endpoint URL.
         """
         return pulumi.get(self, "endpoint_url")
 
@@ -287,7 +287,7 @@ class _StorageBucketState:
     @pulumi.getter(name="minioBucketName")
     def minio_bucket_name(self) -> Optional[pulumi.Input[str]]:
         """
-        Internal MinIO bucket name (includes team prefix).
+        Internal bucket name.
         """
         return pulumi.get(self, "minio_bucket_name")
 
@@ -299,7 +299,7 @@ class _StorageBucketState:
     @pulumi.getter(name="monthlyCost")
     def monthly_cost(self) -> Optional[pulumi.Input[float]]:
         """
-        Monthly cost in dollars.
+        Estimated monthly cost.
         """
         return pulumi.get(self, "monthly_cost")
 
@@ -335,7 +335,7 @@ class _StorageBucketState:
     @pulumi.getter(name="objectCount")
     def object_count(self) -> Optional[pulumi.Input[int]]:
         """
-        Number of objects in the bucket.
+        Number of objects.
         """
         return pulumi.get(self, "object_count")
 
@@ -371,7 +371,7 @@ class _StorageBucketState:
     @pulumi.getter(name="sizeBytes")
     def size_bytes(self) -> Optional[pulumi.Input[int]]:
         """
-        Current size of the bucket in bytes.
+        Current size in bytes.
         """
         return pulumi.get(self, "size_bytes")
 
@@ -383,7 +383,7 @@ class _StorageBucketState:
     @pulumi.getter
     def status(self) -> Optional[pulumi.Input[str]]:
         """
-        Current status of the storage bucket (pending, active, error, destroying).
+        Current status.
         """
         return pulumi.get(self, "status")
 
@@ -440,7 +440,74 @@ class StorageBucket(pulumi.CustomResource):
                  versioning_enabled: Optional[pulumi.Input[bool]] = None,
                  __props__=None):
         """
-        Create a StorageBucket resource with the given unique name, props, and options.
+        ## # StorageBucket
+
+        Manages an S3-compatible object storage bucket.
+
+        ## Example Usage
+
+        ### Basic Bucket
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        assets = danubedata.StorageBucket("assets", region="fsn1")
+        pulumi.export("bucketEndpoint", assets.endpoint_url)
+        ```
+
+        ### Bucket with Versioning
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        backups = danubedata.StorageBucket("backups",
+            region="fsn1",
+            versioning_enabled=True)
+        ```
+
+        ### Public Bucket
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        public = danubedata.StorageBucket("public",
+            public_access=True,
+            region="fsn1")
+        ```
+
+        ### Complete Configuration
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        data = danubedata.StorageBucket("data",
+            display_name="Application Data",
+            encryption_enabled=True,
+            public_access=False,
+            region="fsn1",
+            versioning_enabled=True)
+        ```
+
+        ## Pricing
+
+        - Base: EUR 3.99/month
+        - Includes: 1TB storage + 1TB egress traffic
+        - Overage: EUR 0.01/GB for storage, EUR 0.01/GB for egress
+
+        ## Import
+
+        Storage buckets can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/storageBucket:StorageBucket example bucket-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] display_name: Human-readable display name for the bucket.
@@ -458,7 +525,74 @@ class StorageBucket(pulumi.CustomResource):
                  args: StorageBucketArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a StorageBucket resource with the given unique name, props, and options.
+        ## # StorageBucket
+
+        Manages an S3-compatible object storage bucket.
+
+        ## Example Usage
+
+        ### Basic Bucket
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        assets = danubedata.StorageBucket("assets", region="fsn1")
+        pulumi.export("bucketEndpoint", assets.endpoint_url)
+        ```
+
+        ### Bucket with Versioning
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        backups = danubedata.StorageBucket("backups",
+            region="fsn1",
+            versioning_enabled=True)
+        ```
+
+        ### Public Bucket
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        public = danubedata.StorageBucket("public",
+            public_access=True,
+            region="fsn1")
+        ```
+
+        ### Complete Configuration
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        data = danubedata.StorageBucket("data",
+            display_name="Application Data",
+            encryption_enabled=True,
+            public_access=False,
+            region="fsn1",
+            versioning_enabled=True)
+        ```
+
+        ## Pricing
+
+        - Base: EUR 3.99/month
+        - Includes: 1TB storage + 1TB egress traffic
+        - Overage: EUR 0.01/GB for storage, EUR 0.01/GB for egress
+
+        ## Import
+
+        Storage buckets can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/storageBucket:StorageBucket example bucket-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param StorageBucketArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -544,20 +678,20 @@ class StorageBucket(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] created_at: Timestamp when the bucket was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] display_name: Human-readable display name for the bucket.
         :param pulumi.Input[bool] encryption_enabled: Whether server-side encryption is enabled.
         :param pulumi.Input[str] encryption_type: Encryption type (none, sse-s3, sse-kms).
-        :param pulumi.Input[str] endpoint_url: S3 endpoint URL for accessing the bucket.
-        :param pulumi.Input[str] minio_bucket_name: Internal MinIO bucket name (includes team prefix).
-        :param pulumi.Input[float] monthly_cost: Monthly cost in dollars.
+        :param pulumi.Input[str] endpoint_url: S3-compatible endpoint URL.
+        :param pulumi.Input[str] minio_bucket_name: Internal bucket name.
+        :param pulumi.Input[float] monthly_cost: Estimated monthly cost.
         :param pulumi.Input[int] monthly_cost_cents: Monthly cost in cents.
         :param pulumi.Input[str] name: Name of the storage bucket. Must follow S3 bucket naming rules (3-63 chars, lowercase alphanumeric with hyphens).
-        :param pulumi.Input[int] object_count: Number of objects in the bucket.
+        :param pulumi.Input[int] object_count: Number of objects.
         :param pulumi.Input[bool] public_access: Whether the bucket has public read access enabled.
         :param pulumi.Input[str] region: Region for the storage bucket (fsn1).
-        :param pulumi.Input[int] size_bytes: Current size of the bucket in bytes.
-        :param pulumi.Input[str] status: Current status of the storage bucket (pending, active, error, destroying).
+        :param pulumi.Input[int] size_bytes: Current size in bytes.
+        :param pulumi.Input[str] status: Current status.
         :param pulumi.Input[str] updated_at: Timestamp when the bucket was last updated.
         :param pulumi.Input[bool] versioning_enabled: Whether object versioning is enabled.
         """
@@ -588,7 +722,7 @@ class StorageBucket(pulumi.CustomResource):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the bucket was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -620,7 +754,7 @@ class StorageBucket(pulumi.CustomResource):
     @pulumi.getter(name="endpointUrl")
     def endpoint_url(self) -> pulumi.Output[str]:
         """
-        S3 endpoint URL for accessing the bucket.
+        S3-compatible endpoint URL.
         """
         return pulumi.get(self, "endpoint_url")
 
@@ -628,7 +762,7 @@ class StorageBucket(pulumi.CustomResource):
     @pulumi.getter(name="minioBucketName")
     def minio_bucket_name(self) -> pulumi.Output[str]:
         """
-        Internal MinIO bucket name (includes team prefix).
+        Internal bucket name.
         """
         return pulumi.get(self, "minio_bucket_name")
 
@@ -636,7 +770,7 @@ class StorageBucket(pulumi.CustomResource):
     @pulumi.getter(name="monthlyCost")
     def monthly_cost(self) -> pulumi.Output[float]:
         """
-        Monthly cost in dollars.
+        Estimated monthly cost.
         """
         return pulumi.get(self, "monthly_cost")
 
@@ -660,7 +794,7 @@ class StorageBucket(pulumi.CustomResource):
     @pulumi.getter(name="objectCount")
     def object_count(self) -> pulumi.Output[int]:
         """
-        Number of objects in the bucket.
+        Number of objects.
         """
         return pulumi.get(self, "object_count")
 
@@ -684,7 +818,7 @@ class StorageBucket(pulumi.CustomResource):
     @pulumi.getter(name="sizeBytes")
     def size_bytes(self) -> pulumi.Output[int]:
         """
-        Current size of the bucket in bytes.
+        Current size in bytes.
         """
         return pulumi.get(self, "size_bytes")
 
@@ -692,7 +826,7 @@ class StorageBucket(pulumi.CustomResource):
     @pulumi.getter
     def status(self) -> pulumi.Output[str]:
         """
-        Current status of the storage bucket (pending, active, error, destroying).
+        Current status.
         """
         return pulumi.get(self, "status")
 

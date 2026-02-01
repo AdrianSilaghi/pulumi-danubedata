@@ -46,6 +46,9 @@ class GetDatabaseProvidersResult:
     @property
     @pulumi.getter
     def providers(self) -> Sequence['outputs.GetDatabaseProvidersProviderResult']:
+        """
+        List of database providers. Each provider contains:
+        """
         return pulumi.get(self, "providers")
 
 
@@ -61,7 +64,22 @@ class AwaitableGetDatabaseProvidersResult(GetDatabaseProvidersResult):
 
 def get_database_providers(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetDatabaseProvidersResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_database_providers
+
+    Lists available database providers (MySQL, PostgreSQL, MariaDB).
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_database_providers()
+    pulumi.export("databaseProviders", [{
+        "id": p.id,
+        "name": p.name,
+    } for p in all.providers])
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +90,22 @@ def get_database_providers(opts: Optional[pulumi.InvokeOptions] = None) -> Await
         providers=pulumi.get(__ret__, 'providers'))
 def get_database_providers_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetDatabaseProvidersResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_database_providers
+
+    Lists available database providers (MySQL, PostgreSQL, MariaDB).
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_database_providers()
+    pulumi.export("databaseProviders", [{
+        "id": p.id,
+        "name": p.name,
+    } for p in all.providers])
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

@@ -119,13 +119,13 @@ class _FirewallState:
                  updated_at: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Firewall resources.
-        :param pulumi.Input[str] created_at: Timestamp when the firewall was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] default_action: Default action for traffic not matching any rule: 'drop' or 'accept'.
         :param pulumi.Input[str] description: Description of the firewall.
         :param pulumi.Input[bool] is_default: Whether this is the default firewall for the team.
         :param pulumi.Input[str] name: Name of the firewall.
         :param pulumi.Input[Sequence[pulumi.Input['FirewallRuleArgs']]] rules: List of firewall rules.
-        :param pulumi.Input[str] status: Current status of the firewall (draft, active, deploying).
+        :param pulumi.Input[str] status: Current status of the firewall.
         :param pulumi.Input[str] updated_at: Timestamp when the firewall was last updated.
         """
         if created_at is not None:
@@ -149,7 +149,7 @@ class _FirewallState:
     @pulumi.getter(name="createdAt")
     def created_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the firewall was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -221,7 +221,7 @@ class _FirewallState:
     @pulumi.getter
     def status(self) -> Optional[pulumi.Input[str]]:
         """
-        Current status of the firewall (draft, active, deploying).
+        Current status of the firewall.
         """
         return pulumi.get(self, "status")
 
@@ -254,7 +254,22 @@ class Firewall(pulumi.CustomResource):
                  rules: Optional[pulumi.Input[Sequence[pulumi.Input[Union['FirewallRuleArgs', 'FirewallRuleArgsDict']]]]] = None,
                  __props__=None):
         """
-        Create a Firewall resource with the given unique name, props, and options.
+        ## # Firewall
+
+        Manages a firewall with rules for network traffic control.
+
+        ## Example Usage
+
+        ## Import
+
+        Firewalls can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/firewall:Firewall example fw-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] default_action: Default action for traffic not matching any rule: 'drop' or 'accept'.
@@ -270,7 +285,22 @@ class Firewall(pulumi.CustomResource):
                  args: Optional[FirewallArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Firewall resource with the given unique name, props, and options.
+        ## # Firewall
+
+        Manages a firewall with rules for network traffic control.
+
+        ## Example Usage
+
+        ## Import
+
+        Firewalls can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/firewall:Firewall example fw-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param FirewallArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -333,13 +363,13 @@ class Firewall(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] created_at: Timestamp when the firewall was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] default_action: Default action for traffic not matching any rule: 'drop' or 'accept'.
         :param pulumi.Input[str] description: Description of the firewall.
         :param pulumi.Input[bool] is_default: Whether this is the default firewall for the team.
         :param pulumi.Input[str] name: Name of the firewall.
         :param pulumi.Input[Sequence[pulumi.Input[Union['FirewallRuleArgs', 'FirewallRuleArgsDict']]]] rules: List of firewall rules.
-        :param pulumi.Input[str] status: Current status of the firewall (draft, active, deploying).
+        :param pulumi.Input[str] status: Current status of the firewall.
         :param pulumi.Input[str] updated_at: Timestamp when the firewall was last updated.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -360,7 +390,7 @@ class Firewall(pulumi.CustomResource):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the firewall was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -408,7 +438,7 @@ class Firewall(pulumi.CustomResource):
     @pulumi.getter
     def status(self) -> pulumi.Output[str]:
         """
-        Current status of the firewall (draft, active, deploying).
+        Current status of the firewall.
         """
         return pulumi.get(self, "status")
 

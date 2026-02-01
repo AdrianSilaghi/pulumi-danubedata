@@ -6,6 +6,39 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getSshKeys
+ *
+ * Lists all SSH keys in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getSshKeys({});
+ * export const sshKeyIds = all.then(all => .map(key => (key.id)));
+ * export const sshKeyNames = all.then(all => .map(key => (key.name)));
+ * ```
+ *
+ * ### Find Key by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getSshKeys({});
+ * const deployKey = all.then(all => .filter(key => key.name == "deploy-key").map(key => (key))[0]);
+ * const server = new danubedata.Vps("server", {
+ *     image: "ubuntu-22.04",
+ *     datacenter: "fsn1",
+ *     authMethod: "ssh_key",
+ *     sshKeyId: deployKey.id,
+ * });
+ * ```
+ */
 export function getSshKeys(opts?: pulumi.InvokeOptions): Promise<GetSshKeysResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getSshKeys:getSshKeys", {
@@ -20,8 +53,44 @@ export interface GetSshKeysResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * List of SSH keys. Each key contains:
+     */
     readonly keys: outputs.GetSshKeysKey[];
 }
+/**
+ * ## # danubedata.getSshKeys
+ *
+ * Lists all SSH keys in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getSshKeys({});
+ * export const sshKeyIds = all.then(all => .map(key => (key.id)));
+ * export const sshKeyNames = all.then(all => .map(key => (key.name)));
+ * ```
+ *
+ * ### Find Key by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getSshKeys({});
+ * const deployKey = all.then(all => .filter(key => key.name == "deploy-key").map(key => (key))[0]);
+ * const server = new danubedata.Vps("server", {
+ *     image: "ubuntu-22.04",
+ *     datacenter: "fsn1",
+ *     authMethod: "ssh_key",
+ *     sshKeyId: deployKey.id,
+ * });
+ * ```
+ */
 export function getSshKeysOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetSshKeysResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getSshKeys:getSshKeys", {

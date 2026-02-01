@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  PROVIDER: danubedata
+  GO_VERSION: '1.22'
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Build provider
+        run: |
+          cd provider
+          go build -o ../bin/pulumi-resource-${{ env.PROVIDER }} ./cmd/pulumi-resource-${{ env.PROVIDER }}
+
+      - name: Build tfgen
+        run: |
+          cd provider
+          go build -o ../bin/pulumi-tfgen-${{ env.PROVIDER }} ./cmd/pulumi-tfgen-${{ env.PROVIDER }}
+
+      - name: Run tests
+        run: |
+          cd provider
+          go test -v ./...
+
+      - name: Generate schema
+        run: |
+          ./bin/pulumi-tfgen-${{ env.PROVIDER }} schema --out provider/cmd/pulumi-resource-${{ env.PROVIDER }}
+
+  validate-sdks:
+    name: Validate SDKs
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Build tfgen
+        run: |
+          cd provider
+          go build -o ../bin/pulumi-tfgen-${{ env.PROVIDER }} ./cmd/pulumi-tfgen-${{ env.PROVIDER }}
+
+      - name: Generate Node.js SDK
+        run: ./bin/pulumi-tfgen-${{ env.PROVIDER }} nodejs --out sdk/nodejs
+
+      - name: Validate Node.js SDK
+        run: |
+          cd sdk/nodejs
+          sed -i 's/\${VERSION}/0.0.0/g' package.json
+          npm install
+          npm run build
+
+      - name: Generate Python SDK
+        run: ./bin/pulumi-tfgen-${{ env.PROVIDER }} python --out sdk/python
+
+      - name: Validate Python SDK
+        run: |
+          cd sdk/python
+          pip install -e .
+
+      - name: Generate Go SDK
+        run: ./bin/pulumi-tfgen-${{ env.PROVIDER }} go --out sdk/go
+
+      - name: Validate Go SDK
+        run: |
+          cd sdk/go/danubedata
+          go build ./...

@@ -6,6 +6,81 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.Cache
+ *
+ * Manages an in-memory cache instance (Redis, Valkey, or Dragonfly).
+ *
+ * ## Example Usage
+ *
+ * ### Redis Cache
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const redis = new danubedata.Cache("redis", {
+ *     cacheProvider: "redis",
+ *     memorySizeMb: 512,
+ *     cpuCores: 1,
+ *     datacenter: "fsn1",
+ *     version: "7.2",
+ * });
+ * export const redisEndpoint = redis.endpoint;
+ * ```
+ *
+ * ### Valkey Cache (Redis Fork)
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const valkey = new danubedata.Cache("valkey", {
+ *     cacheProvider: "valkey",
+ *     cpuCores: 2,
+ *     datacenter: "fsn1",
+ *     memorySizeMb: 1024,
+ * });
+ * ```
+ *
+ * ### Dragonfly Cache (High Performance)
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const dragonfly = new danubedata.Cache("dragonfly", {
+ *     cacheProvider: "dragonfly",
+ *     cpuCores: 4,
+ *     datacenter: "fsn1",
+ *     memorySizeMb: 2048,
+ * });
+ * ```
+ *
+ * ### Using Resource Profile
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const standard = new danubedata.Cache("standard", {
+ *     resourceProfile: "cache-medium",
+ *     datacenter: "fsn1",
+ * }, {
+ *     provider: "redis",
+ * });
+ * ```
+ *
+ * ## Import
+ *
+ * Cache instances can be imported using their ID:
+ *
+ * bash
+ *
+ * ```sh
+ * $ pulumi import danubedata:index/cache:Cache example cache-abc123
+ * ```
+ */
 export class Cache extends pulumi.CustomResource {
     /**
      * Get an existing Cache resource's state with the given name, ID, and optional extra
@@ -43,7 +118,7 @@ export class Cache extends pulumi.CustomResource {
      */
     public readonly cpuCores!: pulumi.Output<number>;
     /**
-     * Timestamp when the cache instance was created.
+     * Creation timestamp.
      */
     public /*out*/ readonly createdAt!: pulumi.Output<string>;
     /**
@@ -51,11 +126,11 @@ export class Cache extends pulumi.CustomResource {
      */
     public readonly datacenter!: pulumi.Output<string>;
     /**
-     * Timestamp when the cache instance was deployed.
+     * Deployment timestamp.
      */
     public /*out*/ readonly deployedAt!: pulumi.Output<string>;
     /**
-     * Connection endpoint for the cache instance.
+     * Connection endpoint hostname.
      */
     public /*out*/ readonly endpoint!: pulumi.Output<string>;
     /**
@@ -63,7 +138,7 @@ export class Cache extends pulumi.CustomResource {
      */
     public readonly memorySizeMb!: pulumi.Output<number>;
     /**
-     * Monthly cost in dollars.
+     * Estimated monthly cost.
      */
     public /*out*/ readonly monthlyCost!: pulumi.Output<number>;
     /**
@@ -79,7 +154,7 @@ export class Cache extends pulumi.CustomResource {
      */
     public readonly parameterGroupId!: pulumi.Output<string | undefined>;
     /**
-     * Port number for the cache instance.
+     * Connection port.
      */
     public /*out*/ readonly port!: pulumi.Output<number>;
     /**
@@ -87,7 +162,7 @@ export class Cache extends pulumi.CustomResource {
      */
     public readonly resourceProfile!: pulumi.Output<string>;
     /**
-     * Current status of the cache instance (pending, provisioning, running, stopped, error).
+     * Current status.
      */
     public /*out*/ readonly status!: pulumi.Output<string>;
     public readonly timeouts!: pulumi.Output<outputs.CacheTimeouts | undefined>;
@@ -177,7 +252,7 @@ export interface CacheState {
      */
     cpuCores?: pulumi.Input<number>;
     /**
-     * Timestamp when the cache instance was created.
+     * Creation timestamp.
      */
     createdAt?: pulumi.Input<string>;
     /**
@@ -185,11 +260,11 @@ export interface CacheState {
      */
     datacenter?: pulumi.Input<string>;
     /**
-     * Timestamp when the cache instance was deployed.
+     * Deployment timestamp.
      */
     deployedAt?: pulumi.Input<string>;
     /**
-     * Connection endpoint for the cache instance.
+     * Connection endpoint hostname.
      */
     endpoint?: pulumi.Input<string>;
     /**
@@ -197,7 +272,7 @@ export interface CacheState {
      */
     memorySizeMb?: pulumi.Input<number>;
     /**
-     * Monthly cost in dollars.
+     * Estimated monthly cost.
      */
     monthlyCost?: pulumi.Input<number>;
     /**
@@ -213,7 +288,7 @@ export interface CacheState {
      */
     parameterGroupId?: pulumi.Input<string>;
     /**
-     * Port number for the cache instance.
+     * Connection port.
      */
     port?: pulumi.Input<number>;
     /**
@@ -221,7 +296,7 @@ export interface CacheState {
      */
     resourceProfile?: pulumi.Input<string>;
     /**
-     * Current status of the cache instance (pending, provisioning, running, stopped, error).
+     * Current status.
      */
     status?: pulumi.Input<string>;
     timeouts?: pulumi.Input<inputs.CacheTimeouts>;

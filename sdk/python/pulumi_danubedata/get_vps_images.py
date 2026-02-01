@@ -46,6 +46,9 @@ class GetVpsImagesResult:
     @property
     @pulumi.getter
     def images(self) -> Sequence['outputs.GetVpsImagesImageResult']:
+        """
+        List of available images. Each image contains:
+        """
         return pulumi.get(self, "images")
 
 
@@ -61,7 +64,30 @@ class AwaitableGetVpsImagesResult(GetVpsImagesResult):
 
 def get_vps_images(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetVpsImagesResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_vps_images
+
+    Lists available VPS operating system images.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_images()
+    pulumi.export("availableImages", [img.image for img in all.images])
+    ```
+
+    ### Filter Ubuntu Images
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_images()
+    my_ubuntu_images = [img for img in all.images if img.distro == "ubuntu"]
+    pulumi.export("ubuntuImages", [img.image for img in my_ubuntu_images])
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +98,30 @@ def get_vps_images(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetV
         images=pulumi.get(__ret__, 'images'))
 def get_vps_images_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetVpsImagesResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_vps_images
+
+    Lists available VPS operating system images.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_images()
+    pulumi.export("availableImages", [img.image for img in all.images])
+    ```
+
+    ### Filter Ubuntu Images
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_images()
+    my_ubuntu_images = [img for img in all.images if img.distro == "ubuntu"]
+    pulumi.export("ubuntuImages", [img.image for img in my_ubuntu_images])
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

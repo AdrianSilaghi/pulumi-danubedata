@@ -38,6 +38,9 @@ class GetStorageBucketsResult:
     @property
     @pulumi.getter
     def buckets(self) -> Sequence['outputs.GetStorageBucketsBucketResult']:
+        """
+        List of storage buckets. Each bucket contains:
+        """
         return pulumi.get(self, "buckets")
 
     @property
@@ -61,7 +64,32 @@ class AwaitableGetStorageBucketsResult(GetStorageBucketsResult):
 
 def get_storage_buckets(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetStorageBucketsResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_storage_buckets
+
+    Lists all S3-compatible storage buckets in your account.
+
+    ### Find Bucket by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_buckets()
+    assets_bucket = [b for b in all.buckets if b.name == "assets"][0]
+    pulumi.export("assetsEndpoint", assets_bucket.endpoint_url)
+    pulumi.export("assetsBucketName", assets_bucket.minio_bucket_name)
+    ```
+
+    ### Filter Public Buckets
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_buckets()
+    public_buckets = [b for b in all.buckets if b.public_access]
+    pulumi.export("publicBucketUrls", [b.public_url for b in public_buckets])
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +100,32 @@ def get_storage_buckets(opts: Optional[pulumi.InvokeOptions] = None) -> Awaitabl
         id=pulumi.get(__ret__, 'id'))
 def get_storage_buckets_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetStorageBucketsResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_storage_buckets
+
+    Lists all S3-compatible storage buckets in your account.
+
+    ### Find Bucket by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_buckets()
+    assets_bucket = [b for b in all.buckets if b.name == "assets"][0]
+    pulumi.export("assetsEndpoint", assets_bucket.endpoint_url)
+    pulumi.export("assetsBucketName", assets_bucket.minio_bucket_name)
+    ```
+
+    ### Filter Public Buckets
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_storage_buckets()
+    public_buckets = [b for b in all.buckets if b.public_access]
+    pulumi.export("publicBucketUrls", [b.public_url for b in public_buckets])
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

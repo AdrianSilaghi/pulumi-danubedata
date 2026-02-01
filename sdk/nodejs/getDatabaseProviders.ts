@@ -6,6 +6,24 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getDatabaseProviders
+ *
+ * Lists available database providers (MySQL, PostgreSQL, MariaDB).
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getDatabaseProviders({});
+ * export const databaseProviders = all.then(all => .map(p => ({
+ *     id: p.id,
+ *     name: p.name,
+ * })));
+ * ```
+ */
 export function getDatabaseProviders(opts?: pulumi.InvokeOptions): Promise<GetDatabaseProvidersResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getDatabaseProviders:getDatabaseProviders", {
@@ -20,8 +38,29 @@ export interface GetDatabaseProvidersResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * List of database providers. Each provider contains:
+     */
     readonly providers: outputs.GetDatabaseProvidersProvider[];
 }
+/**
+ * ## # danubedata.getDatabaseProviders
+ *
+ * Lists available database providers (MySQL, PostgreSQL, MariaDB).
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getDatabaseProviders({});
+ * export const databaseProviders = all.then(all => .map(p => ({
+ *     id: p.id,
+ *     name: p.name,
+ * })));
+ * ```
+ */
 export function getDatabaseProvidersOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetDatabaseProvidersResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getDatabaseProviders:getDatabaseProviders", {

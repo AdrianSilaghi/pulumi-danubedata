@@ -6,6 +6,110 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.Serverless
+ *
+ * Manages a serverless container with automatic scaling and scale-to-zero support.
+ *
+ * ## Example Usage
+ *
+ * ### Docker Image Deployment
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const nginx = new danubedata.Serverless("nginx", {
+ *     deploymentType: "docker",
+ *     imageUrl: "nginx:latest",
+ *     port: 80,
+ *     minInstances: 0,
+ *     maxInstances: 10,
+ * });
+ * export const appUrl = nginx.url;
+ * ```
+ *
+ * ### Git Repository Deployment
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const app = new danubedata.Serverless("app", {
+ *     deploymentType: "git",
+ *     environmentVariables: {
+ *         LOG_LEVEL: "info",
+ *         NODE_ENV: "production",
+ *     },
+ *     gitBranch: "main",
+ *     gitRepository: "https://github.com/user/my-app",
+ *     maxInstances: 5,
+ *     minInstances: 1,
+ *     port: 8080,
+ * });
+ * ```
+ *
+ * ### With Resource Profile
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const api = new danubedata.Serverless("api", {
+ *     deploymentType: "docker",
+ *     environmentVariables: {
+ *         DATABASE_URL: "postgres://...",
+ *         REDIS_URL: "redis://...",
+ *     },
+ *     imageUrl: "myregistry/api:v1.0",
+ *     maxInstances: 20,
+ *     minInstances: 2,
+ *     port: 3000,
+ *     resourceProfile: "medium",
+ * });
+ * ```
+ *
+ * ### Scale to Zero Configuration
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@danubedata/pulumi";
+ *
+ * const webhook = new danubedata.Serverless("webhook", {
+ *     deploymentType: "docker",
+ *     imageUrl: "myregistry/webhook:latest",
+ *     maxInstances: 100,
+ *     minInstances: 0,
+ *     port: 8080,
+ * });
+ * ```
+ *
+ * ## Scaling Behavior
+ *
+ * - **min_instances = 0**: Container scales to zero after idle period (cost-effective)
+ * - **min_instances >= 1**: Always keeps instances running (no cold starts)
+ * - Scales up automatically based on traffic
+ * - Scales down when traffic decreases
+ *
+ * ## Build Process (Git Deployment)
+ *
+ * When using `git` deployment type:
+ * 1. Repository is cloned
+ * 2. Buildpack detection or Dockerfile is used
+ * 3. Container image is built
+ * 4. Image is deployed to serverless platform
+ * 5. Automatic rebuilds on git push (via webhook)
+ *
+ * ## Import
+ *
+ * Serverless containers can be imported using their ID:
+ *
+ * bash
+ *
+ * ```sh
+ * $ pulumi import danubedata:index/serverless:Serverless example srv-abc123
+ * ```
+ */
 export class Serverless extends pulumi.CustomResource {
     /**
      * Get an existing Serverless resource's state with the given name, ID, and optional extra
@@ -35,7 +139,7 @@ export class Serverless extends pulumi.CustomResource {
     }
 
     /**
-     * Timestamp when the container was created.
+     * Creation timestamp.
      */
     public /*out*/ readonly createdAt!: pulumi.Output<string>;
     /**
@@ -83,7 +187,7 @@ export class Serverless extends pulumi.CustomResource {
      */
     public readonly resourceProfile!: pulumi.Output<string>;
     /**
-     * Current status of the serverless container.
+     * Current status.
      */
     public /*out*/ readonly status!: pulumi.Output<string>;
     public readonly timeouts!: pulumi.Output<outputs.ServerlessTimeouts | undefined>;
@@ -92,7 +196,7 @@ export class Serverless extends pulumi.CustomResource {
      */
     public /*out*/ readonly updatedAt!: pulumi.Output<string>;
     /**
-     * Public URL of the deployed service.
+     * Public HTTPS URL for the container.
      */
     public /*out*/ readonly url!: pulumi.Output<string>;
 
@@ -157,7 +261,7 @@ export class Serverless extends pulumi.CustomResource {
  */
 export interface ServerlessState {
     /**
-     * Timestamp when the container was created.
+     * Creation timestamp.
      */
     createdAt?: pulumi.Input<string>;
     /**
@@ -205,7 +309,7 @@ export interface ServerlessState {
      */
     resourceProfile?: pulumi.Input<string>;
     /**
-     * Current status of the serverless container.
+     * Current status.
      */
     status?: pulumi.Input<string>;
     timeouts?: pulumi.Input<inputs.ServerlessTimeouts>;
@@ -214,7 +318,7 @@ export interface ServerlessState {
      */
     updatedAt?: pulumi.Input<string>;
     /**
-     * Public URL of the deployed service.
+     * Public HTTPS URL for the container.
      */
     url?: pulumi.Input<string>;
 }

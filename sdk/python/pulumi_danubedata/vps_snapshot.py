@@ -98,11 +98,11 @@ class _VpsSnapshotState:
                  vps_instance_id: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering VpsSnapshot resources.
-        :param pulumi.Input[str] created_at: Timestamp when the snapshot was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] description: Description of the snapshot.
         :param pulumi.Input[str] name: Name of the snapshot.
         :param pulumi.Input[float] size_gb: Size of the snapshot in GB.
-        :param pulumi.Input[str] status: Status of the snapshot (pending, completed, failed).
+        :param pulumi.Input[str] status: Current status (`creating`, `ready`, `error`).
         :param pulumi.Input[str] updated_at: Timestamp when the snapshot was last updated.
         :param pulumi.Input[str] vps_instance_id: ID of the VPS instance to snapshot.
         """
@@ -127,7 +127,7 @@ class _VpsSnapshotState:
     @pulumi.getter(name="createdAt")
     def created_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the snapshot was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -175,7 +175,7 @@ class _VpsSnapshotState:
     @pulumi.getter
     def status(self) -> Optional[pulumi.Input[str]]:
         """
-        Status of the snapshot (pending, completed, failed).
+        Current status (`creating`, `ready`, `error`).
         """
         return pulumi.get(self, "status")
 
@@ -228,7 +228,47 @@ class VpsSnapshot(pulumi.CustomResource):
                  vps_instance_id: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a VpsSnapshot resource with the given unique name, props, and options.
+        ## # VpsSnapshot
+
+        Manages a VPS snapshot for backup and recovery.
+
+        ## Example Usage
+
+        ### Basic Snapshot
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        server = danubedata.Vps("server",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            auth_method="ssh_key",
+            ssh_key_id=danubedata_ssh_key["main"]["id"])
+        backup = danubedata.VpsSnapshot("backup", vps_instance_id=server.id)
+        ```
+
+        ### Snapshot with Description
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        release = danubedata.VpsSnapshot("release",
+            description="Snapshot before v1.0 release deployment",
+            vps_instance_id=danubedata_vps["server"]["id"])
+        ```
+
+        ## Import
+
+        VPS snapshots can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/vpsSnapshot:VpsSnapshot example snap-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] description: Description of the snapshot.
@@ -242,7 +282,47 @@ class VpsSnapshot(pulumi.CustomResource):
                  args: VpsSnapshotArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a VpsSnapshot resource with the given unique name, props, and options.
+        ## # VpsSnapshot
+
+        Manages a VPS snapshot for backup and recovery.
+
+        ## Example Usage
+
+        ### Basic Snapshot
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        server = danubedata.Vps("server",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            auth_method="ssh_key",
+            ssh_key_id=danubedata_ssh_key["main"]["id"])
+        backup = danubedata.VpsSnapshot("backup", vps_instance_id=server.id)
+        ```
+
+        ### Snapshot with Description
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        release = danubedata.VpsSnapshot("release",
+            description="Snapshot before v1.0 release deployment",
+            vps_instance_id=danubedata_vps["server"]["id"])
+        ```
+
+        ## Import
+
+        VPS snapshots can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/vpsSnapshot:VpsSnapshot example snap-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param VpsSnapshotArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -306,11 +386,11 @@ class VpsSnapshot(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] created_at: Timestamp when the snapshot was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] description: Description of the snapshot.
         :param pulumi.Input[str] name: Name of the snapshot.
         :param pulumi.Input[float] size_gb: Size of the snapshot in GB.
-        :param pulumi.Input[str] status: Status of the snapshot (pending, completed, failed).
+        :param pulumi.Input[str] status: Current status (`creating`, `ready`, `error`).
         :param pulumi.Input[str] updated_at: Timestamp when the snapshot was last updated.
         :param pulumi.Input[str] vps_instance_id: ID of the VPS instance to snapshot.
         """
@@ -332,7 +412,7 @@ class VpsSnapshot(pulumi.CustomResource):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the snapshot was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -364,7 +444,7 @@ class VpsSnapshot(pulumi.CustomResource):
     @pulumi.getter
     def status(self) -> pulumi.Output[str]:
         """
-        Status of the snapshot (pending, completed, failed).
+        Current status (`creating`, `ready`, `error`).
         """
         return pulumi.get(self, "status")
 

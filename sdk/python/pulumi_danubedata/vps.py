@@ -276,14 +276,14 @@ class _VpsState:
         :param pulumi.Input[str] auth_method: Authentication method: 'ssh_key' or 'password'.
         :param pulumi.Input[str] cpu_allocation_type: CPU allocation type: 'shared' or 'dedicated'.
         :param pulumi.Input[int] cpu_cores: Number of CPU cores. Can be specified during creation or update. VPS must be stopped to modify.
-        :param pulumi.Input[str] created_at: Timestamp when the VPS was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] custom_cloud_init: Custom cloud-init configuration script.
         :param pulumi.Input[str] datacenter: Datacenter location (fsn1, nbg1, hel1, ash).
-        :param pulumi.Input[str] deployed_at: Timestamp when the VPS was deployed.
+        :param pulumi.Input[str] deployed_at: Deployment timestamp.
         :param pulumi.Input[str] image: Operating system image (e.g., 'ubuntu-24.04', 'debian-12').
-        :param pulumi.Input[str] ipv6_address: IPv6 address.
+        :param pulumi.Input[str] ipv6_address: IPv6 address (if enabled).
         :param pulumi.Input[int] memory_size_gb: Memory size in GB. Can be specified during creation or update. VPS must be stopped to modify.
-        :param pulumi.Input[float] monthly_cost: Monthly cost in dollars.
+        :param pulumi.Input[float] monthly_cost: Estimated monthly cost.
         :param pulumi.Input[int] monthly_cost_cents: Monthly cost in cents.
         :param pulumi.Input[str] name: Name of the VPS instance. Must be lowercase alphanumeric with hyphens.
         :param pulumi.Input[str] network_stack: Network stack: 'ipv4_only', 'ipv6_only', or 'dual_stack'.
@@ -293,7 +293,7 @@ class _VpsState:
         :param pulumi.Input[str] resource_profile: Resource profile for the VPS (nano_shared, micro_shared, small_shared, medium_shared, large_shared, or dedicated
                variants).
         :param pulumi.Input[str] ssh_key_id: SSH key ID for authentication (required if auth_method is 'ssh_key').
-        :param pulumi.Input[str] status: Current status of the VPS instance (pending, provisioning, running, stopped, error).
+        :param pulumi.Input[str] status: Current status of the VPS.
         :param pulumi.Input[int] storage_size_gb: Storage size in GB. Can be specified during creation or update. VPS must be stopped to modify.
         :param pulumi.Input[str] updated_at: Timestamp when the VPS was last updated.
         """
@@ -384,7 +384,7 @@ class _VpsState:
     @pulumi.getter(name="createdAt")
     def created_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the VPS was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -420,7 +420,7 @@ class _VpsState:
     @pulumi.getter(name="deployedAt")
     def deployed_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the VPS was deployed.
+        Deployment timestamp.
         """
         return pulumi.get(self, "deployed_at")
 
@@ -444,7 +444,7 @@ class _VpsState:
     @pulumi.getter(name="ipv6Address")
     def ipv6_address(self) -> Optional[pulumi.Input[str]]:
         """
-        IPv6 address.
+        IPv6 address (if enabled).
         """
         return pulumi.get(self, "ipv6_address")
 
@@ -468,7 +468,7 @@ class _VpsState:
     @pulumi.getter(name="monthlyCost")
     def monthly_cost(self) -> Optional[pulumi.Input[float]]:
         """
-        Monthly cost in dollars.
+        Estimated monthly cost.
         """
         return pulumi.get(self, "monthly_cost")
 
@@ -577,7 +577,7 @@ class _VpsState:
     @pulumi.getter
     def status(self) -> Optional[pulumi.Input[str]]:
         """
-        Current status of the VPS instance (pending, provisioning, running, stopped, error).
+        Current status of the VPS.
         """
         return pulumi.get(self, "status")
 
@@ -640,7 +640,80 @@ class Vps(pulumi.CustomResource):
                  timeouts: Optional[pulumi.Input[Union['VpsTimeoutsArgs', 'VpsTimeoutsArgsDict']]] = None,
                  __props__=None):
         """
-        Create a Vps resource with the given unique name, props, and options.
+        ## # Vps
+
+        Manages a VPS (Virtual Private Server) instance.
+
+        ## Example Usage
+
+        ### Basic VPS with SSH Key
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        main = danubedata.SshKey("main", public_key=(lambda path: open(path).read())("~/.ssh/id_ed25519.pub"))
+        web = danubedata.Vps("web",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            auth_method="ssh_key",
+            ssh_key_id=main.id)
+        ```
+
+        ### VPS with Custom Resources
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        app = danubedata.Vps("app",
+            image="debian-12",
+            datacenter="fsn1",
+            auth_method="ssh_key",
+            ssh_key_id=danubedata_ssh_key["main"]["id"],
+            cpu_allocation_type="dedicated",
+            cpu_cores=4,
+            memory_size_gb=8,
+            storage_size_gb=100)
+        ```
+
+        ### VPS with Password Authentication
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        dev = danubedata.Vps("dev",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            auth_method="password",
+            password=var["server_password"])
+        ```
+
+        ### VPS with Resource Profile
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        standard = danubedata.Vps("standard",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            resource_profile="vps-medium",
+            auth_method="ssh_key",
+            ssh_key_id=danubedata_ssh_key["main"]["id"])
+        ```
+
+        ## Import
+
+        VPS instances can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/vps:Vps example vps-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] auth_method: Authentication method: 'ssh_key' or 'password'.
@@ -665,7 +738,80 @@ class Vps(pulumi.CustomResource):
                  args: VpsArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Vps resource with the given unique name, props, and options.
+        ## # Vps
+
+        Manages a VPS (Virtual Private Server) instance.
+
+        ## Example Usage
+
+        ### Basic VPS with SSH Key
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        main = danubedata.SshKey("main", public_key=(lambda path: open(path).read())("~/.ssh/id_ed25519.pub"))
+        web = danubedata.Vps("web",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            auth_method="ssh_key",
+            ssh_key_id=main.id)
+        ```
+
+        ### VPS with Custom Resources
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        app = danubedata.Vps("app",
+            image="debian-12",
+            datacenter="fsn1",
+            auth_method="ssh_key",
+            ssh_key_id=danubedata_ssh_key["main"]["id"],
+            cpu_allocation_type="dedicated",
+            cpu_cores=4,
+            memory_size_gb=8,
+            storage_size_gb=100)
+        ```
+
+        ### VPS with Password Authentication
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        dev = danubedata.Vps("dev",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            auth_method="password",
+            password=var["server_password"])
+        ```
+
+        ### VPS with Resource Profile
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        standard = danubedata.Vps("standard",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            resource_profile="vps-medium",
+            auth_method="ssh_key",
+            ssh_key_id=danubedata_ssh_key["main"]["id"])
+        ```
+
+        ## Import
+
+        VPS instances can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/vps:Vps example vps-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param VpsArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -778,14 +924,14 @@ class Vps(pulumi.CustomResource):
         :param pulumi.Input[str] auth_method: Authentication method: 'ssh_key' or 'password'.
         :param pulumi.Input[str] cpu_allocation_type: CPU allocation type: 'shared' or 'dedicated'.
         :param pulumi.Input[int] cpu_cores: Number of CPU cores. Can be specified during creation or update. VPS must be stopped to modify.
-        :param pulumi.Input[str] created_at: Timestamp when the VPS was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] custom_cloud_init: Custom cloud-init configuration script.
         :param pulumi.Input[str] datacenter: Datacenter location (fsn1, nbg1, hel1, ash).
-        :param pulumi.Input[str] deployed_at: Timestamp when the VPS was deployed.
+        :param pulumi.Input[str] deployed_at: Deployment timestamp.
         :param pulumi.Input[str] image: Operating system image (e.g., 'ubuntu-24.04', 'debian-12').
-        :param pulumi.Input[str] ipv6_address: IPv6 address.
+        :param pulumi.Input[str] ipv6_address: IPv6 address (if enabled).
         :param pulumi.Input[int] memory_size_gb: Memory size in GB. Can be specified during creation or update. VPS must be stopped to modify.
-        :param pulumi.Input[float] monthly_cost: Monthly cost in dollars.
+        :param pulumi.Input[float] monthly_cost: Estimated monthly cost.
         :param pulumi.Input[int] monthly_cost_cents: Monthly cost in cents.
         :param pulumi.Input[str] name: Name of the VPS instance. Must be lowercase alphanumeric with hyphens.
         :param pulumi.Input[str] network_stack: Network stack: 'ipv4_only', 'ipv6_only', or 'dual_stack'.
@@ -795,7 +941,7 @@ class Vps(pulumi.CustomResource):
         :param pulumi.Input[str] resource_profile: Resource profile for the VPS (nano_shared, micro_shared, small_shared, medium_shared, large_shared, or dedicated
                variants).
         :param pulumi.Input[str] ssh_key_id: SSH key ID for authentication (required if auth_method is 'ssh_key').
-        :param pulumi.Input[str] status: Current status of the VPS instance (pending, provisioning, running, stopped, error).
+        :param pulumi.Input[str] status: Current status of the VPS.
         :param pulumi.Input[int] storage_size_gb: Storage size in GB. Can be specified during creation or update. VPS must be stopped to modify.
         :param pulumi.Input[str] updated_at: Timestamp when the VPS was last updated.
         """
@@ -856,7 +1002,7 @@ class Vps(pulumi.CustomResource):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the VPS was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -880,7 +1026,7 @@ class Vps(pulumi.CustomResource):
     @pulumi.getter(name="deployedAt")
     def deployed_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the VPS was deployed.
+        Deployment timestamp.
         """
         return pulumi.get(self, "deployed_at")
 
@@ -896,7 +1042,7 @@ class Vps(pulumi.CustomResource):
     @pulumi.getter(name="ipv6Address")
     def ipv6_address(self) -> pulumi.Output[str]:
         """
-        IPv6 address.
+        IPv6 address (if enabled).
         """
         return pulumi.get(self, "ipv6_address")
 
@@ -912,7 +1058,7 @@ class Vps(pulumi.CustomResource):
     @pulumi.getter(name="monthlyCost")
     def monthly_cost(self) -> pulumi.Output[float]:
         """
-        Monthly cost in dollars.
+        Estimated monthly cost.
         """
         return pulumi.get(self, "monthly_cost")
 
@@ -985,7 +1131,7 @@ class Vps(pulumi.CustomResource):
     @pulumi.getter
     def status(self) -> pulumi.Output[str]:
         """
-        Current status of the VPS instance (pending, provisioning, running, stopped, error).
+        Current status of the VPS.
         """
         return pulumi.get(self, "status")
 

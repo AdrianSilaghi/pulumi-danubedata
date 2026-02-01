@@ -68,12 +68,12 @@ class _StorageAccessKeyState:
                  updated_at: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering StorageAccessKey resources.
-        :param pulumi.Input[str] access_key_id: The S3 access key ID.
-        :param pulumi.Input[str] created_at: Timestamp when the access key was created.
+        :param pulumi.Input[str] access_key_id: The S3 access key ID for authentication.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] expires_at: Optional expiration date for the access key (ISO 8601 format).
         :param pulumi.Input[str] name: Name of the access key.
-        :param pulumi.Input[str] secret_access_key: The S3 secret access key. Only available after creation.
-        :param pulumi.Input[str] status: Current status of the access key (active, revoked).
+        :param pulumi.Input[str] secret_access_key: The S3 secret access key for authentication. Only available after creation.
+        :param pulumi.Input[str] status: Current status of the key.
         :param pulumi.Input[str] updated_at: Timestamp when the access key was last updated.
         """
         if access_key_id is not None:
@@ -95,7 +95,7 @@ class _StorageAccessKeyState:
     @pulumi.getter(name="accessKeyId")
     def access_key_id(self) -> Optional[pulumi.Input[str]]:
         """
-        The S3 access key ID.
+        The S3 access key ID for authentication.
         """
         return pulumi.get(self, "access_key_id")
 
@@ -107,7 +107,7 @@ class _StorageAccessKeyState:
     @pulumi.getter(name="createdAt")
     def created_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the access key was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -143,7 +143,7 @@ class _StorageAccessKeyState:
     @pulumi.getter(name="secretAccessKey")
     def secret_access_key(self) -> Optional[pulumi.Input[str]]:
         """
-        The S3 secret access key. Only available after creation.
+        The S3 secret access key for authentication. Only available after creation.
         """
         return pulumi.get(self, "secret_access_key")
 
@@ -155,7 +155,7 @@ class _StorageAccessKeyState:
     @pulumi.getter
     def status(self) -> Optional[pulumi.Input[str]]:
         """
-        Current status of the access key (active, revoked).
+        Current status of the key.
         """
         return pulumi.get(self, "status")
 
@@ -185,7 +185,60 @@ class StorageAccessKey(pulumi.CustomResource):
                  name: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a StorageAccessKey resource with the given unique name, props, and options.
+        ## # StorageAccessKey
+
+        Manages an S3-compatible storage access key for bucket authentication.
+
+        ## Example Usage
+
+        ### Basic Access Key
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        main = danubedata.StorageAccessKey("main")
+        pulumi.export("accessKeyId", main.access_key_id)
+        pulumi.export("secretAccessKey", main.secret_access_key)
+        ```
+
+        ### Using with AWS Provider for S3 Operations
+
+        ```python
+        import pulumi
+        import pulumi_aws as aws
+        import pulumi_danubedata as danubedata
+
+        data = danubedata.StorageBucket("data", region="fsn1")
+        s3 = danubedata.StorageAccessKey("s3")
+        danubedata = aws.Provider("danubedata",
+            region="us-east-1",
+            access_key=s3.access_key_id,
+            secret_key=s3.secret_access_key,
+            endpoints=[{
+                "s3": data.endpoint_url,
+            }],
+            skip_credentials_validation=True,
+            skip_metadata_api_check=True,
+            skip_requesting_account_id=True,
+            s3_use_path_style=True)
+        example = aws.s3.BucketObjectv2("example",
+            bucket=data.minio_bucket_name,
+            key="example.txt",
+            content="Hello, World!",
+            opts = pulumi.ResourceOptions(provider=aws["danubedata"]))
+        ```
+
+        ## Import
+
+        Storage access keys can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/storageAccessKey:StorageAccessKey example key-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] expires_at: Optional expiration date for the access key (ISO 8601 format).
@@ -198,7 +251,60 @@ class StorageAccessKey(pulumi.CustomResource):
                  args: Optional[StorageAccessKeyArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a StorageAccessKey resource with the given unique name, props, and options.
+        ## # StorageAccessKey
+
+        Manages an S3-compatible storage access key for bucket authentication.
+
+        ## Example Usage
+
+        ### Basic Access Key
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        main = danubedata.StorageAccessKey("main")
+        pulumi.export("accessKeyId", main.access_key_id)
+        pulumi.export("secretAccessKey", main.secret_access_key)
+        ```
+
+        ### Using with AWS Provider for S3 Operations
+
+        ```python
+        import pulumi
+        import pulumi_aws as aws
+        import pulumi_danubedata as danubedata
+
+        data = danubedata.StorageBucket("data", region="fsn1")
+        s3 = danubedata.StorageAccessKey("s3")
+        danubedata = aws.Provider("danubedata",
+            region="us-east-1",
+            access_key=s3.access_key_id,
+            secret_key=s3.secret_access_key,
+            endpoints=[{
+                "s3": data.endpoint_url,
+            }],
+            skip_credentials_validation=True,
+            skip_metadata_api_check=True,
+            skip_requesting_account_id=True,
+            s3_use_path_style=True)
+        example = aws.s3.BucketObjectv2("example",
+            bucket=data.minio_bucket_name,
+            key="example.txt",
+            content="Hello, World!",
+            opts = pulumi.ResourceOptions(provider=aws["danubedata"]))
+        ```
+
+        ## Import
+
+        Storage access keys can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/storageAccessKey:StorageAccessKey example key-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param StorageAccessKeyArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -258,12 +364,12 @@ class StorageAccessKey(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] access_key_id: The S3 access key ID.
-        :param pulumi.Input[str] created_at: Timestamp when the access key was created.
+        :param pulumi.Input[str] access_key_id: The S3 access key ID for authentication.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[str] expires_at: Optional expiration date for the access key (ISO 8601 format).
         :param pulumi.Input[str] name: Name of the access key.
-        :param pulumi.Input[str] secret_access_key: The S3 secret access key. Only available after creation.
-        :param pulumi.Input[str] status: Current status of the access key (active, revoked).
+        :param pulumi.Input[str] secret_access_key: The S3 secret access key for authentication. Only available after creation.
+        :param pulumi.Input[str] status: Current status of the key.
         :param pulumi.Input[str] updated_at: Timestamp when the access key was last updated.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -283,7 +389,7 @@ class StorageAccessKey(pulumi.CustomResource):
     @pulumi.getter(name="accessKeyId")
     def access_key_id(self) -> pulumi.Output[str]:
         """
-        The S3 access key ID.
+        The S3 access key ID for authentication.
         """
         return pulumi.get(self, "access_key_id")
 
@@ -291,7 +397,7 @@ class StorageAccessKey(pulumi.CustomResource):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the access key was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -315,7 +421,7 @@ class StorageAccessKey(pulumi.CustomResource):
     @pulumi.getter(name="secretAccessKey")
     def secret_access_key(self) -> pulumi.Output[str]:
         """
-        The S3 secret access key. Only available after creation.
+        The S3 secret access key for authentication. Only available after creation.
         """
         return pulumi.get(self, "secret_access_key")
 
@@ -323,7 +429,7 @@ class StorageAccessKey(pulumi.CustomResource):
     @pulumi.getter
     def status(self) -> pulumi.Output[str]:
         """
-        Current status of the access key (active, revoked).
+        Current status of the key.
         """
         return pulumi.get(self, "status")
 

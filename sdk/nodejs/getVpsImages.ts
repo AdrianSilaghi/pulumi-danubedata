@@ -6,6 +6,32 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getVpsImages
+ *
+ * Lists available VPS operating system images.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsImages({});
+ * export const availableImages = all.then(all => .map(img => (img.image)));
+ * ```
+ *
+ * ### Filter Ubuntu Images
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsImages({});
+ * const myUbuntuImages = all.then(all => .filter(img => img.distro == "ubuntu").map(img => (img)));
+ * export const ubuntuImages = myUbuntuImages.map(img => (img.image));
+ * ```
+ */
 export function getVpsImages(opts?: pulumi.InvokeOptions): Promise<GetVpsImagesResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getVpsImages:getVpsImages", {
@@ -20,8 +46,37 @@ export interface GetVpsImagesResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * List of available images. Each image contains:
+     */
     readonly images: outputs.GetVpsImagesImage[];
 }
+/**
+ * ## # danubedata.getVpsImages
+ *
+ * Lists available VPS operating system images.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsImages({});
+ * export const availableImages = all.then(all => .map(img => (img.image)));
+ * ```
+ *
+ * ### Filter Ubuntu Images
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getVpsImages({});
+ * const myUbuntuImages = all.then(all => .filter(img => img.distro == "ubuntu").map(img => (img)));
+ * export const ubuntuImages = myUbuntuImages.map(img => (img.image));
+ * ```
+ */
 export function getVpsImagesOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetVpsImagesResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getVpsImages:getVpsImages", {

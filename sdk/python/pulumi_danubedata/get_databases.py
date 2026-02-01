@@ -46,6 +46,9 @@ class GetDatabasesResult:
     @property
     @pulumi.getter
     def instances(self) -> Sequence['outputs.GetDatabasesInstanceResult']:
+        """
+        List of database instances. Each instance contains:
+        """
         return pulumi.get(self, "instances")
 
 
@@ -61,7 +64,43 @@ class AwaitableGetDatabasesResult(GetDatabasesResult):
 
 def get_databases(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetDatabasesResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_databases
+
+    Lists all database instances in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_databases()
+    pulumi.export("databaseCount", len(all.instances))
+    pulumi.export("databaseEndpoints", {db.name: db.endpoint for db in all.instances})
+    ```
+
+    ### Find Database by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_databases()
+    production_db = [db for db in all.instances if db.name == "production-db"][0]
+    pulumi.export("productionConnection", f"{production_db.engine}://{production_db.username}@{production_db.endpoint}:{production_db.port}/{production_db.database_name}")
+    ```
+
+    ### Filter by Engine
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_databases()
+    postgres_dbs = [db for db in all.instances if db.engine == "PostgreSQL"]
+    mysql_dbs = [db for db in all.instances if db.engine == "MySQL"]
+    pulumi.export("postgresCount", len(postgres_dbs))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +111,43 @@ def get_databases(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetDa
         instances=pulumi.get(__ret__, 'instances'))
 def get_databases_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetDatabasesResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_databases
+
+    Lists all database instances in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_databases()
+    pulumi.export("databaseCount", len(all.instances))
+    pulumi.export("databaseEndpoints", {db.name: db.endpoint for db in all.instances})
+    ```
+
+    ### Find Database by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_databases()
+    production_db = [db for db in all.instances if db.name == "production-db"][0]
+    pulumi.export("productionConnection", f"{production_db.engine}://{production_db.username}@{production_db.endpoint}:{production_db.port}/{production_db.database_name}")
+    ```
+
+    ### Filter by Engine
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_databases()
+    postgres_dbs = [db for db in all.instances if db.engine == "PostgreSQL"]
+    mysql_dbs = [db for db in all.instances if db.engine == "MySQL"]
+    pulumi.export("postgresCount", len(postgres_dbs))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

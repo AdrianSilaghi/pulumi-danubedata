@@ -46,6 +46,9 @@ class GetCachesResult:
     @property
     @pulumi.getter
     def instances(self) -> Sequence['outputs.GetCachesInstanceResult']:
+        """
+        List of cache instances. Each instance contains:
+        """
         return pulumi.get(self, "instances")
 
 
@@ -61,7 +64,43 @@ class AwaitableGetCachesResult(GetCachesResult):
 
 def get_caches(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetCachesResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_caches
+
+    Lists all cache instances in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_caches()
+    pulumi.export("cacheCount", len(all.instances))
+    pulumi.export("cacheEndpoints", {cache.name: f"{cache.endpoint}:{cache.port}" for cache in all.instances})
+    ```
+
+    ### Find Cache by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_caches()
+    main_cache = [c for c in all.instances if c.name == "main-cache"][0]
+    pulumi.export("redisUrl", f"redis://{main_cache.endpoint}:{main_cache.port}")
+    ```
+
+    ### Filter by Provider
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_caches()
+    redis_caches = [c for c in all.instances if c.cache_provider == "Redis"]
+    dragonfly_caches = [c for c in all.instances if c.cache_provider == "Dragonfly"]
+    pulumi.export("redisCount", len(redis_caches))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +111,43 @@ def get_caches(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetCache
         instances=pulumi.get(__ret__, 'instances'))
 def get_caches_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetCachesResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_caches
+
+    Lists all cache instances in your account.
+
+    ## Example Usage
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_caches()
+    pulumi.export("cacheCount", len(all.instances))
+    pulumi.export("cacheEndpoints", {cache.name: f"{cache.endpoint}:{cache.port}" for cache in all.instances})
+    ```
+
+    ### Find Cache by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_caches()
+    main_cache = [c for c in all.instances if c.name == "main-cache"][0]
+    pulumi.export("redisUrl", f"redis://{main_cache.endpoint}:{main_cache.port}")
+    ```
+
+    ### Filter by Provider
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_caches()
+    redis_caches = [c for c in all.instances if c.cache_provider == "Redis"]
+    dragonfly_caches = [c for c in all.instances if c.cache_provider == "Dragonfly"]
+    pulumi.export("redisCount", len(redis_caches))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

@@ -3,7 +3,7 @@ module github.com/AdrianSilaghi/pulumi-danubedata/provider
 go 1.24.0
 
 require (
-	github.com/AdrianSilaghi/terraform-provider-danubedata v0.1.0
+	github.com/AdrianSilaghi/terraform-provider-danubedata v0.1.3
 	github.com/hashicorp/terraform-plugin-framework v1.17.0
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.47.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.96.0
@@ -183,5 +183,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	lukechampine.com/frand v1.4.2 // indirect
 )
-
-replace github.com/AdrianSilaghi/terraform-provider-danubedata => ../../terraform-provider-danubedata

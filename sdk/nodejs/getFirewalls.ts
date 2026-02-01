@@ -6,6 +6,45 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getFirewalls
+ *
+ * Lists all firewalls in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getFirewalls({});
+ * export const firewallCount = all.then(all => all.firewalls).length;
+ * export const firewallNames = all.then(all => .map(fw => (fw.name)));
+ * ```
+ *
+ * ### Find Firewall by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getFirewalls({});
+ * const webFirewall = all.then(all => .filter(fw => fw.name == "web-firewall").map(fw => (fw))[0]);
+ * export const webFirewallId = webFirewall.id;
+ * export const webFirewallRules = webFirewall.rulesCount;
+ * ```
+ *
+ * ### Find Default Firewall
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getFirewalls({});
+ * const defaultFirewall = all.then(all => .filter(fw => fw.isDefault).map(fw => (fw))[0]);
+ * export const defaultFirewallId = defaultFirewall.id;
+ * ```
+ */
 export function getFirewalls(opts?: pulumi.InvokeOptions): Promise<GetFirewallsResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getFirewalls:getFirewalls", {
@@ -16,12 +55,54 @@ export function getFirewalls(opts?: pulumi.InvokeOptions): Promise<GetFirewallsR
  * A collection of values returned by getFirewalls.
  */
 export interface GetFirewallsResult {
+    /**
+     * List of firewalls. Each firewall contains:
+     */
     readonly firewalls: outputs.GetFirewallsFirewall[];
     /**
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
 }
+/**
+ * ## # danubedata.getFirewalls
+ *
+ * Lists all firewalls in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getFirewalls({});
+ * export const firewallCount = all.then(all => all.firewalls).length;
+ * export const firewallNames = all.then(all => .map(fw => (fw.name)));
+ * ```
+ *
+ * ### Find Firewall by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getFirewalls({});
+ * const webFirewall = all.then(all => .filter(fw => fw.name == "web-firewall").map(fw => (fw))[0]);
+ * export const webFirewallId = webFirewall.id;
+ * export const webFirewallRules = webFirewall.rulesCount;
+ * ```
+ *
+ * ### Find Default Firewall
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getFirewalls({});
+ * const defaultFirewall = all.then(all => .filter(fw => fw.isDefault).map(fw => (fw))[0]);
+ * export const defaultFirewallId = defaultFirewall.id;
+ * ```
+ */
 export function getFirewallsOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetFirewallsResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getFirewalls:getFirewalls", {

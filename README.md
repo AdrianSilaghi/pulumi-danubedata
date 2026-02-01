@@ -63,7 +63,7 @@ const vps = new danubedata.Vps("my-server", {
     name: "web-server",
     image: "ubuntu-24.04",
     datacenter: "fsn1",
-    resourceProfile: "vps-starter",
+    resourceProfile: "nano_shared",
     authMethod: "ssh_key",
     sshKeyId: sshKey.id,
 });
@@ -72,17 +72,17 @@ const vps = new danubedata.Vps("my-server", {
 const cache = new danubedata.Cache("my-cache", {
     name: "app-cache",
     cacheProvider: "redis",
-    resourceProfile: "cache-starter",
+    resourceProfile: "micro",
     datacenter: "fsn1",
 });
 
 // Create a PostgreSQL database
 const database = new danubedata.Database("my-db", {
     name: "app-database",
-    databaseProvider: "postgresql",
-    resourceProfile: "db-starter",
+    engine: "postgresql",
+    resourceProfile: "small",
     databaseName: "myapp",
-    username: "appuser",
+    datacenter: "fsn1",
 });
 
 // Create an S3-compatible storage bucket
@@ -126,7 +126,7 @@ vps = danubedata.Vps("my-server",
     name="web-server",
     image="ubuntu-24.04",
     datacenter="fsn1",
-    resource_profile="vps-starter",
+    resource_profile="nano_shared",
     auth_method="ssh_key",
     ssh_key_id=ssh_key.id)
 
@@ -134,7 +134,7 @@ vps = danubedata.Vps("my-server",
 cache = danubedata.Cache("my-cache",
     name="app-cache",
     cache_provider="redis",
-    resource_profile="cache-starter",
+    resource_profile="micro",
     datacenter="fsn1")
 
 # Export outputs
@@ -177,7 +177,7 @@ pulumi.export("cache_endpoint", cache.endpoint)
 
 ### Prerequisites
 
-- Go 1.24+
+- Go 1.22+
 - Pulumi CLI
 - Node.js 18+ (for TypeScript SDK)
 - Python 3.8+ (for Python SDK)

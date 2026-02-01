@@ -37,15 +37,15 @@ if not MYPY:
     class CacheTimeoutsArgsDict(TypedDict):
         create: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for cache creation.
         """
         delete: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for cache deletion.
         """
         update: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for cache updates.
         """
 elif False:
     CacheTimeoutsArgsDict: TypeAlias = Mapping[str, Any]
@@ -57,9 +57,9 @@ class CacheTimeoutsArgs:
                  delete: Optional[pulumi.Input[str]] = None,
                  update: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param pulumi.Input[str] delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param pulumi.Input[str] update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param pulumi.Input[str] create: Time to wait for cache creation.
+        :param pulumi.Input[str] delete: Time to wait for cache deletion.
+        :param pulumi.Input[str] update: Time to wait for cache updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -72,7 +72,7 @@ class CacheTimeoutsArgs:
     @pulumi.getter
     def create(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for cache creation.
         """
         return pulumi.get(self, "create")
 
@@ -84,7 +84,7 @@ class CacheTimeoutsArgs:
     @pulumi.getter
     def delete(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for cache deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -96,7 +96,7 @@ class CacheTimeoutsArgs:
     @pulumi.getter
     def update(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for cache updates.
         """
         return pulumi.get(self, "update")
 
@@ -109,15 +109,15 @@ if not MYPY:
     class DatabaseTimeoutsArgsDict(TypedDict):
         create: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for database creation.
         """
         delete: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for database deletion.
         """
         update: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for database updates.
         """
 elif False:
     DatabaseTimeoutsArgsDict: TypeAlias = Mapping[str, Any]
@@ -129,9 +129,9 @@ class DatabaseTimeoutsArgs:
                  delete: Optional[pulumi.Input[str]] = None,
                  update: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param pulumi.Input[str] delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param pulumi.Input[str] update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param pulumi.Input[str] create: Time to wait for database creation.
+        :param pulumi.Input[str] delete: Time to wait for database deletion.
+        :param pulumi.Input[str] update: Time to wait for database updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -144,7 +144,7 @@ class DatabaseTimeoutsArgs:
     @pulumi.getter
     def create(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for database creation.
         """
         return pulumi.get(self, "create")
 
@@ -156,7 +156,7 @@ class DatabaseTimeoutsArgs:
     @pulumi.getter
     def delete(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for database deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -168,7 +168,7 @@ class DatabaseTimeoutsArgs:
     @pulumi.getter
     def update(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for database updates.
         """
         return pulumi.get(self, "update")
 
@@ -181,39 +181,39 @@ if not MYPY:
     class FirewallRuleArgsDict(TypedDict):
         action: pulumi.Input[str]
         """
-        Action to take: 'accept' or 'drop'.
+        Action: `allow` or `deny`.
         """
         direction: pulumi.Input[str]
         """
-        Direction: 'inbound' or 'outbound'.
+        Direction: `inbound` or `outbound`.
         """
         protocol: pulumi.Input[str]
         """
-        Protocol: 'tcp', 'udp', 'icmp', or 'any'.
+        Protocol: `tcp`, `udp`, `icmp`, or `all`.
         """
         id: NotRequired[pulumi.Input[str]]
         """
-        Rule ID (computed by API).
+        The firewall ID.
         """
         name: NotRequired[pulumi.Input[str]]
         """
-        Name/description of the rule.
+        Name of the rule.
         """
         port_range_end: NotRequired[pulumi.Input[int]]
         """
-        End of port range (1-65535).
+        End of port range.
         """
         port_range_start: NotRequired[pulumi.Input[int]]
         """
-        Start of port range (1-65535).
+        Start of port range.
         """
         priority: NotRequired[pulumi.Input[int]]
         """
-        Rule priority (lower numbers = higher priority).
+        Rule priority (lower = higher priority).
         """
         source_ips: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
         """
-        List of source IP addresses or CIDR blocks.
+        List of source IP addresses/CIDRs.
         """
 elif False:
     FirewallRuleArgsDict: TypeAlias = Mapping[str, Any]
@@ -231,15 +231,15 @@ class FirewallRuleArgs:
                  priority: Optional[pulumi.Input[int]] = None,
                  source_ips: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
-        :param pulumi.Input[str] action: Action to take: 'accept' or 'drop'.
-        :param pulumi.Input[str] direction: Direction: 'inbound' or 'outbound'.
-        :param pulumi.Input[str] protocol: Protocol: 'tcp', 'udp', 'icmp', or 'any'.
-        :param pulumi.Input[str] id: Rule ID (computed by API).
-        :param pulumi.Input[str] name: Name/description of the rule.
-        :param pulumi.Input[int] port_range_end: End of port range (1-65535).
-        :param pulumi.Input[int] port_range_start: Start of port range (1-65535).
-        :param pulumi.Input[int] priority: Rule priority (lower numbers = higher priority).
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] source_ips: List of source IP addresses or CIDR blocks.
+        :param pulumi.Input[str] action: Action: `allow` or `deny`.
+        :param pulumi.Input[str] direction: Direction: `inbound` or `outbound`.
+        :param pulumi.Input[str] protocol: Protocol: `tcp`, `udp`, `icmp`, or `all`.
+        :param pulumi.Input[str] id: The firewall ID.
+        :param pulumi.Input[str] name: Name of the rule.
+        :param pulumi.Input[int] port_range_end: End of port range.
+        :param pulumi.Input[int] port_range_start: Start of port range.
+        :param pulumi.Input[int] priority: Rule priority (lower = higher priority).
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] source_ips: List of source IP addresses/CIDRs.
         """
         pulumi.set(__self__, "action", action)
         pulumi.set(__self__, "direction", direction)
@@ -261,7 +261,7 @@ class FirewallRuleArgs:
     @pulumi.getter
     def action(self) -> pulumi.Input[str]:
         """
-        Action to take: 'accept' or 'drop'.
+        Action: `allow` or `deny`.
         """
         return pulumi.get(self, "action")
 
@@ -273,7 +273,7 @@ class FirewallRuleArgs:
     @pulumi.getter
     def direction(self) -> pulumi.Input[str]:
         """
-        Direction: 'inbound' or 'outbound'.
+        Direction: `inbound` or `outbound`.
         """
         return pulumi.get(self, "direction")
 
@@ -285,7 +285,7 @@ class FirewallRuleArgs:
     @pulumi.getter
     def protocol(self) -> pulumi.Input[str]:
         """
-        Protocol: 'tcp', 'udp', 'icmp', or 'any'.
+        Protocol: `tcp`, `udp`, `icmp`, or `all`.
         """
         return pulumi.get(self, "protocol")
 
@@ -297,7 +297,7 @@ class FirewallRuleArgs:
     @pulumi.getter
     def id(self) -> Optional[pulumi.Input[str]]:
         """
-        Rule ID (computed by API).
+        The firewall ID.
         """
         return pulumi.get(self, "id")
 
@@ -309,7 +309,7 @@ class FirewallRuleArgs:
     @pulumi.getter
     def name(self) -> Optional[pulumi.Input[str]]:
         """
-        Name/description of the rule.
+        Name of the rule.
         """
         return pulumi.get(self, "name")
 
@@ -321,7 +321,7 @@ class FirewallRuleArgs:
     @pulumi.getter(name="portRangeEnd")
     def port_range_end(self) -> Optional[pulumi.Input[int]]:
         """
-        End of port range (1-65535).
+        End of port range.
         """
         return pulumi.get(self, "port_range_end")
 
@@ -333,7 +333,7 @@ class FirewallRuleArgs:
     @pulumi.getter(name="portRangeStart")
     def port_range_start(self) -> Optional[pulumi.Input[int]]:
         """
-        Start of port range (1-65535).
+        Start of port range.
         """
         return pulumi.get(self, "port_range_start")
 
@@ -345,7 +345,7 @@ class FirewallRuleArgs:
     @pulumi.getter
     def priority(self) -> Optional[pulumi.Input[int]]:
         """
-        Rule priority (lower numbers = higher priority).
+        Rule priority (lower = higher priority).
         """
         return pulumi.get(self, "priority")
 
@@ -357,7 +357,7 @@ class FirewallRuleArgs:
     @pulumi.getter(name="sourceIps")
     def source_ips(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        List of source IP addresses or CIDR blocks.
+        List of source IP addresses/CIDRs.
         """
         return pulumi.get(self, "source_ips")
 
@@ -370,15 +370,15 @@ if not MYPY:
     class ServerlessTimeoutsArgsDict(TypedDict):
         create: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for container creation.
         """
         delete: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for container deletion.
         """
         update: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for container updates.
         """
 elif False:
     ServerlessTimeoutsArgsDict: TypeAlias = Mapping[str, Any]
@@ -390,9 +390,9 @@ class ServerlessTimeoutsArgs:
                  delete: Optional[pulumi.Input[str]] = None,
                  update: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param pulumi.Input[str] delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param pulumi.Input[str] update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param pulumi.Input[str] create: Time to wait for container creation.
+        :param pulumi.Input[str] delete: Time to wait for container deletion.
+        :param pulumi.Input[str] update: Time to wait for container updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -405,7 +405,7 @@ class ServerlessTimeoutsArgs:
     @pulumi.getter
     def create(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for container creation.
         """
         return pulumi.get(self, "create")
 
@@ -417,7 +417,7 @@ class ServerlessTimeoutsArgs:
     @pulumi.getter
     def delete(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for container deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -429,7 +429,7 @@ class ServerlessTimeoutsArgs:
     @pulumi.getter
     def update(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for container updates.
         """
         return pulumi.get(self, "update")
 
@@ -442,15 +442,15 @@ if not MYPY:
     class StorageBucketTimeoutsArgsDict(TypedDict):
         create: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for bucket creation.
         """
         delete: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for bucket deletion.
         """
         update: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for bucket updates.
         """
 elif False:
     StorageBucketTimeoutsArgsDict: TypeAlias = Mapping[str, Any]
@@ -462,9 +462,9 @@ class StorageBucketTimeoutsArgs:
                  delete: Optional[pulumi.Input[str]] = None,
                  update: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param pulumi.Input[str] delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param pulumi.Input[str] update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param pulumi.Input[str] create: Time to wait for bucket creation.
+        :param pulumi.Input[str] delete: Time to wait for bucket deletion.
+        :param pulumi.Input[str] update: Time to wait for bucket updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -477,7 +477,7 @@ class StorageBucketTimeoutsArgs:
     @pulumi.getter
     def create(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for bucket creation.
         """
         return pulumi.get(self, "create")
 
@@ -489,7 +489,7 @@ class StorageBucketTimeoutsArgs:
     @pulumi.getter
     def delete(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for bucket deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -501,7 +501,7 @@ class StorageBucketTimeoutsArgs:
     @pulumi.getter
     def update(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for bucket updates.
         """
         return pulumi.get(self, "update")
 
@@ -514,11 +514,11 @@ if not MYPY:
     class VpsSnapshotTimeoutsArgsDict(TypedDict):
         create: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for snapshot creation.
         """
         delete: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for snapshot deletion.
         """
 elif False:
     VpsSnapshotTimeoutsArgsDict: TypeAlias = Mapping[str, Any]
@@ -529,8 +529,8 @@ class VpsSnapshotTimeoutsArgs:
                  create: Optional[pulumi.Input[str]] = None,
                  delete: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param pulumi.Input[str] delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        :param pulumi.Input[str] create: Time to wait for snapshot creation.
+        :param pulumi.Input[str] delete: Time to wait for snapshot deletion.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -541,7 +541,7 @@ class VpsSnapshotTimeoutsArgs:
     @pulumi.getter
     def create(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for snapshot creation.
         """
         return pulumi.get(self, "create")
 
@@ -553,7 +553,7 @@ class VpsSnapshotTimeoutsArgs:
     @pulumi.getter
     def delete(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for snapshot deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -566,15 +566,15 @@ if not MYPY:
     class VpsTimeoutsArgsDict(TypedDict):
         create: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for VPS creation.
         """
         delete: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for VPS deletion.
         """
         update: NotRequired[pulumi.Input[str]]
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for VPS updates.
         """
 elif False:
     VpsTimeoutsArgsDict: TypeAlias = Mapping[str, Any]
@@ -586,9 +586,9 @@ class VpsTimeoutsArgs:
                  delete: Optional[pulumi.Input[str]] = None,
                  update: Optional[pulumi.Input[str]] = None):
         """
-        :param pulumi.Input[str] create: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
-        :param pulumi.Input[str] delete: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
-        :param pulumi.Input[str] update: A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        :param pulumi.Input[str] create: Time to wait for VPS creation.
+        :param pulumi.Input[str] delete: Time to wait for VPS deletion.
+        :param pulumi.Input[str] update: Time to wait for VPS updates.
         """
         if create is not None:
             pulumi.set(__self__, "create", create)
@@ -601,7 +601,7 @@ class VpsTimeoutsArgs:
     @pulumi.getter
     def create(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for VPS creation.
         """
         return pulumi.get(self, "create")
 
@@ -613,7 +613,7 @@ class VpsTimeoutsArgs:
     @pulumi.getter
     def delete(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+        Time to wait for VPS deletion.
         """
         return pulumi.get(self, "delete")
 
@@ -625,7 +625,7 @@ class VpsTimeoutsArgs:
     @pulumi.getter
     def update(self) -> Optional[pulumi.Input[str]]:
         """
-        A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+        Time to wait for VPS updates.
         """
         return pulumi.get(self, "update")
 

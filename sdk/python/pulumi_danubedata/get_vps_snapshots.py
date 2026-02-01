@@ -46,6 +46,9 @@ class GetVpsSnapshotsResult:
     @property
     @pulumi.getter
     def snapshots(self) -> Sequence['outputs.GetVpsSnapshotsSnapshotResult']:
+        """
+        List of VPS snapshots. Each snapshot contains:
+        """
         return pulumi.get(self, "snapshots")
 
 
@@ -61,7 +64,46 @@ class AwaitableGetVpsSnapshotsResult(GetVpsSnapshotsResult):
 
 def get_vps_snapshots(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetVpsSnapshotsResult:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_vps_snapshots
+
+    Lists all VPS snapshots in your account.
+
+    ### Find Snapshot by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_snapshots()
+    pre_upgrade = [s for s in all.snapshots if s.name == "pre-upgrade-backup"][0]
+    pulumi.export("preUpgradeSnapshotId", pre_upgrade.id)
+    ```
+
+    ### Filter Snapshots by VPS Instance
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_snapshots()
+    config = pulumi.Config()
+    vps_id = config.get("vpsId")
+    if vps_id is None:
+        vps_id = "vps-abc123"
+    vps_snapshots = [s for s in all.snapshots if s.vps_instance_id == vps_id]
+    pulumi.export("vpsSnapshotCount", len(vps_snapshots))
+    ```
+
+    ### Filter Ready Snapshots
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_snapshots()
+    ready_snapshots = [s for s in all.snapshots if s.status == "ready"]
+    pulumi.export("readyCount", len(ready_snapshots))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)
@@ -72,7 +114,46 @@ def get_vps_snapshots(opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableG
         snapshots=pulumi.get(__ret__, 'snapshots'))
 def get_vps_snapshots_output(opts: Optional[pulumi.InvokeOptions] = None) -> pulumi.Output[GetVpsSnapshotsResult]:
     """
-    Use this data source to access information about an existing resource.
+    ## # get_vps_snapshots
+
+    Lists all VPS snapshots in your account.
+
+    ### Find Snapshot by Name
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_snapshots()
+    pre_upgrade = [s for s in all.snapshots if s.name == "pre-upgrade-backup"][0]
+    pulumi.export("preUpgradeSnapshotId", pre_upgrade.id)
+    ```
+
+    ### Filter Snapshots by VPS Instance
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_snapshots()
+    config = pulumi.Config()
+    vps_id = config.get("vpsId")
+    if vps_id is None:
+        vps_id = "vps-abc123"
+    vps_snapshots = [s for s in all.snapshots if s.vps_instance_id == vps_id]
+    pulumi.export("vpsSnapshotCount", len(vps_snapshots))
+    ```
+
+    ### Filter Ready Snapshots
+
+    ```python
+    import pulumi
+    import pulumi_danubedata as danubedata
+
+    all = danubedata.get_vps_snapshots()
+    ready_snapshots = [s for s in all.snapshots if s.status == "ready"]
+    pulumi.export("readyCount", len(ready_snapshots))
+    ```
     """
     __args__ = dict()
     opts = pulumi.InvokeOptions.merge(_utilities.get_invoke_opts_defaults(), opts)

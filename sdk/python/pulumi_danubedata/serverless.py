@@ -218,7 +218,7 @@ class _ServerlessState:
                  url: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering Serverless resources.
-        :param pulumi.Input[str] created_at: Timestamp when the container was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[int] current_month_cost_cents: Current month's cost in cents.
         :param pulumi.Input[str] deployment_type: Deployment type: 'image' for Docker image, 'git' for Git repository.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] environment_variables: Environment variables for the container.
@@ -230,9 +230,9 @@ class _ServerlessState:
         :param pulumi.Input[str] name: Name of the serverless container.
         :param pulumi.Input[int] port: Port the container listens on.
         :param pulumi.Input[str] resource_profile: Resource profile for the container (small, medium, large).
-        :param pulumi.Input[str] status: Current status of the serverless container.
+        :param pulumi.Input[str] status: Current status.
         :param pulumi.Input[str] updated_at: Timestamp when the container was last updated.
-        :param pulumi.Input[str] url: Public URL of the deployed service.
+        :param pulumi.Input[str] url: Public HTTPS URL for the container.
         """
         if created_at is not None:
             pulumi.set(__self__, "created_at", created_at)
@@ -271,7 +271,7 @@ class _ServerlessState:
     @pulumi.getter(name="createdAt")
     def created_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the container was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -415,7 +415,7 @@ class _ServerlessState:
     @pulumi.getter
     def status(self) -> Optional[pulumi.Input[str]]:
         """
-        Current status of the serverless container.
+        Current status.
         """
         return pulumi.get(self, "status")
 
@@ -448,7 +448,7 @@ class _ServerlessState:
     @pulumi.getter
     def url(self) -> Optional[pulumi.Input[str]]:
         """
-        Public URL of the deployed service.
+        Public HTTPS URL for the container.
         """
         return pulumi.get(self, "url")
 
@@ -475,7 +475,105 @@ class Serverless(pulumi.CustomResource):
                  timeouts: Optional[pulumi.Input[Union['ServerlessTimeoutsArgs', 'ServerlessTimeoutsArgsDict']]] = None,
                  __props__=None):
         """
-        Create a Serverless resource with the given unique name, props, and options.
+        ## # Serverless
+
+        Manages a serverless container with automatic scaling and scale-to-zero support.
+
+        ## Example Usage
+
+        ### Docker Image Deployment
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        nginx = danubedata.Serverless("nginx",
+            deployment_type="docker",
+            image_url="nginx:latest",
+            port=80,
+            min_instances=0,
+            max_instances=10)
+        pulumi.export("appUrl", nginx.url)
+        ```
+
+        ### Git Repository Deployment
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        app = danubedata.Serverless("app",
+            deployment_type="git",
+            environment_variables={
+                "LOG_LEVEL": "info",
+                "NODE_ENV": "production",
+            },
+            git_branch="main",
+            git_repository="https://github.com/user/my-app",
+            max_instances=5,
+            min_instances=1,
+            port=8080)
+        ```
+
+        ### With Resource Profile
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        api = danubedata.Serverless("api",
+            deployment_type="docker",
+            environment_variables={
+                "DATABASE_URL": "postgres://...",
+                "REDIS_URL": "redis://...",
+            },
+            image_url="myregistry/api:v1.0",
+            max_instances=20,
+            min_instances=2,
+            port=3000,
+            resource_profile="medium")
+        ```
+
+        ### Scale to Zero Configuration
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        webhook = danubedata.Serverless("webhook",
+            deployment_type="docker",
+            image_url="myregistry/webhook:latest",
+            max_instances=100,
+            min_instances=0,
+            port=8080)
+        ```
+
+        ## Scaling Behavior
+
+        - **min_instances = 0**: Container scales to zero after idle period (cost-effective)
+        - **min_instances >= 1**: Always keeps instances running (no cold starts)
+        - Scales up automatically based on traffic
+        - Scales down when traffic decreases
+
+        ## Build Process (Git Deployment)
+
+        When using `git` deployment type:
+        1. Repository is cloned
+        2. Buildpack detection or Dockerfile is used
+        3. Container image is built
+        4. Image is deployed to serverless platform
+        5. Automatic rebuilds on git push (via webhook)
+
+        ## Import
+
+        Serverless containers can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/serverless:Serverless example srv-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] deployment_type: Deployment type: 'image' for Docker image, 'git' for Git repository.
@@ -496,7 +594,105 @@ class Serverless(pulumi.CustomResource):
                  args: ServerlessArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a Serverless resource with the given unique name, props, and options.
+        ## # Serverless
+
+        Manages a serverless container with automatic scaling and scale-to-zero support.
+
+        ## Example Usage
+
+        ### Docker Image Deployment
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        nginx = danubedata.Serverless("nginx",
+            deployment_type="docker",
+            image_url="nginx:latest",
+            port=80,
+            min_instances=0,
+            max_instances=10)
+        pulumi.export("appUrl", nginx.url)
+        ```
+
+        ### Git Repository Deployment
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        app = danubedata.Serverless("app",
+            deployment_type="git",
+            environment_variables={
+                "LOG_LEVEL": "info",
+                "NODE_ENV": "production",
+            },
+            git_branch="main",
+            git_repository="https://github.com/user/my-app",
+            max_instances=5,
+            min_instances=1,
+            port=8080)
+        ```
+
+        ### With Resource Profile
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        api = danubedata.Serverless("api",
+            deployment_type="docker",
+            environment_variables={
+                "DATABASE_URL": "postgres://...",
+                "REDIS_URL": "redis://...",
+            },
+            image_url="myregistry/api:v1.0",
+            max_instances=20,
+            min_instances=2,
+            port=3000,
+            resource_profile="medium")
+        ```
+
+        ### Scale to Zero Configuration
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        webhook = danubedata.Serverless("webhook",
+            deployment_type="docker",
+            image_url="myregistry/webhook:latest",
+            max_instances=100,
+            min_instances=0,
+            port=8080)
+        ```
+
+        ## Scaling Behavior
+
+        - **min_instances = 0**: Container scales to zero after idle period (cost-effective)
+        - **min_instances >= 1**: Always keeps instances running (no cold starts)
+        - Scales up automatically based on traffic
+        - Scales down when traffic decreases
+
+        ## Build Process (Git Deployment)
+
+        When using `git` deployment type:
+        1. Repository is cloned
+        2. Buildpack detection or Dockerfile is used
+        3. Container image is built
+        4. Image is deployed to serverless platform
+        5. Automatic rebuilds on git push (via webhook)
+
+        ## Import
+
+        Serverless containers can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/serverless:Serverless example srv-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param ServerlessArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -583,7 +779,7 @@ class Serverless(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] created_at: Timestamp when the container was created.
+        :param pulumi.Input[str] created_at: Creation timestamp.
         :param pulumi.Input[int] current_month_cost_cents: Current month's cost in cents.
         :param pulumi.Input[str] deployment_type: Deployment type: 'image' for Docker image, 'git' for Git repository.
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] environment_variables: Environment variables for the container.
@@ -595,9 +791,9 @@ class Serverless(pulumi.CustomResource):
         :param pulumi.Input[str] name: Name of the serverless container.
         :param pulumi.Input[int] port: Port the container listens on.
         :param pulumi.Input[str] resource_profile: Resource profile for the container (small, medium, large).
-        :param pulumi.Input[str] status: Current status of the serverless container.
+        :param pulumi.Input[str] status: Current status.
         :param pulumi.Input[str] updated_at: Timestamp when the container was last updated.
-        :param pulumi.Input[str] url: Public URL of the deployed service.
+        :param pulumi.Input[str] url: Public HTTPS URL for the container.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -625,7 +821,7 @@ class Serverless(pulumi.CustomResource):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the container was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -721,7 +917,7 @@ class Serverless(pulumi.CustomResource):
     @pulumi.getter
     def status(self) -> pulumi.Output[str]:
         """
-        Current status of the serverless container.
+        Current status.
         """
         return pulumi.get(self, "status")
 
@@ -742,7 +938,7 @@ class Serverless(pulumi.CustomResource):
     @pulumi.getter
     def url(self) -> pulumi.Output[str]:
         """
-        Public URL of the deployed service.
+        Public HTTPS URL for the container.
         """
         return pulumi.get(self, "url")
 

@@ -65,8 +65,8 @@ class _SshKeyState:
                  updated_at: Optional[pulumi.Input[str]] = None):
         """
         Input properties used for looking up and filtering SshKey resources.
-        :param pulumi.Input[str] created_at: Timestamp when the SSH key was created.
-        :param pulumi.Input[str] fingerprint: The SHA256 fingerprint of the SSH key.
+        :param pulumi.Input[str] created_at: Creation timestamp.
+        :param pulumi.Input[str] fingerprint: The SSH key fingerprint.
         :param pulumi.Input[str] name: A descriptive name for the SSH key.
         :param pulumi.Input[str] public_key: The SSH public key in OpenSSH format (e.g., 'ssh-rsa AAAA...' or 'ssh-ed25519 AAAA...').
         :param pulumi.Input[str] updated_at: Timestamp when the SSH key was last updated.
@@ -86,7 +86,7 @@ class _SshKeyState:
     @pulumi.getter(name="createdAt")
     def created_at(self) -> Optional[pulumi.Input[str]]:
         """
-        Timestamp when the SSH key was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -98,7 +98,7 @@ class _SshKeyState:
     @pulumi.getter
     def fingerprint(self) -> Optional[pulumi.Input[str]]:
         """
-        The SHA256 fingerprint of the SSH key.
+        The SSH key fingerprint.
         """
         return pulumi.get(self, "fingerprint")
 
@@ -152,7 +152,43 @@ class SshKey(pulumi.CustomResource):
                  public_key: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
-        Create a SshKey resource with the given unique name, props, and options.
+        ## # SshKey
+
+        Manages an SSH key for VPS authentication.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        main = danubedata.SshKey("main", public_key=(lambda path: open(path).read())("~/.ssh/id_ed25519.pub"))
+        ```
+
+        ### Using with VPS
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        deploy = danubedata.SshKey("deploy", public_key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... deploy@example.com")
+        server = danubedata.Vps("server",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            auth_method="ssh_key",
+            ssh_key_id=deploy.id)
+        ```
+
+        ## Import
+
+        SSH keys can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/sshKey:SshKey example key-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[str] name: A descriptive name for the SSH key.
@@ -165,7 +201,43 @@ class SshKey(pulumi.CustomResource):
                  args: SshKeyArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        Create a SshKey resource with the given unique name, props, and options.
+        ## # SshKey
+
+        Manages an SSH key for VPS authentication.
+
+        ## Example Usage
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        main = danubedata.SshKey("main", public_key=(lambda path: open(path).read())("~/.ssh/id_ed25519.pub"))
+        ```
+
+        ### Using with VPS
+
+        ```python
+        import pulumi
+        import pulumi_danubedata as danubedata
+
+        deploy = danubedata.SshKey("deploy", public_key="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... deploy@example.com")
+        server = danubedata.Vps("server",
+            image="ubuntu-22.04",
+            datacenter="fsn1",
+            auth_method="ssh_key",
+            ssh_key_id=deploy.id)
+        ```
+
+        ## Import
+
+        SSH keys can be imported using their ID:
+
+        bash
+
+        ```sh
+        $ pulumi import danubedata:index/sshKey:SshKey example key-abc123
+        ```
+
         :param str resource_name: The name of the resource.
         :param SshKeyArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -221,8 +293,8 @@ class SshKey(pulumi.CustomResource):
         :param str resource_name: The unique name of the resulting resource.
         :param pulumi.Input[str] id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] created_at: Timestamp when the SSH key was created.
-        :param pulumi.Input[str] fingerprint: The SHA256 fingerprint of the SSH key.
+        :param pulumi.Input[str] created_at: Creation timestamp.
+        :param pulumi.Input[str] fingerprint: The SSH key fingerprint.
         :param pulumi.Input[str] name: A descriptive name for the SSH key.
         :param pulumi.Input[str] public_key: The SSH public key in OpenSSH format (e.g., 'ssh-rsa AAAA...' or 'ssh-ed25519 AAAA...').
         :param pulumi.Input[str] updated_at: Timestamp when the SSH key was last updated.
@@ -242,7 +314,7 @@ class SshKey(pulumi.CustomResource):
     @pulumi.getter(name="createdAt")
     def created_at(self) -> pulumi.Output[str]:
         """
-        Timestamp when the SSH key was created.
+        Creation timestamp.
         """
         return pulumi.get(self, "created_at")
 
@@ -250,7 +322,7 @@ class SshKey(pulumi.CustomResource):
     @pulumi.getter
     def fingerprint(self) -> pulumi.Output[str]:
         """
-        The SHA256 fingerprint of the SSH key.
+        The SSH key fingerprint.
         """
         return pulumi.get(self, "fingerprint")
 

@@ -6,6 +6,24 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getCacheProviders
+ *
+ * Lists available cache providers (Redis, Valkey, Dragonfly).
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getCacheProviders({});
+ * export const cacheProviders = all.then(all => .map(p => ({
+ *     id: p.id,
+ *     name: p.name,
+ * })));
+ * ```
+ */
 export function getCacheProviders(opts?: pulumi.InvokeOptions): Promise<GetCacheProvidersResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getCacheProviders:getCacheProviders", {
@@ -20,8 +38,29 @@ export interface GetCacheProvidersResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * List of cache providers. Each provider contains:
+     */
     readonly providers: outputs.GetCacheProvidersProvider[];
 }
+/**
+ * ## # danubedata.getCacheProviders
+ *
+ * Lists available cache providers (Redis, Valkey, Dragonfly).
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getCacheProviders({});
+ * export const cacheProviders = all.then(all => .map(p => ({
+ *     id: p.id,
+ *     name: p.name,
+ * })));
+ * ```
+ */
 export function getCacheProvidersOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetCacheProvidersResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getCacheProviders:getCacheProviders", {

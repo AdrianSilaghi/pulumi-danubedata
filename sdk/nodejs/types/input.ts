@@ -7,125 +7,125 @@ import * as outputs from "../types/output";
 
 export interface CacheTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for cache creation.
      */
     create?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for cache deletion.
      */
     delete?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for cache updates.
      */
     update?: pulumi.Input<string>;
 }
 
 export interface DatabaseTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for database creation.
      */
     create?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for database deletion.
      */
     delete?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for database updates.
      */
     update?: pulumi.Input<string>;
 }
 
 export interface FirewallRule {
     /**
-     * Action to take: 'accept' or 'drop'.
+     * Action: `allow` or `deny`.
      */
     action: pulumi.Input<string>;
     /**
-     * Direction: 'inbound' or 'outbound'.
+     * Direction: `inbound` or `outbound`.
      */
     direction: pulumi.Input<string>;
     /**
-     * Rule ID (computed by API).
+     * The firewall ID.
      */
     id?: pulumi.Input<string>;
     /**
-     * Name/description of the rule.
+     * Name of the rule.
      */
     name?: pulumi.Input<string>;
     /**
-     * End of port range (1-65535).
+     * End of port range.
      */
     portRangeEnd?: pulumi.Input<number>;
     /**
-     * Start of port range (1-65535).
+     * Start of port range.
      */
     portRangeStart?: pulumi.Input<number>;
     /**
-     * Rule priority (lower numbers = higher priority).
+     * Rule priority (lower = higher priority).
      */
     priority?: pulumi.Input<number>;
     /**
-     * Protocol: 'tcp', 'udp', 'icmp', or 'any'.
+     * Protocol: `tcp`, `udp`, `icmp`, or `all`.
      */
     protocol: pulumi.Input<string>;
     /**
-     * List of source IP addresses or CIDR blocks.
+     * List of source IP addresses/CIDRs.
      */
     sourceIps?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 export interface ServerlessTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for container creation.
      */
     create?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for container deletion.
      */
     delete?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for container updates.
      */
     update?: pulumi.Input<string>;
 }
 
 export interface StorageBucketTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for bucket creation.
      */
     create?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for bucket deletion.
      */
     delete?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for bucket updates.
      */
     update?: pulumi.Input<string>;
 }
 
 export interface VpsSnapshotTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for snapshot creation.
      */
     create?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for snapshot deletion.
      */
     delete?: pulumi.Input<string>;
 }
 
 export interface VpsTimeouts {
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for VPS creation.
      */
     create?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+     * Time to wait for VPS deletion.
      */
     delete?: pulumi.Input<string>;
     /**
-     * A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+     * Time to wait for VPS updates.
      */
     update?: pulumi.Input<string>;
 }

@@ -6,6 +6,45 @@ import * as inputs from "./types/input";
 import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
+/**
+ * ## # danubedata.getDatabases
+ *
+ * Lists all database instances in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getDatabases({});
+ * export const databaseCount = all.then(all => all.instances).length;
+ * export const databaseEndpoints = all.then(all => .reduce((__obj, db) => ({ ...__obj, [db.name]: db.endpoint })));
+ * ```
+ *
+ * ### Find Database by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getDatabases({});
+ * const productionDb = all.then(all => .filter(db => db.name == "production-db").map(db => (db))[0]);
+ * export const productionConnection = `${productionDb.engine}://${productionDb.username}@${productionDb.endpoint}:${productionDb.port}/${productionDb.databaseName}`;
+ * ```
+ *
+ * ### Filter by Engine
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getDatabases({});
+ * const postgresDbs = all.then(all => .filter(db => db.engine == "PostgreSQL").map(db => (db)));
+ * const mysqlDbs = all.then(all => .filter(db => db.engine == "MySQL").map(db => (db)));
+ * export const postgresCount = postgresDbs.length;
+ * ```
+ */
 export function getDatabases(opts?: pulumi.InvokeOptions): Promise<GetDatabasesResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invoke("danubedata:index/getDatabases:getDatabases", {
@@ -20,8 +59,50 @@ export interface GetDatabasesResult {
      * The provider-assigned unique ID for this managed resource.
      */
     readonly id: string;
+    /**
+     * List of database instances. Each instance contains:
+     */
     readonly instances: outputs.GetDatabasesInstance[];
 }
+/**
+ * ## # danubedata.getDatabases
+ *
+ * Lists all database instances in your account.
+ *
+ * ## Example Usage
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getDatabases({});
+ * export const databaseCount = all.then(all => all.instances).length;
+ * export const databaseEndpoints = all.then(all => .reduce((__obj, db) => ({ ...__obj, [db.name]: db.endpoint })));
+ * ```
+ *
+ * ### Find Database by Name
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getDatabases({});
+ * const productionDb = all.then(all => .filter(db => db.name == "production-db").map(db => (db))[0]);
+ * export const productionConnection = `${productionDb.engine}://${productionDb.username}@${productionDb.endpoint}:${productionDb.port}/${productionDb.databaseName}`;
+ * ```
+ *
+ * ### Filter by Engine
+ *
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as danubedata from "@pulumi/danubedata";
+ *
+ * const all = danubedata.getDatabases({});
+ * const postgresDbs = all.then(all => .filter(db => db.engine == "PostgreSQL").map(db => (db)));
+ * const mysqlDbs = all.then(all => .filter(db => db.engine == "MySQL").map(db => (db)));
+ * export const postgresCount = postgresDbs.length;
+ * ```
+ */
 export function getDatabasesOutput(opts?: pulumi.InvokeOptions): pulumi.Output<GetDatabasesResult> {
     opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts || {});
     return pulumi.runtime.invokeOutput("danubedata:index/getDatabases:getDatabases", {
