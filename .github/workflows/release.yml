@@ -127,6 +127,8 @@ jobs:
           # Update devDependencies
           sed -i 's/"@types\/node": "[^"]*"/"@types\/node": "^18.0.0"/g' package.json
           sed -i 's/"typescript": "[^"]*"/"typescript": "^5.0.0"/g' package.json
+          # Add npm packaging fields (main, types, files)
+          node -e "const p=require('./package.json'); p.main='bin/index.js'; p.types='bin/index.d.ts'; p.files=['bin/**/*.js','bin/**/*.d.ts','bin/**/*.js.map']; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 4));"
           cd ../..
 
           # Update Python setup.py
