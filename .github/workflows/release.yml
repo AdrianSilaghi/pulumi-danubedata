@@ -134,9 +134,10 @@ jobs:
           sed -i "s/VERSION = \"0.0.0\"/VERSION = \"${VERSION}\"/g" setup.py
           cd ../..
 
-          # Update .NET csproj
+          # Update .NET csproj and version.txt
           cd sdk/dotnet
           sed -i "s/<Version>.*<\/Version>/<Version>${VERSION}<\/Version>/g" *.csproj
+          echo "${VERSION}" > version.txt
           cd ../..
 
       - name: Publish Node.js SDK
