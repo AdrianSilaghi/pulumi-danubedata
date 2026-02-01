@@ -168,7 +168,9 @@ jobs:
           NUGET_API_KEY: ${{ secrets.NUGET_TOKEN }}
         run: |
           cd sdk/dotnet
-          dotnet pack -c Release
+          dotnet restore
+          dotnet build -c Release
+          dotnet pack -c Release --no-build
           dotnet nuget push **/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
         continue-on-error: true
 

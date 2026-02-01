@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.0</Version>
     <Authors>AdrianSilaghi</Authors>
     <Company>AdrianSilaghi</Company>
     <Description>A Pulumi provider for managing DanubeData cloud infrastructure resources.</Description>
@@ -14,7 +15,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
