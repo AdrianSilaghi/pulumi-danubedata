@@ -34,7 +34,7 @@ func Provider() tfbridge.ProviderInfo {
 		DisplayName: "DanubeData",
 		Version:     Version,
 		Publisher:   "AdrianSilaghi",
-		LogoURL:     "",
+		LogoURL:     "https://raw.githubusercontent.com/AdrianSilaghi/pulumi-danubedata/main/docs/logo.png",
 		PluginDownloadURL: "github://api.github.com/AdrianSilaghi/pulumi-danubedata",
 		Description: "A Pulumi provider for managing DanubeData cloud infrastructure resources.",
 		Keywords: []string{
