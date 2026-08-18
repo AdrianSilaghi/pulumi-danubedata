@@ -1,19 +1,12 @@
 name: CI
 
-# Build, test and SDK validation. Releasing stays on GitHub Actions.
+# Build, test and SDK validation on every push and pull request to main.
 #
-# `.forgejo/workflows` completely shadows `.github/workflows` on this forge --
-# first-match-wins across .gitea -> .forgejo -> .github, not a merge. Adding
-# this file means Forgejo stops running .github/workflows/ci.yml AND
-# .github/workflows/release.yml. That is deliberate: this repo is push-mirrored
-# to github.com, where release.yml still fires on tags and publishes the SDKs
-# to npm, PyPI and NuGet. Those tokens live in GitHub, and `secrets.GITHUB_TOKEN`
-# here is scoped to this forge -- a "GitHub release" step run on Forgejo would
-# silently create a Forgejo release instead.
-#
-# release.yml also passes artifacts between jobs via actions/upload-artifact and
-# download-artifact, which talk to GitHub's artifact service and do not work
-# here. Porting it needs restructuring, not a version bump; it is out of scope.
+# Releasing lives in .forgejo/workflows/release.yml, which fires on `v*` tags
+# and publishes the SDKs to npm, PyPI and NuGet before cutting the GitHub
+# release. The GitHub workflows this was ported from are deleted: the repo is
+# push-mirrored to github.com and the mirror carries tags, so leaving
+# release.yml there would have published the same SDK versions twice.
 
 on:
   push:

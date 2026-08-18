@@ -1,0 +1,226 @@
+name: Release
+
+# Tag -> build provider binaries -> publish SDKs -> GitHub release.
+#
+# Ported from .github/workflows/release.yml, with two structural changes.
+#
+# 1. One job instead of three. The original chained build-provider ->
+#    publish-sdks -> create-release with actions/upload-artifact and
+#    download-artifact, which talk to GitHub's artifact service and do not work
+#    on this forge. Collapsing the jobs removes the artifact hop entirely
+#    rather than trying to reproduce it. Cross-compiling five Go binaries costs
+#    seconds, so the lost matrix parallelism is not worth an artifact store.
+#
+# 2. The publish steps no longer carry `continue-on-error: true`. That made a
+#    failed npm, PyPI or NuGet push invisible -- the release went green having
+#    shipped nothing. Re-running is instead made safe per registry: npm is
+#    checked before publishing, twine uses --skip-existing, and NuGet uses
+#    --skip-duplicate. A genuine failure now fails the run.
+#
+# The GitHub release is created through api.github.com with GH_RELEASE_TOKEN.
+# `secrets.GITHUB_TOKEN` on Forgejo is scoped to this forge and would silently
+# create a Forgejo release instead.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v0.1.0)'
+        required: true
+        type: string
+
+env:
+  PROVIDER: danubedata
+  GO_VERSION: '1.22'
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  DOTNET_VERSION: '6.0'
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Resolve version
+        id: version
+        run: |
+          set -euo pipefail
+          if [ -n "${{ inputs.tag }}" ]; then
+            TAG='${{ inputs.tag }}'
+          else
+            TAG="${GITHUB_REF#refs/tags/}"
+          fi
+          [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]] || { echo "not a version tag: $TAG" >&2; exit 1; }
+          echo "VERSION=${TAG#v}" >> "$GITHUB_OUTPUT"
+          echo "TAG=${TAG}" >> "$GITHUB_OUTPUT"
+          # Pre-release tags publish nothing to the public registries, matching
+          # the original `if: !contains(github.ref, 'alpha'|'beta')` guards.
+          if [[ "$TAG" == *alpha* || "$TAG" == *beta* ]]; then
+            echo "PRERELEASE=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "PRERELEASE=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Build provider binaries
+        env:
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          set -euo pipefail
+          # Was a 5-way job matrix; cross-compiling in one job costs seconds and
+          # keeps the archives in this workspace, where the release step needs them.
+          mkdir -p dist
+          for target in linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64; do
+            GOOS="${target%/*}"; GOARCH="${target#*/}"
+            BINARY="pulumi-resource-${PROVIDER}"
+            [ "$GOOS" = windows ] && BINARY="${BINARY}.exe"
+            ( cd provider && GOOS="$GOOS" GOARCH="$GOARCH" go build \
+                -o "../bin/${BINARY}" \
+                -ldflags "-X github.com/AdrianSilaghi/pulumi-danubedata/provider.Version=${VERSION}" \
+                "./cmd/pulumi-resource-${PROVIDER}" )
+            ARCHIVE="pulumi-resource-${PROVIDER}-v${VERSION}-${GOOS}-${GOARCH}"
+            if [ "$GOOS" = windows ]; then
+              ( cd bin && zip -q "../dist/${ARCHIVE}.zip" "${BINARY}" )
+            else
+              ( cd bin && tar -czf "../dist/${ARCHIVE}.tar.gz" "${BINARY}" )
+            fi
+            rm -f "bin/${BINARY}"
+          done
+          ls -la dist/
+
+      - name: Generate and version SDKs
+        env:
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          set -euo pipefail
+          ( cd provider && go build -o "../bin/pulumi-tfgen-${PROVIDER}" "./cmd/pulumi-tfgen-${PROVIDER}" )
+          "./bin/pulumi-tfgen-${PROVIDER}" nodejs --out sdk/nodejs
+          "./bin/pulumi-tfgen-${PROVIDER}" python --out sdk/python
+          "./bin/pulumi-tfgen-${PROVIDER}" dotnet --out sdk/dotnet
+          "./bin/pulumi-tfgen-${PROVIDER}" go     --out sdk/go
+
+          ( cd sdk/nodejs
+            sed -i "s/\${VERSION}/${VERSION}/g" package.json
+            sed -i 's/"@types\/node": "[^"]*"/"@types\/node": "^18.0.0"/g' package.json
+            sed -i 's/"typescript": "[^"]*"/"typescript": "^5.0.0"/g' package.json
+            node -e "const p=require('./package.json'); p.main='bin/index.js'; p.types='bin/index.d.ts'; p.files=['bin/**/*.js','bin/**/*.d.ts','bin/**/*.js.map','package.json']; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 4));" )
+
+          ( cd sdk/python && sed -i "s/VERSION = \"0.0.0\"/VERSION = \"${VERSION}\"/g" setup.py )
+          ( cd sdk/dotnet
+            sed -i "s|<Version>.*</Version>|<Version>${VERSION}</Version>|g" ./*.csproj
+            echo "${VERSION}" > version.txt )
+
+      - name: Publish Node.js SDK
+        if: steps.version.outputs.PRERELEASE == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          set -euo pipefail
+          cd sdk/nodejs
+          npm install
+          npm run build
+          cp package.json bin/
+          NAME="$(node -p "require('./package.json').name")"
+          # Makes a re-run safe without hiding real failures the way
+          # continue-on-error did.
+          if npm view "${NAME}@${VERSION}" version >/dev/null 2>&1; then
+            echo "${NAME}@${VERSION} already on npm, skipping"
+          else
+            npm publish --access public
+          fi
+
+      - name: Publish Python SDK
+        if: steps.version.outputs.PRERELEASE == 'false'
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          set -euo pipefail
+          cd sdk/python
+          pip install --quiet build twine
+          python -m build
+          twine upload --skip-existing dist/*
+
+      - name: Publish .NET SDK
+        if: steps.version.outputs.PRERELEASE == 'false'
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_TOKEN }}
+        run: |
+          set -euo pipefail
+          cd sdk/dotnet
+          dotnet restore
+          dotnet build -c Release
+          dotnet pack -c Release --no-build
+          find . -name '*.nupkg' -print0 | xargs -0 -I {} \
+            dotnet nuget push {} --api-key "$NUGET_API_KEY" \
+              --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
+          TAG: ${{ steps.version.outputs.TAG }}
+          PRERELEASE: ${{ steps.version.outputs.PRERELEASE }}
+        run: |
+          set -euo pipefail
+          REPO=AdrianSilaghi/pulumi-danubedata
+          API=https://api.github.com
+
+          # Reuse the release if the tag was already released, so a re-run
+          # attaches assets instead of failing on a duplicate.
+          release_id="$(curl -fsS -H "Authorization: Bearer ${GH_TOKEN}" \
+            "${API}/repos/${REPO}/releases/tags/${TAG}" 2>/dev/null | jq -r '.id // empty')"
+
+          if [ -z "$release_id" ]; then
+            release_id="$(jq -n --arg t "$TAG" --argjson pre "$PRERELEASE" \
+                '{tag_name:$t, name:$t, draft:false, prerelease:$pre, generate_release_notes:true}' \
+              | curl -fsS -X POST -H "Authorization: Bearer ${GH_TOKEN}" \
+                  -H 'Content-Type: application/json' --data @- \
+                  "${API}/repos/${REPO}/releases" | jq -r '.id')"
+            echo "created release ${release_id}"
+          else
+            echo "reusing release ${release_id}"
+          fi
+
+          for asset in dist/*; do
+            name="$(basename "$asset")"
+            echo "uploading ${name}"
+            curl -fsS -X POST \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H 'Content-Type: application/octet-stream' \
+              --data-binary "@${asset}" \
+              "https://uploads.github.com/repos/${REPO}/releases/${release_id}/assets?name=${name}" \
+              >/dev/null
+          done
+          echo "release ${TAG} published with $(ls dist | wc -l) assets"
